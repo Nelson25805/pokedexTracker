@@ -1,5 +1,7 @@
 ﻿using System.Windows;
 using System.Threading.Tasks;
+using System.Linq;
+using System;
 
 namespace PokedexTracker
 {
@@ -22,21 +24,21 @@ namespace PokedexTracker
 
         private async void HandleStartupAsync()
         {
-            // Check if the database is empty
-            if (_dbHelper.IsDatabaseEmpty())
-            {
-                MessageBox.Show("No Pokémon found in the database. Fetching data...");
+            MessageBox.Show("Fetching the latest Pokémon data...");
 
-                // Fetch and store Pokémon from the API
-                await FetchAndStorePokemon();
-            }
+            // Fetch and store Pokémon from the API, even if the database has some data
+            await FetchAndStorePokemon();
 
             // Load Pokémon into the UI
             LoadPokemonList();
         }
 
+
+
+
         private void LoadPokemonList()
         {
+            // Fetch the updated list of Pokémon from the database
             var pokemonList = _dbHelper.GetAllPokemon();
 
             if (pokemonList == null || pokemonList.Count == 0)
@@ -45,24 +47,55 @@ namespace PokedexTracker
             }
             else
             {
+                // Display the Pokémon list in the UI
                 PokemonListView.ItemsSource = pokemonList;
             }
         }
 
+
+
         private async Task FetchAndStorePokemon()
         {
-            var pokemonList = await _apiClient.GetAllPokemonAsync();
+            try
+            {
+                // Check if the database already has Pokémon data
+                int pokemonCount = _dbHelper.GetPokemonCount();
 
-            if (pokemonList != null && pokemonList.Count > 0)
-            {
-                _dbHelper.SavePokemon(pokemonList);
-                MessageBox.Show("Pokémon data fetched and saved!");
+                // If fewer than the expected number of Pokémon, fetch more from the API
+                if (pokemonCount < 1000)  // Assuming 1000 or more Pokémon should be in the database
+                {
+                    var pokemonList = await _apiClient.GetAllPokemonAsync();
+
+                    if (pokemonList != null && pokemonList.Count > 0)
+                    {
+                        // Save only new Pokémon that are not already in the database
+                        _dbHelper.SavePokemon(pokemonList);
+                        MessageBox.Show("New Pokémon data fetched and saved!");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Failed to fetch Pokémon data.");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Database already contains the latest Pokémon.");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Failed to fetch Pokémon data.");
+                MessageBox.Show($"An error occurred while fetching and saving Pokémon: {ex.Message}");
             }
+
+            // Reload the Pokémon list in the UI after fetching and saving
+            LoadPokemonList();
         }
+
+
+
+
+
+
 
         private void ViewDetails_Click(object sender, RoutedEventArgs e)
         {

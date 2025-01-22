@@ -32,8 +32,7 @@ namespace PokedexTracker
                     string createTableQuery = @"
                     CREATE TABLE IF NOT EXISTS Pokemon (
                         Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        Name TEXT NOT NULL UNIQUE,
-                        IsCaught INTEGER NOT NULL
+                        Name TEXT NOT NULL UNIQUE
                     );";
 
                     using (var command = new SQLiteCommand(createTableQuery, connection))
@@ -108,33 +107,38 @@ namespace PokedexTracker
 
 
         // Save Pokémon data to the database
-        public void SavePokemon(List<PokemonApiClient.PokemonBasic> pokemonList)
+        public void SavePokemon(List<PokemonBasic> pokemonList)
         {
             using (var connection = new SQLiteConnection(ConnectionString))
             {
                 connection.Open();
 
-                string insertQuery = "INSERT OR IGNORE INTO Pokemon (Name, IsCaught) VALUES (@Name, 0);";
-
                 foreach (var pokemon in pokemonList)
                 {
-                    using (var command = new SQLiteCommand(insertQuery, connection))
+                    // Avoid inserting duplicates by checking if the Pokemon already exists
+                    string checkQuery = "SELECT COUNT(1) FROM Pokemon WHERE Name = @Name";
+                    using (var checkCommand = new SQLiteCommand(checkQuery, connection))
                     {
-                        command.Parameters.AddWithValue("@Name", pokemon.Name);
+                        checkCommand.Parameters.AddWithValue("@Name", pokemon.Name);
+                        int count = Convert.ToInt32(checkCommand.ExecuteScalar());
 
-                        try
+                        if (count == 0) // Only insert if not already in database
                         {
-                            command.ExecuteNonQuery();
-                            Console.WriteLine($"Saved Pokémon: {pokemon.Name}");
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine($"Error saving Pokémon {pokemon.Name}: {ex.Message}");
+                            string insertQuery = "INSERT INTO Pokemon (Name) VALUES (@Name)";
+                            using (var insertCommand = new SQLiteCommand(insertQuery, connection))
+                            {
+                                insertCommand.Parameters.AddWithValue("@Name", pokemon.Name);
+                                insertCommand.ExecuteNonQuery();
+                            }
                         }
                     }
                 }
             }
         }
+
+
+
+
 
         // Check if the database is empty (no Pokémon saved yet)
         public bool IsDatabaseEmpty()
@@ -152,6 +156,21 @@ namespace PokedexTracker
                 }
             }
         }
+
+        public int GetPokemonCount()
+        {
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Open();
+
+                string query = "SELECT COUNT(*) FROM Pokemon;";
+                using (var command = new SQLiteCommand(query, connection))
+                {
+                    return Convert.ToInt32(command.ExecuteScalar());
+                }
+            }
+        }
+
 
 
     }

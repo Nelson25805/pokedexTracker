@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System;
+using System.Windows;
 
 public class PokemonApiClient
 {
@@ -23,10 +24,34 @@ public class PokemonApiClient
     // Fetch the first 151 Pokémon
     public async Task<List<PokemonBasic>> GetAllPokemonAsync()
     {
-        var response = await _httpClient.GetStringAsync("pokemon?limit=151&offset=0");
-        var result = JsonConvert.DeserializeObject<PokemonResponse>(response);
-        return result.Results;
+        var allPokemon = new List<PokemonBasic>();
+        int offset = 0;
+        int limit = 100;  // Number of Pokémon to fetch per request
+
+        while (true)
+        {
+            var response = await _httpClient.GetStringAsync($"pokemon?limit={limit}&offset={offset}");
+            var result = JsonConvert.DeserializeObject<PokemonResponse>(response);
+
+            // Add a MessageBox to show how many Pokémon were fetched
+            MessageBox.Show($"Fetched {result.Results.Count} Pokémon (Offset: {offset})");
+
+            if (result.Results.Count == 0)
+            {
+                // No more Pokémon to fetch, exit the loop
+                break;
+            }
+
+            allPokemon.AddRange(result.Results);
+
+            // Move the offset forward to fetch the next set of Pokémon
+            offset += limit;
+        }
+
+        return allPokemon;
     }
+
+
 
     // Class to hold the response structure
     public class PokemonResponse
