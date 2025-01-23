@@ -46,11 +46,11 @@ namespace PokedexTracker
 
                 // Base query for fetching Pokémon data
                 string query = @"
-        SELECT Pokemon.Name, Pokemon.Number, Sprites.FilePath 
-        FROM Pokemon
-        JOIN Pokedex_Status ON Pokedex_Status.Pokemon_Number = Pokemon.Number
-        JOIN Sprites ON Sprites.PokemonId = Pokemon.Number
-        WHERE Pokedex_Status.Game_Id = (SELECT Id FROM Game WHERE Name = @gameName)";
+                    SELECT Pokemon.Name, Pokemon.Number, Sprites.FilePath 
+                    FROM Pokemon
+                    JOIN Pokedex_Status ON Pokedex_Status.Pokemon_Number = Pokemon.Number
+                    JOIN Sprites ON Sprites.PokemonId = Pokemon.Number
+                    WHERE Pokedex_Status.Game_Id = (SELECT Id FROM Game WHERE Name = @gameName)";
 
                 // Add conditions for game-specific sprites
                 if (gameName == "Red" || gameName == "Blue")
@@ -90,14 +90,16 @@ namespace PokedexTracker
                                 Size = new Size(120, 150),
                                 Location = new Point(xPos, yPos),
                                 BorderStyle = BorderStyle.FixedSingle,
-                                BackColor = isCaught ? Color.Green : Color.LightGray // Green if caught
+                                BackColor = isCaught ? Color.Green : Color.LightGray
                             };
 
+                            // Disable click event for child controls (sprite and label)
                             PictureBox sprite = new PictureBox
                             {
                                 SizeMode = PictureBoxSizeMode.StretchImage,
                                 Size = new Size(100, 100),
-                                Location = new Point(10, 10)
+                                Location = new Point(10, 10),
+                                Enabled = false // Disable click events for sprite
                             };
 
                             // Check if the sprite file exists before displaying
@@ -111,13 +113,14 @@ namespace PokedexTracker
                                 Text = $"{name} #{number}",
                                 Location = new Point(10, 115),
                                 Size = new Size(100, 20),
-                                TextAlign = ContentAlignment.MiddleCenter
+                                TextAlign = ContentAlignment.MiddleCenter,
+                                Enabled = false // Disable click events for label
                             };
 
                             card.Controls.Add(sprite);
                             card.Controls.Add(label);
 
-                            // Add a click event to the card
+                            // Add a click event to the card itself
                             card.Click += (sender, e) =>
                             {
                                 // Reopen the connection to avoid disposed error
@@ -145,6 +148,7 @@ namespace PokedexTracker
                 }
             }
         }
+
 
 
 
@@ -194,7 +198,7 @@ namespace PokedexTracker
             }
 
             // Debug message to confirm database update
-            MessageBox.Show("Caught status updated for Pokémon #" + pokemonNumber + " in game " + gameName + ": " + (newStatus == 1 ? "Caught" : "Uncaught"));
+            //MessageBox.Show("Caught status updated for Pokémon #" + pokemonNumber + " in game " + gameName + ": " + (newStatus == 1 ? "Caught" : "Uncaught"));
         }
 
     }
