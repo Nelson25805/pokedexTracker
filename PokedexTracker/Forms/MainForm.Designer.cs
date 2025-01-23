@@ -32,6 +32,7 @@
             this.btnBlue = new System.Windows.Forms.Button();
             this.btnYellow = new System.Windows.Forms.Button();
             this.panelCards = new System.Windows.Forms.Panel();
+            this.progressBarCaught = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
             // btnRed
@@ -72,11 +73,19 @@
             this.panelCards.Size = new System.Drawing.Size(1779, 1218);
             this.panelCards.TabIndex = 4;
             // 
+            // progressBarCaught
+            // 
+            this.progressBarCaught.Location = new System.Drawing.Point(332, 77);
+            this.progressBarCaught.Name = "progressBarCaught";
+            this.progressBarCaught.Size = new System.Drawing.Size(313, 27);
+            this.progressBarCaught.TabIndex = 5;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1817, 1379);
+            this.Controls.Add(this.progressBarCaught);
             this.Controls.Add(this.panelCards);
             this.Controls.Add(this.btnYellow);
             this.Controls.Add(this.btnBlue);
@@ -94,5 +103,6 @@
         private System.Windows.Forms.Button btnBlue;
         private System.Windows.Forms.Button btnYellow;
         private System.Windows.Forms.Panel panelCards;
+        private System.Windows.Forms.ProgressBar progressBarCaught;
     }
 }
