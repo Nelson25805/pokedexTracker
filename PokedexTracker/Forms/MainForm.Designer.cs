@@ -40,40 +40,43 @@
             // 
             // btnRed
             // 
-            this.btnRed.Location = new System.Drawing.Point(1250, 47);
+            this.btnRed.Location = new System.Drawing.Point(31, 469);
             this.btnRed.Name = "btnRed";
             this.btnRed.Size = new System.Drawing.Size(109, 57);
             this.btnRed.TabIndex = 0;
+            this.btnRed.Tag = "Red";
             this.btnRed.Text = "Red";
             this.btnRed.UseVisualStyleBackColor = true;
-            this.btnRed.Click += new System.EventHandler(this.btnRed_Click);
+            this.btnRed.Click += new System.EventHandler(this.GameSwitchButton_Click);
             // 
             // btnBlue
             // 
-            this.btnBlue.Location = new System.Drawing.Point(1408, 47);
+            this.btnBlue.Location = new System.Drawing.Point(167, 469);
             this.btnBlue.Name = "btnBlue";
             this.btnBlue.Size = new System.Drawing.Size(105, 57);
             this.btnBlue.TabIndex = 1;
+            this.btnBlue.Tag = "Blue";
             this.btnBlue.Text = "Blue";
             this.btnBlue.UseVisualStyleBackColor = true;
-            this.btnBlue.Click += new System.EventHandler(this.btnBlue_Click);
+            this.btnBlue.Click += new System.EventHandler(this.GameSwitchButton_Click);
             // 
             // btnYellow
             // 
-            this.btnYellow.Location = new System.Drawing.Point(1575, 47);
+            this.btnYellow.Location = new System.Drawing.Point(295, 469);
             this.btnYellow.Name = "btnYellow";
             this.btnYellow.Size = new System.Drawing.Size(140, 57);
             this.btnYellow.TabIndex = 2;
+            this.btnYellow.Tag = "Yellow";
             this.btnYellow.Text = "Yellow";
             this.btnYellow.UseVisualStyleBackColor = true;
-            this.btnYellow.Click += new System.EventHandler(this.btnYellow_Click);
+            this.btnYellow.Click += new System.EventHandler(this.GameSwitchButton_Click);
             // 
             // panelCards
             // 
             this.panelCards.AutoScroll = true;
-            this.panelCards.Location = new System.Drawing.Point(26, 645);
+            this.panelCards.Location = new System.Drawing.Point(716, 12);
             this.panelCards.Name = "panelCards";
-            this.panelCards.Size = new System.Drawing.Size(1779, 722);
+            this.panelCards.Size = new System.Drawing.Size(1108, 1329);
             this.panelCards.TabIndex = 4;
             // 
             // lblProgress
@@ -81,7 +84,7 @@
             this.lblProgress.AutoSize = true;
             this.lblProgress.BackColor = System.Drawing.SystemColors.Window;
             this.lblProgress.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.1F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblProgress.Location = new System.Drawing.Point(334, 149);
+            this.lblProgress.Location = new System.Drawing.Point(341, 118);
             this.lblProgress.Name = "lblProgress";
             this.lblProgress.Size = new System.Drawing.Size(73, 32);
             this.lblProgress.TabIndex = 6;
@@ -90,7 +93,6 @@
             // 
             // trainerCard
             // 
-            this.trainerCard.Image = ((System.Drawing.Image)(resources.GetObject("trainerCard.Image")));
             this.trainerCard.InitialImage = ((System.Drawing.Image)(resources.GetObject("trainerCard.InitialImage")));
             this.trainerCard.Location = new System.Drawing.Point(12, 12);
             this.trainerCard.Name = "trainerCard";
@@ -105,7 +107,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.ClientSize = new System.Drawing.Size(1817, 1379);
+            this.ClientSize = new System.Drawing.Size(1825, 1379);
             this.Controls.Add(this.trainerCard);
             this.Controls.Add(this.lblProgress);
             this.Controls.Add(this.panelCards);

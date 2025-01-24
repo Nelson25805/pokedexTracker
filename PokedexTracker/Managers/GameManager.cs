@@ -62,8 +62,6 @@ namespace PokedexTracker
         }
 
 
-
-
         public void ToggleCaughtStatus(string pokemonNumber, string gameName, bool newStatus)
         {
             string query = @"

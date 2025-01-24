@@ -1,6 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Runtime.CompilerServices;
 
 namespace PokedexTracker
 {
@@ -8,11 +11,21 @@ namespace PokedexTracker
     {
         private readonly DatabaseManager _dbManager;
         private readonly GameManager _gameManager;
+        private readonly string _assetsPath;
+        private readonly string _trainerCardPath;
 
         public MainForm()
         {
+            string basePath = AppDomain.CurrentDomain.BaseDirectory;
+
+            _assetsPath = Path.GetFullPath(Path.Combine(basePath, @"..\..\Assets"));
+            _trainerCardPath = Path.Combine(_assetsPath, "TrainerCard");
+
+            // Construct the database path
+            string databasePath = Path.Combine(_assetsPath, "pokedex.db");
+            _dbManager = new DatabaseManager($@"Data Source={databasePath}");
+
             InitializeComponent();
-            _dbManager = new DatabaseManager(@"Data Source=C:\Users\Nelso\OneDrive\Desktop\Pokdex Project\PokedexTracker\PokedexTracker\Assets\pokedex.db");
             _gameManager = new GameManager(_dbManager);
         }
 
@@ -21,9 +34,18 @@ namespace PokedexTracker
             // Optionally, initial setup for the form.
         }
 
-        private void btnRed_Click(object sender, EventArgs e) => LoadPokemonCards("Red");
-        private void btnBlue_Click(object sender, EventArgs e) => LoadPokemonCards("Blue");
-        private void btnYellow_Click(object sender, EventArgs e) => LoadPokemonCards("Yellow");
+        private void GameSwitchButton_Click(object sender, EventArgs e)
+        {
+            if (sender is Button button)
+            {
+                string gameName = button.Tag as string; // Use the Tag property to store game names
+                if (!string.IsNullOrEmpty(gameName))
+                {
+                    LoadPokemonCards(gameName);
+                }
+            }
+        }
+
 
         private void LoadPokemonCards(string gameName)
         {
@@ -75,33 +97,11 @@ namespace PokedexTracker
 
         private void SetTrainerVisibility(string gameName)
         {
-            // Hide all trainers and progress initially
-            trainerCard.Visible = false;
-            lblProgress.Visible = false;
-
-            // Set visibility based on the selected game
-            switch (gameName)
-            {
-                case "Red":
-                    trainerCard.Visible = true;
-                    lblProgress.Visible = true;
-                    lblProgress.BringToFront();
-                    break;
-                case "Blue":
-                    trainerCard.Visible = true;
-                    lblProgress.Visible = true;
-                    lblProgress.BringToFront();
-                    break;
-                case "Yellow":
-                    trainerCard.Visible = true;
-                    lblProgress.Visible = true;
-                    lblProgress.BringToFront();
-                    break;
-                default:
-                    break;
-            }
+            // Set trainer card and progress label visibility for all games
+            trainerCard.Visible = true;
+            lblProgress.Visible = true;
+            lblProgress.BringToFront();
         }
-
 
         private void UpdateProgressBar(int caught, int total)
         {
@@ -121,14 +121,13 @@ namespace PokedexTracker
             int badgeThreshold = totalCount / 8; // Each badge represents 1/8 of total Pokémon
             int badgeCount = Math.Min(caughtCount / badgeThreshold, 8); // Cap badge count at 8
 
-            // Build the path to the correct image
-            string projectPath = @"C:\Users\Nelso\OneDrive\Desktop\Pokdex Project\PokedexTracker\PokedexTracker\Assets\TrainerCard";
-            string badgeImagePath = $@"{projectPath}\{currentGameName}\Trainer_{badgeCount}.png";
+            // Use the class-level _trainerCardPath field here
+            string badgeImagePath = Path.Combine(_trainerCardPath, currentGameName, $"Trainer_{badgeCount}.png");
 
             // Check if the file exists before updating the image
-            if (System.IO.File.Exists(badgeImagePath))
+            if (File.Exists(badgeImagePath))
             {
-                trainerCard.Image = System.Drawing.Image.FromFile(badgeImagePath);
+                trainerCard.Image = Image.FromFile(badgeImagePath);
             }
             else
             {
