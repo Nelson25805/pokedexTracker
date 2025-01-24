@@ -13,9 +13,11 @@ namespace PokedexTracker
             _dbManager = dbManager;
         }
 
-        public List<(string Name, string Number, string SpritePath, bool IsCaught)> GetPokemonData(string gameName)
+        public (List<(string Name, string Number, string SpritePath, bool IsCaught)> PokemonData, int Total, int Caught)
+    GetPokemonData(string gameName)
         {
             var result = new List<(string, string, string, bool)>();
+            int total = 0, caught = 0;
 
             string query = @"
         SELECT Pokemon.Name, Pokemon.Number, Sprites.FilePath, Pokedex_Status.Is_Caught
@@ -40,7 +42,6 @@ namespace PokedexTracker
                     {
                         while (reader.Read())
                         {
-                            // Safely handle "Is_Caught"
                             bool isCaught = reader["Is_Caught"] != DBNull.Value && Convert.ToInt32(reader["Is_Caught"]) == 1;
 
                             result.Add((
@@ -49,13 +50,18 @@ namespace PokedexTracker
                                 reader["FilePath"].ToString(),
                                 isCaught
                             ));
+
+                            total++;
+                            if (isCaught) caught++;
                         }
                     }
                 }
             }
 
-            return result;
+            return (result, total, caught);
         }
+
+
 
 
         public void ToggleCaughtStatus(string pokemonNumber, string gameName, bool newStatus)

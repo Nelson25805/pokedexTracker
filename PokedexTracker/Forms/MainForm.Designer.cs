@@ -28,16 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.btnRed = new System.Windows.Forms.Button();
             this.btnBlue = new System.Windows.Forms.Button();
             this.btnYellow = new System.Windows.Forms.Button();
             this.panelCards = new System.Windows.Forms.Panel();
-            this.progressBarCaught = new System.Windows.Forms.ProgressBar();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
+            this.lblProgress = new System.Windows.Forms.Label();
+            this.trainerCard = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.trainerCard)).BeginInit();
             this.SuspendLayout();
             // 
             // btnRed
             // 
-            this.btnRed.Location = new System.Drawing.Point(767, 47);
+            this.btnRed.Location = new System.Drawing.Point(1250, 47);
             this.btnRed.Name = "btnRed";
             this.btnRed.Size = new System.Drawing.Size(109, 57);
             this.btnRed.TabIndex = 0;
@@ -47,7 +51,7 @@
             // 
             // btnBlue
             // 
-            this.btnBlue.Location = new System.Drawing.Point(914, 47);
+            this.btnBlue.Location = new System.Drawing.Point(1408, 47);
             this.btnBlue.Name = "btnBlue";
             this.btnBlue.Size = new System.Drawing.Size(105, 57);
             this.btnBlue.TabIndex = 1;
@@ -57,7 +61,7 @@
             // 
             // btnYellow
             // 
-            this.btnYellow.Location = new System.Drawing.Point(1071, 47);
+            this.btnYellow.Location = new System.Drawing.Point(1575, 47);
             this.btnYellow.Name = "btnYellow";
             this.btnYellow.Size = new System.Drawing.Size(140, 57);
             this.btnYellow.TabIndex = 2;
@@ -68,24 +72,51 @@
             // panelCards
             // 
             this.panelCards.AutoScroll = true;
-            this.panelCards.Location = new System.Drawing.Point(26, 149);
+            this.panelCards.Location = new System.Drawing.Point(26, 645);
             this.panelCards.Name = "panelCards";
-            this.panelCards.Size = new System.Drawing.Size(1779, 1218);
+            this.panelCards.Size = new System.Drawing.Size(1779, 722);
             this.panelCards.TabIndex = 4;
             // 
-            // progressBarCaught
+            // progressBar
             // 
-            this.progressBarCaught.Location = new System.Drawing.Point(332, 77);
-            this.progressBarCaught.Name = "progressBarCaught";
-            this.progressBarCaught.Size = new System.Drawing.Size(313, 27);
-            this.progressBarCaught.TabIndex = 5;
+            this.progressBar.Location = new System.Drawing.Point(965, 47);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(203, 27);
+            this.progressBar.TabIndex = 5;
+            // 
+            // lblProgress
+            // 
+            this.lblProgress.AutoSize = true;
+            this.lblProgress.BackColor = System.Drawing.SystemColors.Window;
+            this.lblProgress.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.1F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblProgress.Location = new System.Drawing.Point(334, 149);
+            this.lblProgress.Name = "lblProgress";
+            this.lblProgress.Size = new System.Drawing.Size(73, 32);
+            this.lblProgress.TabIndex = 6;
+            this.lblProgress.Text = "0 / 0";
+            this.lblProgress.Visible = false;
+            // 
+            // trainerCard
+            // 
+            this.trainerCard.Image = ((System.Drawing.Image)(resources.GetObject("trainerCard.Image")));
+            this.trainerCard.InitialImage = ((System.Drawing.Image)(resources.GetObject("trainerCard.InitialImage")));
+            this.trainerCard.Location = new System.Drawing.Point(12, 12);
+            this.trainerCard.Name = "trainerCard";
+            this.trainerCard.Size = new System.Drawing.Size(698, 417);
+            this.trainerCard.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.trainerCard.TabIndex = 8;
+            this.trainerCard.TabStop = false;
+            this.trainerCard.Visible = false;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.ClientSize = new System.Drawing.Size(1817, 1379);
-            this.Controls.Add(this.progressBarCaught);
+            this.Controls.Add(this.trainerCard);
+            this.Controls.Add(this.lblProgress);
+            this.Controls.Add(this.progressBar);
             this.Controls.Add(this.panelCards);
             this.Controls.Add(this.btnYellow);
             this.Controls.Add(this.btnBlue);
@@ -93,7 +124,9 @@
             this.Name = "MainForm";
             this.Text = "MainForm";
             this.Load += new System.EventHandler(this.MainForm_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.trainerCard)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -103,6 +136,8 @@
         private System.Windows.Forms.Button btnBlue;
         private System.Windows.Forms.Button btnYellow;
         private System.Windows.Forms.Panel panelCards;
-        private System.Windows.Forms.ProgressBar progressBarCaught;
+        private System.Windows.Forms.ProgressBar progressBar;
+        private System.Windows.Forms.Label lblProgress;
+        private System.Windows.Forms.PictureBox trainerCard;
     }
 }
