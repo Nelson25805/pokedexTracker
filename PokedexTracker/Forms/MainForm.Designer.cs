@@ -33,7 +33,6 @@
             this.btnBlue = new System.Windows.Forms.Button();
             this.btnYellow = new System.Windows.Forms.Button();
             this.panelCards = new System.Windows.Forms.Panel();
-            this.progressBar = new System.Windows.Forms.ProgressBar();
             this.lblProgress = new System.Windows.Forms.Label();
             this.trainerCard = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.trainerCard)).BeginInit();
@@ -77,13 +76,6 @@
             this.panelCards.Size = new System.Drawing.Size(1779, 722);
             this.panelCards.TabIndex = 4;
             // 
-            // progressBar
-            // 
-            this.progressBar.Location = new System.Drawing.Point(965, 47);
-            this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(203, 27);
-            this.progressBar.TabIndex = 5;
-            // 
             // lblProgress
             // 
             this.lblProgress.AutoSize = true;
@@ -116,7 +108,6 @@
             this.ClientSize = new System.Drawing.Size(1817, 1379);
             this.Controls.Add(this.trainerCard);
             this.Controls.Add(this.lblProgress);
-            this.Controls.Add(this.progressBar);
             this.Controls.Add(this.panelCards);
             this.Controls.Add(this.btnYellow);
             this.Controls.Add(this.btnBlue);
@@ -136,7 +127,6 @@
         private System.Windows.Forms.Button btnBlue;
         private System.Windows.Forms.Button btnYellow;
         private System.Windows.Forms.Panel panelCards;
-        private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Label lblProgress;
         private System.Windows.Forms.PictureBox trainerCard;
     }
