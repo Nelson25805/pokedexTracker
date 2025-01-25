@@ -19,6 +19,7 @@ namespace PokedexTracker
             string basePath = AppDomain.CurrentDomain.BaseDirectory;
 
             _assetsPath = Path.GetFullPath(Path.Combine(basePath, @"..\..\Assets"));
+
             _trainerCardPath = Path.Combine(_assetsPath, "TrainerCard");
 
             // Construct the database path
@@ -32,6 +33,7 @@ namespace PokedexTracker
         private void MainForm_Load(object sender, EventArgs e)
         {
             // Optionally, initial setup for the form.
+            //this.BackColor = ColorTranslator.FromHtml("#ADD8E6");
         }
 
         private void GameSwitchButton_Click(object sender, EventArgs e)
@@ -69,7 +71,7 @@ namespace PokedexTracker
             foreach (var (name, number, spritePath, isCaught) in pokemonData)
             {
                 var card = new PokemonCard(name, number, spritePath, isCaught);
-                card.Location = new System.Drawing.Point(xPos, yPos);
+                card.Location = new Point(xPos, yPos);
 
                 card.Click += (s, e) =>
                 {
@@ -94,6 +96,7 @@ namespace PokedexTracker
                 }
             }
         }
+
 
         private void SetTrainerVisibility(string gameName)
         {
