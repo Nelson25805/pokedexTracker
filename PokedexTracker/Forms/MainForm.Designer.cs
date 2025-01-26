@@ -35,6 +35,9 @@
             this.panelCards = new System.Windows.Forms.Panel();
             this.lblProgress = new System.Windows.Forms.Label();
             this.trainerCard = new System.Windows.Forms.PictureBox();
+            this.btnSilver = new System.Windows.Forms.Button();
+            this.btnGold = new System.Windows.Forms.Button();
+            this.btnCrystal = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.trainerCard)).BeginInit();
             this.SuspendLayout();
             // 
@@ -102,12 +105,48 @@
             this.trainerCard.TabStop = false;
             this.trainerCard.Visible = false;
             // 
+            // btnSilver
+            // 
+            this.btnSilver.Location = new System.Drawing.Point(31, 578);
+            this.btnSilver.Name = "btnSilver";
+            this.btnSilver.Size = new System.Drawing.Size(109, 50);
+            this.btnSilver.TabIndex = 9;
+            this.btnSilver.Tag = "Silver";
+            this.btnSilver.Text = "Silver";
+            this.btnSilver.UseVisualStyleBackColor = true;
+            this.btnSilver.Click += new System.EventHandler(this.GameSwitchButton_Click);
+            // 
+            // btnGold
+            // 
+            this.btnGold.Location = new System.Drawing.Point(167, 578);
+            this.btnGold.Name = "btnGold";
+            this.btnGold.Size = new System.Drawing.Size(105, 50);
+            this.btnGold.TabIndex = 10;
+            this.btnGold.Tag = "Gold";
+            this.btnGold.Text = "Gold";
+            this.btnGold.UseVisualStyleBackColor = true;
+            this.btnGold.Click += new System.EventHandler(this.GameSwitchButton_Click);
+            // 
+            // btnCrystal
+            // 
+            this.btnCrystal.Location = new System.Drawing.Point(295, 578);
+            this.btnCrystal.Name = "btnCrystal";
+            this.btnCrystal.Size = new System.Drawing.Size(140, 50);
+            this.btnCrystal.TabIndex = 11;
+            this.btnCrystal.Tag = "Crystal";
+            this.btnCrystal.Text = "Crystal";
+            this.btnCrystal.UseVisualStyleBackColor = true;
+            this.btnCrystal.Click += new System.EventHandler(this.GameSwitchButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.ClientSize = new System.Drawing.Size(1825, 1379);
+            this.Controls.Add(this.btnCrystal);
+            this.Controls.Add(this.btnGold);
+            this.Controls.Add(this.btnSilver);
             this.Controls.Add(this.trainerCard);
             this.Controls.Add(this.lblProgress);
             this.Controls.Add(this.panelCards);
@@ -130,5 +169,8 @@
         private System.Windows.Forms.Panel panelCards;
         private System.Windows.Forms.Label lblProgress;
         private System.Windows.Forms.PictureBox trainerCard;
+        private System.Windows.Forms.Button btnSilver;
+        private System.Windows.Forms.Button btnGold;
+        private System.Windows.Forms.Button btnCrystal;
     }
 }
