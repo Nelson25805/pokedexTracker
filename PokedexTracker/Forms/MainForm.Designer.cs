@@ -160,6 +160,7 @@
             this.Controls.Add(this.btnBlue);
             this.Controls.Add(this.btnRed);
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MainForm";
             ((System.ComponentModel.ISupportInitialize)(this.trainerCard)).EndInit();
             this.ResumeLayout(false);

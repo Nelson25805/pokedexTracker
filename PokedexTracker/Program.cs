@@ -17,14 +17,19 @@ namespace PokedexTracker
 
             if (!string.IsNullOrWhiteSpace(savedName))
             {
-                MessageBox.Show(savedName);
                 // If player name exists, skip IntroForm and go to MainForm
-                Application.Run(new MainForm(savedName));
+                using (var mainForm = new MainForm(savedName))
+                {
+                    Application.Run(mainForm);
+                }
             }
             else
             {
                 // If no name is saved, run IntroForm
-                Application.Run(new Forms.IntroForm());
+                using (var introForm = new IntroForm())
+                {
+                    Application.Run(introForm);
+                }
             }
         }
     }
