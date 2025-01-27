@@ -166,5 +166,11 @@ namespace PokedexTracker
                 MessageBox.Show($"Badge image not found: {badgeImagePath}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            base.OnFormClosing(e);
+            Application.Exit(); // Ensure full application termination
+        }
+
     }
 }

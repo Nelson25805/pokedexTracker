@@ -10,103 +10,77 @@ namespace PokedexTracker.Forms
         public IntroForm()
         {
             InitializeComponent();
-            InitializeIntroUI();
+
+            // Attach event handlers
+            submitButton.Click += SubmitButton_Click;
+            skipIntroButton.Click += SkipIntroButton_Click;
+
+            // Load the saved name if it exists
+            string savedName = Properties.Settings.Default.playerName;
+            if (!string.IsNullOrWhiteSpace(savedName))
+            {
+                playerName = savedName;
+                NavigateToMainForm();
+            }
         }
 
-        private void InitializeIntroUI()
+        private void SubmitButton_Click(object sender, EventArgs e)
         {
-            // Set up intro controls
-            var titleLabel = new Label()
+            playerName = nameTextBox.Text.Trim();
+
+            if (string.IsNullOrEmpty(playerName))
             {
-                Text = "Welcome to the World of Pokémon!",
-                Font = new System.Drawing.Font("Arial", 24, System.Drawing.FontStyle.Bold),
-                AutoSize = true,
-                Location = new System.Drawing.Point(50, 50),
-            };
-
-            var professorLabel = new Label()
+                playerName = "Trainer"; // Use default name
+                professorLabel.Text = "You haven't entered a name.\nWe'll go with Trainer as your name!";
+            }
+            else
             {
-                Text = "Hello! I am the Pokémon Professor. What is your name?",
-                AutoSize = true,
-                Location = new System.Drawing.Point(100, 150),
-            };
+                professorLabel.Text = $"Ah, {playerName}, what a great name!\nWelcome to the Pokémon world!";
+            }
 
-            var nameTextBox = new TextBox()
+            // Save the name to settings
+            Properties.Settings.Default.playerName = playerName;
+            Properties.Settings.Default.Save();
+
+            // Delay navigation to MainForm
+            Timer timer = new Timer();
+            timer.Interval = 3000; // 3-second delay
+            timer.Tick += (s, args) =>
             {
-                Width = 200,
-                Location = new System.Drawing.Point(100, 250),
-            };
-
-            var submitButton = new Button()
-            {
-                Text = "Submit",
-                Location = new System.Drawing.Point(100, 300),
-            };
-
-            var skipButton = new Button()
-            {
-                Text = "Skip Intro",
-                Location = new System.Drawing.Point(100, 350),
-            };
-
-            // Add controls to the form
-            this.Controls.Add(titleLabel);
-            this.Controls.Add(professorLabel);
-            this.Controls.Add(nameTextBox);
-            this.Controls.Add(submitButton);
-            this.Controls.Add(skipButton);
-
-            // Attach event handler to the "Submit" button
-            submitButton.Click += (s, e) =>
-            {
-                playerName = nameTextBox.Text.Trim();
-
-                if (string.IsNullOrEmpty(playerName))
-                {
-                    playerName = "Trainer"; // Default name
-                    professorLabel.Text = "You haven't entered a name.\nWe'll go with Trainer as your name!";
-                }
-                else
-                {
-                    professorLabel.Text = $"Ah, {playerName}, what a great name!\nWelcome to the Pokémon world!";
-                }
-
-                // Save the name to settings
-                Properties.Settings.Default.playerName = playerName;
-                Properties.Settings.Default.Save();
-
-                // Delay and navigate to MainForm
-                Timer timer = new Timer();
-                timer.Interval = 3000; // Wait for 3 seconds
-                timer.Tick += (timerSender, timerArgs) =>
-                {
-                    timer.Stop();
-                    NavigateToMainForm();
-                };
-                timer.Start();
-
-                // Disable input fields after submission
-                nameTextBox.Enabled = false;
-                submitButton.Enabled = false;
-            };
-
-            // Attach event handler to the "Skip Intro" button
-            skipButton.Click += (s, e) =>
-            {
-                playerName = "Trainer"; // Default name when skipping intro
-                Properties.Settings.Default.playerName = playerName;
-                Properties.Settings.Default.Save(); // Save name to settings
-
-                // Navigate directly to MainForm
+                timer.Stop();
                 NavigateToMainForm();
             };
+            timer.Start();
+
+            // Disable input fields
+            nameTextBox.Enabled = false;
+            submitButton.Enabled = false;
+            skipIntroButton.Enabled = false;
+        }
+
+        private void SkipIntroButton_Click(object sender, EventArgs e)
+        {
+            // Set default name and save
+            playerName = "Trainer";
+            Properties.Settings.Default.playerName = playerName;
+            Properties.Settings.Default.Save();
+
+            // Navigate to MainForm immediately
+            NavigateToMainForm();
         }
 
         private void NavigateToMainForm()
         {
             this.Hide();
-            MainForm mainForm = new MainForm(playerName); // Pass the name to MainForm
+            MainForm mainForm = new MainForm(playerName); // Pass player's name to MainForm
             mainForm.Show();
         }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            base.OnFormClosing(e);
+            Application.Exit(); // Ensure full application termination
+        }
+
     }
 }
