@@ -43,9 +43,10 @@
             // 
             // btnRed
             // 
-            this.btnRed.Location = new System.Drawing.Point(31, 469);
+            this.btnRed.Font = new System.Drawing.Font("PKMN RBYGSC", 8.1F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRed.Location = new System.Drawing.Point(12, 459);
             this.btnRed.Name = "btnRed";
-            this.btnRed.Size = new System.Drawing.Size(109, 57);
+            this.btnRed.Size = new System.Drawing.Size(130, 57);
             this.btnRed.TabIndex = 0;
             this.btnRed.Tag = "Red";
             this.btnRed.Text = "Red";
@@ -54,9 +55,10 @@
             // 
             // btnBlue
             // 
-            this.btnBlue.Location = new System.Drawing.Point(167, 469);
+            this.btnBlue.Font = new System.Drawing.Font("PKMN RBYGSC", 8.1F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnBlue.Location = new System.Drawing.Point(167, 459);
             this.btnBlue.Name = "btnBlue";
-            this.btnBlue.Size = new System.Drawing.Size(105, 57);
+            this.btnBlue.Size = new System.Drawing.Size(138, 57);
             this.btnBlue.TabIndex = 1;
             this.btnBlue.Tag = "Blue";
             this.btnBlue.Text = "Blue";
@@ -65,9 +67,10 @@
             // 
             // btnYellow
             // 
-            this.btnYellow.Location = new System.Drawing.Point(295, 469);
+            this.btnYellow.Font = new System.Drawing.Font("PKMN RBYGSC", 8.1F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnYellow.Location = new System.Drawing.Point(330, 459);
             this.btnYellow.Name = "btnYellow";
-            this.btnYellow.Size = new System.Drawing.Size(140, 57);
+            this.btnYellow.Size = new System.Drawing.Size(171, 57);
             this.btnYellow.TabIndex = 2;
             this.btnYellow.Tag = "Yellow";
             this.btnYellow.Text = "Yellow";
@@ -107,9 +110,10 @@
             // 
             // btnSilver
             // 
-            this.btnSilver.Location = new System.Drawing.Point(31, 578);
+            this.btnSilver.Font = new System.Drawing.Font("PKMN RBYGSC", 8.1F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSilver.Location = new System.Drawing.Point(12, 540);
             this.btnSilver.Name = "btnSilver";
-            this.btnSilver.Size = new System.Drawing.Size(109, 50);
+            this.btnSilver.Size = new System.Drawing.Size(170, 50);
             this.btnSilver.TabIndex = 9;
             this.btnSilver.Tag = "Silver";
             this.btnSilver.Text = "Silver";
@@ -118,9 +122,10 @@
             // 
             // btnGold
             // 
-            this.btnGold.Location = new System.Drawing.Point(167, 578);
+            this.btnGold.Font = new System.Drawing.Font("PKMN RBYGSC", 8.1F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnGold.Location = new System.Drawing.Point(211, 540);
             this.btnGold.Name = "btnGold";
-            this.btnGold.Size = new System.Drawing.Size(105, 50);
+            this.btnGold.Size = new System.Drawing.Size(144, 50);
             this.btnGold.TabIndex = 10;
             this.btnGold.Tag = "Gold";
             this.btnGold.Text = "Gold";
@@ -129,9 +134,10 @@
             // 
             // btnCrystal
             // 
-            this.btnCrystal.Location = new System.Drawing.Point(295, 578);
+            this.btnCrystal.Font = new System.Drawing.Font("PKMN RBYGSC", 8.1F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCrystal.Location = new System.Drawing.Point(361, 540);
             this.btnCrystal.Name = "btnCrystal";
-            this.btnCrystal.Size = new System.Drawing.Size(140, 50);
+            this.btnCrystal.Size = new System.Drawing.Size(205, 50);
             this.btnCrystal.TabIndex = 11;
             this.btnCrystal.Tag = "Crystal";
             this.btnCrystal.Text = "Crystal";
