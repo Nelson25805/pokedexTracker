@@ -14,6 +14,8 @@ namespace PokedexTracker
         private readonly string _assetsPath;
         private readonly string _trainerCardPath;
 
+        private string playerName;
+
         public MainForm()
         {
             string basePath = AppDomain.CurrentDomain.BaseDirectory;
@@ -28,6 +30,33 @@ namespace PokedexTracker
 
             InitializeComponent();
             _gameManager = new GameManager(_dbManager);
+        }
+
+        public MainForm(string name)
+        {
+            InitializeComponent();
+            playerName = name;
+            Label welcomeLabel = new Label()
+            {
+                Text = $"Welcome to the Pokémon world, {playerName}!",
+                Font = new System.Drawing.Font("Arial", 16, System.Drawing.FontStyle.Bold),
+                AutoSize = true,
+                Location = new System.Drawing.Point(100, 100)
+            };
+            this.Controls.Add(welcomeLabel);
+
+            string basePath = AppDomain.CurrentDomain.BaseDirectory;
+
+            _assetsPath = Path.GetFullPath(Path.Combine(basePath, @"..\..\Assets"));
+
+            _trainerCardPath = Path.Combine(_assetsPath, "TrainerCard");
+
+            // Construct the database path
+            string databasePath = Path.Combine(_assetsPath, "pokedex.db");
+            _dbManager = new DatabaseManager($@"Data Source={databasePath}");
+
+            _gameManager = new GameManager(_dbManager);
+
         }
 
         private void MainForm_Load(object sender, EventArgs e)
