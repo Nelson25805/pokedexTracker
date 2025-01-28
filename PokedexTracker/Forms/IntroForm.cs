@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace PokedexTracker.Forms
 {
     public partial class IntroForm : Form
     {
+        private string text;
+        private int len = 0;
         private string playerName = "Trainer"; // Default name
 
         public IntroForm()
@@ -81,6 +84,35 @@ namespace PokedexTracker.Forms
             base.OnFormClosing(e);
             Application.Exit(); // Ensure full application termination
         }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            if (len < text.Length)
+            {
+                professorLabel.Text = professorLabel.Text + text.ElementAt(len);
+                len++;
+            }
+            else
+            {
+                timer1.Stop();
+
+                // Show the input fields after the text finishes typing
+                nameTextBox.Visible = true;
+                submitButton.Visible = true;
+                nameTextBox.Focus(); // Set focus on the text box
+            }
+        }
+
+        private void IntroForm_Load(object sender, EventArgs e)
+        {
+            text = professorLabel.Text; // Store the full dialogue text
+            professorLabel.Text = ""; // Clear the label to start typing effect
+            timer1.Start(); // Begin the text animation
+        }
+
+        
+
+
 
     }
 }
