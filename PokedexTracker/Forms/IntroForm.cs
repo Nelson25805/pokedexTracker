@@ -6,113 +6,319 @@ namespace PokedexTracker.Forms
 {
     public partial class IntroForm : Form
     {
-        private string text;
+        private readonly AssetManager _assetManager;
+        private GenerationManager _generationManager;
+        private PokemonGeneration _selectedGeneration;
+        private int currentSpeechIndex = 0; // Declare currentSpeechIndex here
         private int len = 0;
-        private string playerName = "Trainer"; // Default name
+        private string currentText = "";
+        private string playerName = "Trainer";
+        private string[] speechParts;
+        private int currentSelectionIndex = 0;
+        private Label arrowLabel; // Declare at class level
+
+        private float imageOpacity = 0f; // Current opacity of the image
+        private const float fadeStep = 0.05f; // How much to increase the opacity on each tick
+
+        private System.Drawing.Image originalProfessorImage;
+
+
 
         public IntroForm()
         {
             InitializeComponent();
 
-            // Attach event handlers
+            _assetManager = new AssetManager();
+            _generationManager = new GenerationManager(_assetManager); // Pass AssetManager
+
+            HideAllContent();
+            InitGenerationMenu();
+
             submitButton.Click += SubmitButton_Click;
             skipIntroButton.Click += SkipIntroButton_Click;
-
-            // Load the saved name if it exists
-            string savedName = Properties.Settings.Default.playerName;
-            if (!string.IsNullOrWhiteSpace(savedName))
-            {
-                playerName = savedName;
-                NavigateToMainForm();
-            }
+            advanceButton.Click += AdvanceButton_Click;
         }
+
+
+
+        // Helper method to hide all non-menu elements
+        private void HideAllContent()
+        {
+            professorLabel.Visible = false;
+            professorPictureBox.Visible = false;
+            advanceButton.Visible = false;
+            nameTextBox.Visible = false;
+            submitButton.Visible = false;
+            skipIntroButton.Visible = false;
+        }
+
+        private void InitGenerationMenu()
+        {
+            var generationNames = _generationManager.GetAvailableGenerations();
+            int yPosition = 20; // Start y position for menu items
+
+            // Add labels for each generation
+            foreach (var generationName in generationNames)
+            {
+                Label generationLabel = new Label
+                {
+                    Text = generationName,
+                    Location = new System.Drawing.Point(20, yPosition),
+                    AutoSize = true,
+                    ForeColor = System.Drawing.Color.Black,
+                    Tag = yPosition // Store the Y position in the Tag
+                };
+                generationMenuPanel.Controls.Add(generationLabel);
+                yPosition += 30; // Add some spacing between the menu items
+            }
+
+            // Create and position the arrow
+            arrowLabel = new Label
+            {
+                Text = "▶", // Arrow symbol
+                Location = new System.Drawing.Point(0, 20), // Initial position of arrow
+                AutoSize = true,
+                ForeColor = System.Drawing.Color.Black
+            };
+            generationMenuPanel.Controls.Add(arrowLabel);
+        }
+
+        // Key press handling for moving the arrow up and down
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Up || keyData == Keys.Down)
+            {
+                MoveArrow(keyData);
+                return true;
+            }
+            else if (keyData == Keys.Enter) // User confirms selection
+            {
+                SubmitSelection();
+                return true;
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void SubmitSelection()
+        {
+            var generationLabels = generationMenuPanel.Controls.OfType<Label>()
+                                      .Where(lbl => lbl != arrowLabel) // Exclude the arrow itself
+                                      .ToList();
+
+            if (generationLabels.Count == 0) return; // Prevent errors
+
+            // Get the selected generation's name
+            string selectedGeneration = generationLabels[currentSelectionIndex].Text;
+            _selectedGeneration = _generationManager.GetGeneration(selectedGeneration);
+
+            // Hide the menu and start the intro
+            StartIntro();
+        }
+
+
+
+        private void MoveArrow(Keys direction)
+        {
+            var generationLabels = generationMenuPanel.Controls.OfType<Label>()
+                                      .Where(lbl => lbl != arrowLabel) // Exclude the arrow itself
+                                      .ToList();
+
+            if (generationLabels.Count == 0) return; // Prevent errors if no labels exist
+
+            // Move the selection index up or down
+            if (direction == Keys.Up)
+            {
+                currentSelectionIndex = (currentSelectionIndex > 0) ? currentSelectionIndex - 1 : generationLabels.Count - 1;
+            }
+            else if (direction == Keys.Down)
+            {
+                currentSelectionIndex = (currentSelectionIndex < generationLabels.Count - 1) ? currentSelectionIndex + 1 : 0;
+            }
+
+            // Move the arrow to the selected label's position
+            arrowLabel.Location = new System.Drawing.Point(0, (int)generationLabels[currentSelectionIndex].Tag);
+        }
+
 
         private void SubmitButton_Click(object sender, EventArgs e)
         {
-            playerName = nameTextBox.Text.Trim();
+            // Set the player's name and save it
+            playerName = nameTextBox.Text;
+            Properties.Settings.Default.playerName = playerName;
+            Properties.Settings.Default.Save();
 
-            if (string.IsNullOrEmpty(playerName))
+            // Now, continue the dialogue with the professor
+            currentSpeechIndex = 0; // Reset or set it to the point you want to continue from
+            currentText = speechParts[currentSpeechIndex];
+            professorLabel.Text = "";
+            len = 0; // Reset text length
+            advanceButton.Visible = false; // Hide the advance button until speech is fully typed out
+
+            // Start the typing effect again
+            timer1.Start();
+        }
+
+
+
+
+        private void StartIntro()
+        {
+            if (_selectedGeneration == null)
             {
-                playerName = "Trainer"; // Use default name
-                professorLabel.Text = "You haven't entered a name.\nWe'll go with Trainer as your name!";
+                MessageBox.Show("Please select a generation before proceeding.");
+                return; // Do NOT proceed until the user selects a generation
+            }
+
+            // Hide the selection menu
+            generationMenuPanel.Visible = false;
+
+            // Show the actual intro elements
+            ShowIntroContent();
+
+            speechParts = _selectedGeneration.Speeches; // Get the extended speech parts
+            currentSpeechIndex = 0; // Reset speech index
+            currentText = speechParts[currentSpeechIndex];
+            professorLabel.Text = "";
+            len = 0; // Reset text length
+            advanceButton.Visible = false; // Ensure it's hidden before speech starts
+            timer1.Start();
+        }
+
+
+        // Helper method to show all intro elements
+        private void ShowIntroContent()
+        {
+            professorLabel.Visible = true;
+            professorPictureBox.Visible = true;
+            skipIntroButton.Visible = true;
+        }
+
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            if (len < currentText.Length)
+            {
+                professorLabel.Text += currentText.ElementAt(len);
+                len++;
             }
             else
             {
-                professorLabel.Text = $"Ah, {playerName}, what a great name!\nWelcome to the Pokémon world!";
+                timer1.Stop(); // Stop the timer once the text is fully shown
+                advanceButton.Visible = true; // Show the "Advance" button when speech finishes
             }
-
-            // Save the name to settings
-            Properties.Settings.Default.playerName = playerName;
-            Properties.Settings.Default.Save();
-
-            // Delay navigation to MainForm
-            Timer timer = new Timer();
-            timer.Interval = 3000; // 3-second delay
-            timer.Tick += (s, args) =>
-            {
-                timer.Stop();
-                NavigateToMainForm();
-            };
-            timer.Start();
-
-            // Disable input fields
-            nameTextBox.Enabled = false;
-            submitButton.Enabled = false;
-            skipIntroButton.Enabled = false;
         }
+
+
+        private void AdvanceButton_Click(object sender, EventArgs e)
+        {
+            currentSpeechIndex++;
+
+            if (currentSpeechIndex < speechParts.Length)
+            {
+                currentText = speechParts[currentSpeechIndex];
+                professorLabel.Text = "";
+                len = 0; // Reset the length counter
+                advanceButton.Visible = false; 
+
+                // Only set professor image during the introduction (first time)
+                if (currentSpeechIndex == 1)
+                {
+                    UpdateProfessorImage();
+                }
+
+                timer1.Start(); // Start the typing effect for the new speech
+            }
+            else
+            {
+                // If all dialogue is done, then transition to the name input
+                professorLabel.Text = "Now, tell me about yourself!";
+                nameTextBox.Visible = true;
+                submitButton.Visible = true;
+                nameTextBox.Focus();
+                advanceButton.Visible = false;
+            }
+        }
+
+
+        private void UpdateProfessorImage()
+        {
+            if (_selectedGeneration != null && professorPictureBox.Image == null)
+            {
+                string imagePath = _selectedGeneration.ProfessorImages.FirstOrDefault(); // Use the first image only
+
+                if (!string.IsNullOrEmpty(imagePath) && System.IO.File.Exists(imagePath))
+                {
+                    originalProfessorImage = System.Drawing.Image.FromFile(imagePath); // Store original image
+                    professorPictureBox.Image = AdjustImageOpacity((System.Drawing.Bitmap)originalProfessorImage, 0f);
+                    professorPictureBox.Visible = true;
+                    imageOpacity = 0f; // Reset opacity
+                    fadeTimer.Start(); // Start fade effect
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("Professor image not found.");
+                    professorPictureBox.Image = null;
+                    MessageBox.Show($"Professor image not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
 
         private void SkipIntroButton_Click(object sender, EventArgs e)
         {
-            // Set default name and save
             playerName = "Trainer";
             Properties.Settings.Default.playerName = playerName;
             Properties.Settings.Default.Save();
-
-            // Navigate to MainForm immediately
             NavigateToMainForm();
         }
 
         private void NavigateToMainForm()
         {
             this.Hide();
-            MainForm mainForm = new MainForm(playerName); // Pass player's name to MainForm
+            MainForm mainForm = new MainForm(playerName);
             mainForm.Show();
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             base.OnFormClosing(e);
-            Application.Exit(); // Ensure full application termination
+            Application.Exit();
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        private void fadeTimer_Tick(object sender, EventArgs e)
         {
-            if (len < text.Length)
+            if (imageOpacity < 1f)
             {
-                professorLabel.Text = professorLabel.Text + text.ElementAt(len);
-                len++;
+                imageOpacity += fadeStep;  // Increase opacity
+                professorPictureBox.Image = AdjustImageOpacity((System.Drawing.Bitmap)originalProfessorImage, imageOpacity);
+                professorPictureBox.Refresh(); // Force UI update
             }
             else
             {
-                timer1.Stop();
-
-                // Show the input fields after the text finishes typing
-                nameTextBox.Visible = true;
-                submitButton.Visible = true;
-                nameTextBox.Focus(); // Set focus on the text box
+                fadeTimer.Stop();
+                System.Diagnostics.Debug.WriteLine("Fade complete. Stopping timer.");
             }
         }
 
-        private void IntroForm_Load(object sender, EventArgs e)
+        private System.Drawing.Image AdjustImageOpacity(System.Drawing.Image image, float opacity)
         {
-            text = professorLabel.Text; // Store the full dialogue text
-            professorLabel.Text = ""; // Clear the label to start typing effect
-            timer1.Start(); // Begin the text animation
+            if (image == null) return null;
+
+            var bmp = new System.Drawing.Bitmap(image.Width, image.Height);
+            using (var graphics = System.Drawing.Graphics.FromImage(bmp))
+            {
+                var matrix = new System.Drawing.Imaging.ColorMatrix
+                {
+                    Matrix33 = opacity
+                };
+
+                var attributes = new System.Drawing.Imaging.ImageAttributes();
+                attributes.SetColorMatrix(matrix, System.Drawing.Imaging.ColorMatrixFlag.Default, System.Drawing.Imaging.ColorAdjustType.Bitmap);
+
+                graphics.DrawImage(image, new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height), 0, 0, image.Width, image.Height, System.Drawing.GraphicsUnit.Pixel, attributes);
+            }
+            return bmp;
         }
-
-        
-
-
-
     }
 }

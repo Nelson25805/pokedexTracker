@@ -1,9 +1,7 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Runtime.CompilerServices;
 
 namespace PokedexTracker
 {
@@ -11,21 +9,16 @@ namespace PokedexTracker
     {
         private readonly DatabaseManager _dbManager;
         private readonly GameManager _gameManager;
-        private readonly string _assetsPath;
-        private readonly string _trainerCardPath;
+        private readonly AssetManager _assetManager;
 
         private string playerName;
 
         public MainForm()
         {
-            string basePath = AppDomain.CurrentDomain.BaseDirectory;
+            _assetManager = new AssetManager();
 
-            _assetsPath = Path.GetFullPath(Path.Combine(basePath, @"..\..\Assets"));
-
-            _trainerCardPath = Path.Combine(_assetsPath, "TrainerCard");
-
-            // Construct the database path
-            string databasePath = Path.Combine(_assetsPath, "pokedex.db");
+            // Construct the database path using AssetManager
+            string databasePath = _assetManager.GetDatabasePath();
             _dbManager = new DatabaseManager($@"Data Source={databasePath}");
 
             InitializeComponent();
@@ -34,35 +27,31 @@ namespace PokedexTracker
 
         public MainForm(string name)
         {
-            InitializeComponent();
+            _assetManager = new AssetManager();
             playerName = name;
+
+            InitializeComponent();
+
             Label welcomeLabel = new Label()
             {
                 Text = $"Welcome to the Pokémon world, {playerName}!",
-                Font = new System.Drawing.Font("Arial", 16, System.Drawing.FontStyle.Bold),
+                Font = new Font("Arial", 16, FontStyle.Bold),
                 AutoSize = true,
-                Location = new System.Drawing.Point(100, 100)
+                Location = new Point(100, 100)
             };
             this.Controls.Add(welcomeLabel);
 
-            string basePath = AppDomain.CurrentDomain.BaseDirectory;
-
-            _assetsPath = Path.GetFullPath(Path.Combine(basePath, @"..\..\Assets"));
-
-            _trainerCardPath = Path.Combine(_assetsPath, "TrainerCard");
-
-            // Construct the database path
-            string databasePath = Path.Combine(_assetsPath, "pokedex.db");
+            // Construct the database path using AssetManager
+            string databasePath = _assetManager.GetDatabasePath();
             _dbManager = new DatabaseManager($@"Data Source={databasePath}");
 
             _gameManager = new GameManager(_dbManager);
-
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
             // Optionally, initial setup for the form.
-            //this.BackColor = ColorTranslator.FromHtml("#ADD8E6");
+            // this.BackColor = ColorTranslator.FromHtml("#ADD8E6");
         }
 
         private void GameSwitchButton_Click(object sender, EventArgs e)
@@ -77,7 +66,6 @@ namespace PokedexTracker
             }
         }
 
-
         private void LoadPokemonCards(string gameName)
         {
             // Clear previous Pokémon cards
@@ -88,7 +76,7 @@ namespace PokedexTracker
 
             // Update progress bar and trainer sprite
             UpdateProgressBar(caught, total);
-            UpdateTrainerSprite(caught, total, gameName); // Pass gameName here
+            UpdateTrainerSprite(caught, total, gameName);
 
             // Set visibility of the trainer card and progress label based on the game selected
             SetTrainerVisibility(gameName);
@@ -111,7 +99,7 @@ namespace PokedexTracker
                     // Recalculate progress and update UI
                     var (updatedData, updatedTotal, updatedCaught) = _gameManager.GetPokemonData(gameName);
                     UpdateProgressBar(updatedCaught, updatedTotal);
-                    UpdateTrainerSprite(updatedCaught, updatedTotal, gameName); // Pass gameName here
+                    UpdateTrainerSprite(updatedCaught, updatedTotal, gameName);
                 };
 
                 panelCards.Controls.Add(card);
@@ -125,7 +113,6 @@ namespace PokedexTracker
                 }
             }
         }
-
 
         private void SetTrainerVisibility(string gameName)
         {
@@ -153,8 +140,8 @@ namespace PokedexTracker
             int badgeThreshold = totalCount / 8; // Each badge represents 1/8 of total Pokémon
             int badgeCount = Math.Min(caughtCount / badgeThreshold, 8); // Cap badge count at 8
 
-            // Use the class-level _trainerCardPath field here
-            string badgeImagePath = Path.Combine(_trainerCardPath, currentGameName, $"Trainer_{badgeCount}.png");
+            // Use AssetManager to get the badge image path
+            string badgeImagePath = _assetManager.GetTrainerBadgePath(currentGameName, badgeCount);
 
             // Check if the file exists before updating the image
             if (File.Exists(badgeImagePath))
@@ -166,11 +153,11 @@ namespace PokedexTracker
                 MessageBox.Show($"Badge image not found: {badgeImagePath}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             base.OnFormClosing(e);
             Application.Exit(); // Ensure full application termination
         }
-
     }
 }
