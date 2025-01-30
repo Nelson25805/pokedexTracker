@@ -18,21 +18,18 @@ public class GenerationManager
                     "Generation 1",
                     new string[] // Initial dialogues before name submission
                     {
-                        "Welcome to the world of Pokémon!",
-                        "My name is Professor Oak.",
-                        "People call me the Pokémon Professor.",
-                        "This world is inhabited by creatures called Pokémon."
+                        "Hello there! Welcome to the world of Pokémon!",
+                        "My name is Professor Oak. \nPeople call me the Pokémon Professor.",
+                        "This world is inhabited by creatures called Pokémon.",
+                        "First, what is your name?",
+                        "Right! So your name is, {playerName}!",
+                        "My dream is have a record of every Pokémon, \nso I give to you my lifes work.",
+                        "The Pokédex! Keep track of every Pokemon you have,\n and complete a living dex of them all.",
+                        "Your very own POKEMON legend is about to unfold!\n A world of dreams and adventures with POKEMON\n awaits! Let's go!"
                     },
                     new string[]
                     {
                         _assetManager.GetProfessorImagePath(0) // Professor image path for Gen 1
-                    },
-                    new string[] // New array for post-name submission dialogue
-                    {
-                        "Ah, so your name is {playerName}!",
-                        "I hope you're ready for your journey, {playerName}!",
-                        "In this world, there are creatures called Pokémon. Get ready to catch them all!",
-                        "I’ll help you get started. Let's make sure you're prepared!"
                     }
                 )
             },
@@ -50,13 +47,6 @@ public class GenerationManager
                     new string[]
                     {
                         _assetManager.GetProfessorImagePath(1) // Professor image path for Gen 2
-                    },
-                    new string[] // New array for post-name submission dialogue
-                    {
-                        "So, {playerName}, are you ready to begin your adventure?",
-                        "In Johto, new Pokémon await you. Your journey is about to begin!",
-                        "Remember, you can catch Pokémon in the wild. I’ll teach you how!",
-                        "Good luck, {playerName}! Go and make new friends!"
                     }
                 )
             }
