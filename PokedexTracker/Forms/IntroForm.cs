@@ -147,20 +147,8 @@ namespace PokedexTracker.Forms
             playerName = nameTextBox.Text;
             Properties.Settings.Default.playerName = playerName;
             Properties.Settings.Default.Save();
-
-            // Now, continue the dialogue with the professor
-            currentSpeechIndex = 0; // Reset or set it to the point you want to continue from
-            currentText = speechParts[currentSpeechIndex];
-            professorLabel.Text = "";
-            len = 0; // Reset text length
-            advanceButton.Visible = false; // Hide the advance button until speech is fully typed out
-
-            // Start the typing effect again
-            timer1.Start();
+            AdvanceButton_Click(sender, e);
         }
-
-
-
 
         private void StartIntro()
         {
@@ -186,6 +174,7 @@ namespace PokedexTracker.Forms
         }
 
 
+
         // Helper method to show all intro elements
         private void ShowIntroContent()
         {
@@ -206,6 +195,13 @@ namespace PokedexTracker.Forms
             {
                 timer1.Stop(); // Stop the timer once the text is fully shown
                 advanceButton.Visible = true; // Show the "Advance" button when speech finishes
+                if (currentSpeechIndex == 3)
+                {
+                    nameTextBox.Visible = true;
+                    submitButton.Visible = true;
+                    nameTextBox.Focus();
+                    advanceButton.Visible = false;
+                }
             }
         }
 
@@ -216,29 +212,35 @@ namespace PokedexTracker.Forms
 
             if (currentSpeechIndex < speechParts.Length)
             {
-                currentText = speechParts[currentSpeechIndex];
+                // Replace {playerName} before displaying
+                currentText = speechParts[currentSpeechIndex].Replace("{playerName}", playerName);
                 professorLabel.Text = "";
-                len = 0; // Reset the length counter
-                advanceButton.Visible = false; 
+                len = 0;
+                advanceButton.Visible = false;
 
-                // Only set professor image during the introduction (first time)
                 if (currentSpeechIndex == 1)
                 {
                     UpdateProfessorImage();
                 }
+                if (currentSpeechIndex == 4)
+                {
+                    nameTextBox.Visible = false;
+                    submitButton.Visible = false;
+                    // Retrieve player name from settings
+                    playerName = Properties.Settings.Default.playerName;
 
-                timer1.Start(); // Start the typing effect for the new speech
+                    // Replace "{playerName}" dynamically in the speech
+                    speechParts = _selectedGeneration.Speeches.Select(s => s.Replace("{playerName}", playerName)).ToArray();
+                }
+
+                timer1.Start();
             }
             else
             {
-                // If all dialogue is done, then transition to the name input
-                professorLabel.Text = "Now, tell me about yourself!";
-                nameTextBox.Visible = true;
-                submitButton.Visible = true;
-                nameTextBox.Focus();
-                advanceButton.Visible = false;
+                NavigateToMainForm();
             }
         }
+
 
 
         private void UpdateProfessorImage()
