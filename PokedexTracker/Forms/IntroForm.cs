@@ -56,7 +56,9 @@ namespace PokedexTracker.Forms
         {
             var generationNames = _generationManager.GetAvailableGenerations();
             generationMenu = new GenerationMenu(generationMenuPanel, generationNames);
+            generationMenu.GenerationClicked += (s, e) => SubmitSelection();
         }
+
 
         // Override keyboard handling to move arrow and confirm selection.
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
