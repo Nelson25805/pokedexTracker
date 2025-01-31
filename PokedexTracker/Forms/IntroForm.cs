@@ -1,35 +1,38 @@
 ﻿using System;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using PokedexTracker.Controls;
+using PokedexTracker.Helpers;
+using PokedexTracker.Managers;
 
 namespace PokedexTracker.Forms
 {
     public partial class IntroForm : Form
     {
         private readonly AssetManager _assetManager;
-        private GenerationManager _generationManager;
+        private readonly GenerationManager _generationManager;
         private PokemonGeneration _selectedGeneration;
-        private int currentSpeechIndex = 0; // Declare currentSpeechIndex here
-        private int len = 0;
+        private SpeechManager _speechManager;
         private string currentText = "";
+        private int textCharIndex = 0;
         private string playerName = "Trainer";
-        private string[] speechParts;
-        private int currentSelectionIndex = 0;
-        private Label arrowLabel; // Declare at class level
 
-        private float imageOpacity = 0f; // Current opacity of the image
-        private const float fadeStep = 0.05f; // How much to increase the opacity on each tick
+        // UI Elements for fade effect
+        private float imageOpacity = 0f;
+        private const float fadeStep = 0.05f;
+        private Image originalProfessorImage;
 
-        private System.Drawing.Image originalProfessorImage;
-
-
+        // The refactored generation menu controller
+        private GenerationMenu generationMenu;
 
         public IntroForm()
         {
             InitializeComponent();
 
             _assetManager = new AssetManager();
-            _generationManager = new GenerationManager(_assetManager); // Pass AssetManager
+            _generationManager = new GenerationManager(_assetManager);
 
             HideAllContent();
             InitGenerationMenu();
@@ -39,9 +42,6 @@ namespace PokedexTracker.Forms
             advanceButton.Click += AdvanceButton_Click;
         }
 
-
-
-        // Helper method to hide all non-menu elements
         private void HideAllContent()
         {
             professorLabel.Visible = false;
@@ -55,99 +55,35 @@ namespace PokedexTracker.Forms
         private void InitGenerationMenu()
         {
             var generationNames = _generationManager.GetAvailableGenerations();
-            int yPosition = 20; // Start y position for menu items
-
-            // Add labels for each generation
-            foreach (var generationName in generationNames)
-            {
-                Label generationLabel = new Label
-                {
-                    Text = generationName,
-                    Location = new System.Drawing.Point(20, yPosition),
-                    AutoSize = true,
-                    ForeColor = System.Drawing.Color.Black,
-                    Tag = yPosition // Store the Y position in the Tag
-                };
-                generationMenuPanel.Controls.Add(generationLabel);
-                yPosition += 30; // Add some spacing between the menu items
-            }
-
-            // Create and position the arrow
-            arrowLabel = new Label
-            {
-                Text = "▶", // Arrow symbol
-                Location = new System.Drawing.Point(0, 20), // Initial position of arrow
-                AutoSize = true,
-                ForeColor = System.Drawing.Color.Black
-            };
-            generationMenuPanel.Controls.Add(arrowLabel);
+            generationMenu = new GenerationMenu(generationMenuPanel, generationNames);
         }
 
-        // Key press handling for moving the arrow up and down
+        // Override keyboard handling to move arrow and confirm selection.
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (keyData == Keys.Up || keyData == Keys.Down)
+            if (keyData == Keys.Up)
             {
-                MoveArrow(keyData);
+                generationMenu.MoveUp();
                 return true;
             }
-            else if (keyData == Keys.Enter) // User confirms selection
+            else if (keyData == Keys.Down)
+            {
+                generationMenu.MoveDown();
+                return true;
+            }
+            else if (keyData == Keys.Enter)
             {
                 SubmitSelection();
                 return true;
             }
-
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
         private void SubmitSelection()
         {
-            var generationLabels = generationMenuPanel.Controls.OfType<Label>()
-                                      .Where(lbl => lbl != arrowLabel) // Exclude the arrow itself
-                                      .ToList();
-
-            if (generationLabels.Count == 0) return; // Prevent errors
-
-            // Get the selected generation's name
-            string selectedGeneration = generationLabels[currentSelectionIndex].Text;
-            _selectedGeneration = _generationManager.GetGeneration(selectedGeneration);
-
-            // Hide the menu and start the intro
+            string selectedName = generationMenu.GetSelectedGenerationName();
+            _selectedGeneration = _generationManager.GetGeneration(selectedName);
             StartIntro();
-        }
-
-
-
-        private void MoveArrow(Keys direction)
-        {
-            var generationLabels = generationMenuPanel.Controls.OfType<Label>()
-                                      .Where(lbl => lbl != arrowLabel) // Exclude the arrow itself
-                                      .ToList();
-
-            if (generationLabels.Count == 0) return; // Prevent errors if no labels exist
-
-            // Move the selection index up or down
-            if (direction == Keys.Up)
-            {
-                currentSelectionIndex = (currentSelectionIndex > 0) ? currentSelectionIndex - 1 : generationLabels.Count - 1;
-            }
-            else if (direction == Keys.Down)
-            {
-                currentSelectionIndex = (currentSelectionIndex < generationLabels.Count - 1) ? currentSelectionIndex + 1 : 0;
-            }
-
-            // Move the arrow to the selected label's position
-            arrowLabel.Location = new System.Drawing.Point(0, (int)generationLabels[currentSelectionIndex].Tag);
-        }
-
-
-        private void SubmitButton_Click(object sender, EventArgs e)
-        {
-            // Set the player's name and save it
-            playerName = nameTextBox.Text;
-            Properties.Settings.Default.playerName = playerName;
-            Properties.Settings.Default.Save();
-            AdvanceButton_Click(sender, e);
         }
 
         private void StartIntro()
@@ -155,27 +91,21 @@ namespace PokedexTracker.Forms
             if (_selectedGeneration == null)
             {
                 MessageBox.Show("Please select a generation before proceeding.");
-                return; // Do NOT proceed until the user selects a generation
+                return;
             }
 
-            // Hide the selection menu
             generationMenuPanel.Visible = false;
-
-            // Show the actual intro elements
             ShowIntroContent();
 
-            speechParts = _selectedGeneration.Speeches; // Get the extended speech parts
-            currentSpeechIndex = 0; // Reset speech index
-            currentText = speechParts[currentSpeechIndex];
+            // Initialize the SpeechManager with speeches from the selected generation.
+            _speechManager = new SpeechManager(_selectedGeneration.Speeches);
+            currentText = _speechManager.CurrentSpeech;
             professorLabel.Text = "";
-            len = 0; // Reset text length
-            advanceButton.Visible = false; // Ensure it's hidden before speech starts
+            textCharIndex = 0;
+            advanceButton.Visible = false;
             timer1.Start();
         }
 
-
-
-        // Helper method to show all intro elements
         private void ShowIntroContent()
         {
             professorLabel.Visible = true;
@@ -183,19 +113,20 @@ namespace PokedexTracker.Forms
             skipIntroButton.Visible = true;
         }
 
-
+        // Timer tick for “typing” effect.
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if (len < currentText.Length)
+            if (textCharIndex < currentText.Length)
             {
-                professorLabel.Text += currentText.ElementAt(len);
-                len++;
+                professorLabel.Text += currentText[textCharIndex];
+                textCharIndex++;
             }
             else
             {
-                timer1.Stop(); // Stop the timer once the text is fully shown
-                advanceButton.Visible = true; // Show the "Advance" button when speech finishes
-                if (currentSpeechIndex == 3)
+                timer1.Stop();
+                advanceButton.Visible = true;
+                // For example, if you want to reveal name input on a specific speech index:
+                if (_speechManager.CurrentIndex == 3)
                 {
                     nameTextBox.Visible = true;
                     submitButton.Visible = true;
@@ -205,32 +136,28 @@ namespace PokedexTracker.Forms
             }
         }
 
-
         private void AdvanceButton_Click(object sender, EventArgs e)
         {
-            currentSpeechIndex++;
-
-            if (currentSpeechIndex < speechParts.Length)
+            _speechManager.Advance();
+            if (_speechManager.CurrentIndex < _selectedGeneration.Speeches.Length)
             {
-                // Replace {playerName} before displaying
-                currentText = speechParts[currentSpeechIndex].Replace("{playerName}", playerName);
+                // Replace any placeholder with the player's name
+                currentText = _selectedGeneration.Speeches[_speechManager.CurrentIndex].Replace("{playerName}", playerName);
                 professorLabel.Text = "";
-                len = 0;
+                textCharIndex = 0;
                 advanceButton.Visible = false;
 
-                if (currentSpeechIndex == 1)
+                if (_speechManager.CurrentIndex == 1)
                 {
                     UpdateProfessorImage();
                 }
-                if (currentSpeechIndex == 4)
+                if (_speechManager.CurrentIndex == 4)
                 {
                     nameTextBox.Visible = false;
                     submitButton.Visible = false;
-                    // Retrieve player name from settings
+                    // Retrieve player name from settings and update speeches if needed.
                     playerName = Properties.Settings.Default.playerName;
-
-                    // Replace "{playerName}" dynamically in the speech
-                    speechParts = _selectedGeneration.Speeches.Select(s => s.Replace("{playerName}", playerName)).ToArray();
+                    currentText = currentText.Replace("{playerName}", playerName);
                 }
 
                 timer1.Start();
@@ -241,31 +168,34 @@ namespace PokedexTracker.Forms
             }
         }
 
-
+        private void SubmitButton_Click(object sender, EventArgs e)
+        {
+            playerName = nameTextBox.Text;
+            Properties.Settings.Default.playerName = playerName;
+            Properties.Settings.Default.Save();
+            AdvanceButton_Click(sender, e);
+        }
 
         private void UpdateProfessorImage()
         {
             if (_selectedGeneration != null && professorPictureBox.Image == null)
             {
-                string imagePath = _selectedGeneration.ProfessorImages.FirstOrDefault(); // Use the first image only
-
-                if (!string.IsNullOrEmpty(imagePath) && System.IO.File.Exists(imagePath))
+                string imagePath = _selectedGeneration.ProfessorImages.FirstOrDefault();
+                if (!string.IsNullOrEmpty(imagePath) && File.Exists(imagePath))
                 {
-                    originalProfessorImage = System.Drawing.Image.FromFile(imagePath); // Store original image
-                    professorPictureBox.Image = AdjustImageOpacity((System.Drawing.Bitmap)originalProfessorImage, 0f);
+                    originalProfessorImage = Image.FromFile(imagePath);
+                    professorPictureBox.Image = ImageFader.AdjustImageOpacity(originalProfessorImage, 0f);
                     professorPictureBox.Visible = true;
-                    imageOpacity = 0f; // Reset opacity
-                    fadeTimer.Start(); // Start fade effect
+                    imageOpacity = 0f;
+                    fadeTimer.Start();
                 }
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine("Professor image not found.");
                     professorPictureBox.Image = null;
-                    MessageBox.Show($"Professor image not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Professor image not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
-
 
         private void SkipIntroButton_Click(object sender, EventArgs e)
         {
@@ -288,38 +218,18 @@ namespace PokedexTracker.Forms
             Application.Exit();
         }
 
+        // Timer tick for fading in the professor image.
         private void fadeTimer_Tick(object sender, EventArgs e)
         {
             if (imageOpacity < 1f)
             {
-                imageOpacity += fadeStep;  // Increase opacity
-                professorPictureBox.Image = AdjustImageOpacity((System.Drawing.Bitmap)originalProfessorImage, imageOpacity);
+                imageOpacity += fadeStep;
+                professorPictureBox.Image = ImageFader.AdjustImageOpacity(originalProfessorImage, imageOpacity);
             }
             else
             {
                 fadeTimer.Stop();
-                System.Diagnostics.Debug.WriteLine("Fade complete. Stopping timer.");
             }
-        }
-
-        private System.Drawing.Image AdjustImageOpacity(System.Drawing.Image image, float opacity)
-        {
-            if (image == null) return null;
-
-            var bmp = new System.Drawing.Bitmap(image.Width, image.Height);
-            using (var graphics = System.Drawing.Graphics.FromImage(bmp))
-            {
-                var matrix = new System.Drawing.Imaging.ColorMatrix
-                {
-                    Matrix33 = opacity
-                };
-
-                var attributes = new System.Drawing.Imaging.ImageAttributes();
-                attributes.SetColorMatrix(matrix, System.Drawing.Imaging.ColorMatrixFlag.Default, System.Drawing.Imaging.ColorAdjustType.Bitmap);
-
-                graphics.DrawImage(image, new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height), 0, 0, image.Width, image.Height, System.Drawing.GraphicsUnit.Pixel, attributes);
-            }
-            return bmp;
         }
     }
 }

@@ -91,6 +91,9 @@
     <Compile Include="Managers\DatabaseManager.cs" />
     <Compile Include="Managers\GameManager.cs" />
     <Compile Include="Managers\GenerationManager.cs" />
+    <Compile Include="Controls\GenerationMenu.cs" />
+    <Compile Include="Helpers\ImageFader.cs" />
+    <Compile Include="Managers\SpeechManager.cs" />
     <Compile Include="Models\PokemonCard.cs">
       <SubType>Component</SubType>
     </Compile>
