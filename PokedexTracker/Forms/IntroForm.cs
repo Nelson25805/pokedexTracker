@@ -294,7 +294,6 @@ namespace PokedexTracker.Forms
             {
                 imageOpacity += fadeStep;  // Increase opacity
                 professorPictureBox.Image = AdjustImageOpacity((System.Drawing.Bitmap)originalProfessorImage, imageOpacity);
-                professorPictureBox.Refresh(); // Force UI update
             }
             else
             {
