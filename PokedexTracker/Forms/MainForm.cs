@@ -10,26 +10,25 @@ namespace PokedexTracker
         private readonly DatabaseManager _dbManager;
         private readonly GameManager _gameManager;
         private readonly AssetManager _assetManager;
-
         private string playerName;
 
         public MainForm()
         {
             _assetManager = new AssetManager();
-
             // Construct the database path using AssetManager
             string databasePath = _assetManager.GetDatabasePath();
             _dbManager = new DatabaseManager($@"Data Source={databasePath}");
-
             InitializeComponent();
             _gameManager = new GameManager(_dbManager);
+
+            // Optionally, set fixed form size as before
+            LockFormSize();
         }
 
         public MainForm(string name)
         {
             _assetManager = new AssetManager();
             playerName = name;
-
             InitializeComponent();
 
             Label welcomeLabel = new Label()
@@ -44,35 +43,36 @@ namespace PokedexTracker
             // Construct the database path using AssetManager
             string databasePath = _assetManager.GetDatabasePath();
             _dbManager = new DatabaseManager($@"Data Source={databasePath}");
-
             _gameManager = new GameManager(_dbManager);
 
-            // Set a fixed border style to prevent resizing.
+            LockFormSize();
+        }
+
+        private void LockFormSize()
+        {
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
-
-            // Disable the maximize button.
             this.MaximizeBox = false;
-
-            // Optionally, lock the form size completely by setting MinimumSize and MaximumSize.
             this.MinimumSize = this.Size;
             this.MaximumSize = this.Size;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            // Optionally, initial setup for the form.
-            // this.BackColor = ColorTranslator.FromHtml("#ADD8E6");
+            // You might pre-select a default game if desired:
+            if (comboBoxGames.Items.Count > 0)
+            {
+                comboBoxGames.SelectedIndex = 0;
+            }
         }
 
-        private void GameSwitchButton_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Event handler for when the selected game in the ComboBox changes.
+        /// </summary>
+        private void comboBoxGames_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (sender is Button button)
+            if (comboBoxGames.SelectedItem is string gameName)
             {
-                string gameName = button.Tag as string; // Use the Tag property to store game names
-                if (!string.IsNullOrEmpty(gameName))
-                {
-                    LoadPokemonCards(gameName);
-                }
+                LoadPokemonCards(gameName);
             }
         }
 
@@ -84,11 +84,11 @@ namespace PokedexTracker
             // Get data from the GameManager
             var (pokemonData, total, caught) = _gameManager.GetPokemonData(gameName);
 
-            // Update progress bar and trainer sprite
+            // Update progress and trainer sprite
             UpdateProgressBar(caught, total);
             UpdateTrainerSprite(caught, total, gameName);
 
-            // Set visibility of the trainer card and progress label based on the game selected
+            // Show the trainer card and progress label based on the game selected
             SetTrainerVisibility(gameName);
 
             int xPos = 10, yPos = 10, count = 0;
@@ -126,7 +126,6 @@ namespace PokedexTracker
 
         private void SetTrainerVisibility(string gameName)
         {
-            // Set trainer card and progress label visibility for all games
             trainerCard.Visible = true;
             lblProgress.Visible = true;
             lblProgress.BringToFront();
@@ -134,7 +133,7 @@ namespace PokedexTracker
 
         private void UpdateProgressBar(int caught, int total)
         {
-            lblProgress.Text = $"{caught} / {total}";  // Optional label showing caught/total
+            lblProgress.Text = $"{caught} / {total}";
         }
 
         private void UpdateTrainerSprite(int caughtCount, int totalCount, string currentGameName)
@@ -145,15 +144,12 @@ namespace PokedexTracker
                 return;
             }
 
-            if (totalCount == 0) return; // Avoid division by zero
+            if (totalCount == 0) return;
 
-            int badgeThreshold = totalCount / 8; // Each badge represents 1/8 of total Pokémon
-            int badgeCount = Math.Min(caughtCount / badgeThreshold, 8); // Cap badge count at 8
+            int badgeThreshold = totalCount / 8;
+            int badgeCount = Math.Min(caughtCount / badgeThreshold, 8);
 
-            // Use AssetManager to get the badge image path
             string badgeImagePath = _assetManager.GetTrainerBadgePath(currentGameName, badgeCount);
-
-            // Check if the file exists before updating the image
             if (File.Exists(badgeImagePath))
             {
                 trainerCard.Image = Image.FromFile(badgeImagePath);
@@ -167,7 +163,7 @@ namespace PokedexTracker
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             base.OnFormClosing(e);
-            Application.Exit(); // Ensure full application termination
+            Application.Exit();
         }
     }
 }
