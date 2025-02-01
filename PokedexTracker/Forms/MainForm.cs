@@ -21,8 +21,6 @@ namespace PokedexTracker
             InitializeComponent();
             _gameManager = new GameManager(_dbManager);
 
-            // Optionally, set fixed form size as before
-            LockFormSize();
         }
 
         public MainForm(string name)
@@ -45,16 +43,8 @@ namespace PokedexTracker
             _dbManager = new DatabaseManager($@"Data Source={databasePath}");
             _gameManager = new GameManager(_dbManager);
 
-            LockFormSize();
         }
 
-        private void LockFormSize()
-        {
-            this.FormBorderStyle = FormBorderStyle.FixedSingle;
-            this.MaximizeBox = false;
-            this.MinimumSize = this.Size;
-            this.MaximumSize = this.Size;
-        }
 
         private void MainForm_Load(object sender, EventArgs e)
         {

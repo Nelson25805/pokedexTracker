@@ -31,16 +31,6 @@ namespace PokedexTracker.Forms
         {
             InitializeComponent();
 
-            // Set a fixed border style to prevent resizing.
-            this.FormBorderStyle = FormBorderStyle.FixedSingle;
-
-            // Disable the maximize button.
-            this.MaximizeBox = false;
-
-            // Optionally, lock the form size completely by setting MinimumSize and MaximumSize.
-            this.MinimumSize = this.Size;
-            this.MaximumSize = this.Size;
-
             _assetManager = new AssetManager();
             _generationManager = new GenerationManager(_assetManager);
 

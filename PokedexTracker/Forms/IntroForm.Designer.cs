@@ -129,6 +129,8 @@
             this.Controls.Add(this.submitButton);
             this.Controls.Add(this.nameTextBox);
             this.Controls.Add(this.professorLabel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "IntroForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "IntroForm";
