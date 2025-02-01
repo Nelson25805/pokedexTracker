@@ -29,15 +29,6 @@ namespace PokedexTracker
             playerName = name;
             InitializeComponent();
 
-            Label welcomeLabel = new Label()
-            {
-                Text = $"Welcome to the Pokémon world, {playerName}!",
-                Font = new Font("Arial", 16, FontStyle.Bold),
-                AutoSize = true,
-                Location = new Point(100, 100)
-            };
-            this.Controls.Add(welcomeLabel);
-
             // Construct the database path using AssetManager
             string databasePath = _assetManager.GetDatabasePath();
             _dbManager = new DatabaseManager($@"Data Source={databasePath}");
