@@ -107,7 +107,7 @@
             // 
             // generationMenuPanel
             // 
-            this.generationMenuPanel.Location = new System.Drawing.Point(116, 106);
+            this.generationMenuPanel.Location = new System.Drawing.Point(735, 218);
             this.generationMenuPanel.Name = "generationMenuPanel";
             this.generationMenuPanel.Size = new System.Drawing.Size(315, 245);
             this.generationMenuPanel.TabIndex = 7;

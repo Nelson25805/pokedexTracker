@@ -46,6 +46,16 @@ namespace PokedexTracker
             _dbManager = new DatabaseManager($@"Data Source={databasePath}");
 
             _gameManager = new GameManager(_dbManager);
+
+            // Set a fixed border style to prevent resizing.
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+
+            // Disable the maximize button.
+            this.MaximizeBox = false;
+
+            // Optionally, lock the form size completely by setting MinimumSize and MaximumSize.
+            this.MinimumSize = this.Size;
+            this.MaximumSize = this.Size;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
