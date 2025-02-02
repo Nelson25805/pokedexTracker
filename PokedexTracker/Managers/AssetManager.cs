@@ -45,5 +45,16 @@ namespace PokedexTracker
             return Path.Combine(professorFolderPath, $"professor{index + 1}.png");
         }
 
+        // New: Return the path to the Fonts folder.
+        public string GetFontsPath()
+        {
+            return Path.Combine(_baseAssetsPath, "Fonts");
+        }
+
+        // New: Return the full path for a specific font file.
+        public string GetFontPath(string fontFileName)
+        {
+            return Path.Combine(GetFontsPath(), fontFileName);
+        }
     }
 }

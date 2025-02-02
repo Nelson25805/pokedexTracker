@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using PokedexTracker.DisplayManagers;  // Contains PlayerNameDisplayManager and PlayerNameStyle
 
 namespace PokedexTracker
 {
@@ -10,36 +11,52 @@ namespace PokedexTracker
         private readonly DatabaseManager _dbManager;
         private readonly GameManager _gameManager;
         private readonly AssetManager _assetManager;
+        private readonly PlayerNameDisplayManager _nameDisplayManager;
         private string playerName;
 
+        /// <summary>
+        /// Constructor used when a player name is provided.
+        /// </summary>
+        public MainForm(string name) : this()
+        {
+            playerName = name;
+            // Immediately update the player name display using the currently selected game (if any)
+            if (comboBoxGames.SelectedItem is string selectedGame)
+            {
+                _nameDisplayManager.UpdatePlayerNameLabel(selectedGame, lblPlayerName, playerName);
+            }
+
+            lblPlayerName.Parent = trainerCard;
+            lblPlayerName.BackColor = Color.Transparent;
+
+        }
+
+        /// <summary>
+        /// Parameterless constructor.
+        /// </summary>
         public MainForm()
         {
+            // Initialize asset manager and related database components.
             _assetManager = new AssetManager();
-            // Construct the database path using AssetManager
             string databasePath = _assetManager.GetDatabasePath();
             _dbManager = new DatabaseManager($@"Data Source={databasePath}");
-            InitializeComponent();
-            _gameManager = new GameManager(_dbManager);
 
-        }
-
-        public MainForm(string name)
-        {
-            _assetManager = new AssetManager();
-            playerName = name;
             InitializeComponent();
 
-            // Construct the database path using AssetManager
-            string databasePath = _assetManager.GetDatabasePath();
-            _dbManager = new DatabaseManager($@"Data Source={databasePath}");
             _gameManager = new GameManager(_dbManager);
+            // Create the player name display manager instance.
+            _nameDisplayManager = new PlayerNameDisplayManager();
 
+            // Optionally, lock the form size (if desired)
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimumSize = this.Size;
+            this.MaximumSize = this.Size;
         }
-
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            // You might pre-select a default game if desired:
+            // Pre-select a default game if available.
             if (comboBoxGames.Items.Count > 0)
             {
                 comboBoxGames.SelectedIndex = 0;
@@ -47,47 +64,56 @@ namespace PokedexTracker
         }
 
         /// <summary>
-        /// Event handler for when the selected game in the ComboBox changes.
+        /// Event handler for when the user selects a game from the dropdown.
         /// </summary>
         private void comboBoxGames_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboBoxGames.SelectedItem is string gameName)
             {
                 LoadPokemonCards(gameName);
+
+                // Make lblPlayerName a child of trainerCard so its transparency is relative to it.
+                lblPlayerName.Parent = trainerCard;
+                lblPlayerName.BackColor = Color.Transparent;
+
+                // Then update the player name label style.
+                _nameDisplayManager.UpdatePlayerNameLabel(gameName, lblPlayerName, playerName);
             }
         }
 
+
         private void LoadPokemonCards(string gameName)
         {
-            // Clear previous Pokémon cards
+            // Clear previous Pokémon cards.
             panelCards.Controls.Clear();
 
-            // Get data from the GameManager
+            // Get data from the GameManager.
             var (pokemonData, total, caught) = _gameManager.GetPokemonData(gameName);
 
-            // Update progress and trainer sprite
+            // Update the progress label and trainer sprite.
             UpdateProgressBar(caught, total);
             UpdateTrainerSprite(caught, total, gameName);
 
-            // Show the trainer card and progress label based on the game selected
-            SetTrainerVisibility(gameName);
+            // Show the trainer card and progress label.
+            SetTrainerVisibility();
 
             int xPos = 10, yPos = 10, count = 0;
             int cardsPerRow = panelCards.Width / 130;
 
-            // Add Pokémon cards to the panel
+            // Create and add Pokémon card controls.
             foreach (var (name, number, spritePath, isCaught) in pokemonData)
             {
                 var card = new PokemonCard(name, number, spritePath, isCaught);
                 card.Location = new Point(xPos, yPos);
 
+                // Toggle caught status when a card is clicked.
                 card.Click += (s, e) =>
                 {
                     var newStatus = !card.IsCaught;
                     card.UpdateCaughtStatus(newStatus);
                     _gameManager.ToggleCaughtStatus(number, gameName, newStatus);
 
-                    // Recalculate progress and update UI
+                    // Refresh progress and trainer sprite.
                     var (updatedData, updatedTotal, updatedCaught) = _gameManager.GetPokemonData(gameName);
                     UpdateProgressBar(updatedCaught, updatedTotal);
                     UpdateTrainerSprite(updatedCaught, updatedTotal, gameName);
@@ -105,7 +131,7 @@ namespace PokedexTracker
             }
         }
 
-        private void SetTrainerVisibility(string gameName)
+        private void SetTrainerVisibility()
         {
             trainerCard.Visible = true;
             lblProgress.Visible = true;

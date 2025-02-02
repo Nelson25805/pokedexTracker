@@ -46,6 +46,7 @@
             this.panelCards = new System.Windows.Forms.Panel();
             this.lblProgress = new System.Windows.Forms.Label();
             this.trainerCard = new System.Windows.Forms.PictureBox();
+            this.lblPlayerName = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.trainerCard)).BeginInit();
             this.SuspendLayout();
             // 
@@ -54,17 +55,48 @@
             this.comboBoxGames.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxGames.Font = new System.Drawing.Font("PKMN RBYGSC", 8.1F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxGames.FormattingEnabled = true;
-            // You can add items here or do it in code; for example:
             this.comboBoxGames.Items.AddRange(new object[] {
-                "Red",
-                "Blue",
-                "Yellow",
-                "Silver",
-                "Gold",
-                "Crystal"});
+            "Red",
+            "Blue",
+            "Yellow",
+            "Silver",
+            "Gold",
+            "Crystal",
+            "Ruby",
+            "Sapphire",
+            "Emerald",
+            "FireRed",
+            "LeadGreen",
+            "Diamond",
+            "Pearl",
+            "Platinum",
+            "HeartGold",
+            "SoulSilver",
+            "Black",
+            "White",
+            "Black 2",
+            "White 2",
+            "X",
+            "Y",
+            "Omega Ruby",
+            "Alpha Sapphire",
+            "Sun",
+            "Moon",
+            "Ultra Sun",
+            "Ultra Moon",
+            "Let\'s Go Pikachu!",
+            "Let\'s Go Eevee!",
+            "Sword",
+            "Shield",
+            "Brilliant Diamond",
+            "Shining Pearl",
+            "Legends Arceus",
+            "Scarlet",
+            "Violet",
+            "Legends: Z-A"});
             this.comboBoxGames.Location = new System.Drawing.Point(12, 459);
             this.comboBoxGames.Name = "comboBoxGames";
-            this.comboBoxGames.Size = new System.Drawing.Size(300, 57);
+            this.comboBoxGames.Size = new System.Drawing.Size(487, 38);
             this.comboBoxGames.TabIndex = 0;
             this.comboBoxGames.SelectedIndexChanged += new System.EventHandler(this.comboBoxGames_SelectedIndexChanged);
             // 
@@ -99,12 +131,22 @@
             this.trainerCard.TabStop = false;
             this.trainerCard.Visible = false;
             // 
+            // lblPlayerName
+            // 
+            this.lblPlayerName.AutoSize = true;
+            this.lblPlayerName.BackColor = System.Drawing.Color.Transparent;
+            this.lblPlayerName.Location = new System.Drawing.Point(276, 57);
+            this.lblPlayerName.Name = "lblPlayerName";
+            this.lblPlayerName.Size = new System.Drawing.Size(0, 32);
+            this.lblPlayerName.TabIndex = 0;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.ClientSize = new System.Drawing.Size(1825, 1379);
+            this.Controls.Add(this.lblPlayerName);
             this.Controls.Add(this.trainerCard);
             this.Controls.Add(this.lblProgress);
             this.Controls.Add(this.panelCards);
@@ -119,5 +161,7 @@
         }
 
         #endregion
+
+        private System.Windows.Forms.Label lblPlayerName;
     }
 }
