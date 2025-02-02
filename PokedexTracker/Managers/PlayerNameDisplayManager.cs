@@ -16,22 +16,34 @@ namespace PokedexTracker.DisplayManagers
             _styles = new Dictionary<string, PlayerNameStyle>
             {
                 { "Red", new PlayerNameStyle {
-                    Location = new Point(130, 22),
-                    FontFileName = "PKMN RBYGSC.ttf", // Replace with your actual font file
+                    Location = new Point(90, 22),
+                    FontFileName = "PKMN RBYGSC.ttf",
                     FontSize = 7,
                     Size = new Size(300, 50)
                 } },
                 { "Blue", new PlayerNameStyle {
-                    Location = new Point(100, 80),
+                    Location = new Point(90, 22),
                     FontFileName = "PKMN RBYGSC.ttf",
-                    FontSize = 6,
-                    Size = new Size(320, 50)
+                    FontSize = 7,
+                    Size = new Size(300, 50)
                 } },
                 { "Yellow", new PlayerNameStyle {
-                    Location = new Point(70, 60),
+                    Location = new Point(90, 22),
                     FontFileName = "PKMN RBYGSC.ttf",
-                    FontSize = 6,
-                    Size = new Size(310, 55)
+                    FontSize = 7,
+                    Size = new Size(300, 50)
+                } },
+                { "Gold", new PlayerNameStyle {
+                    Location = new Point(84, 18),
+                    FontFileName = "PKMN RBYGSC.ttf",
+                    FontSize = 7,
+                    Size = new Size(300, 50)
+                } },
+                { "Silver", new PlayerNameStyle {
+                    Location = new Point(84, 18),
+                    FontFileName = "PKMN RBYGSC.ttf",
+                    FontSize = 7,
+                    Size = new Size(300, 50)
                 } },
                 // Add more styles for other games as needed.
             };

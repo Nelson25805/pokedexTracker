@@ -95,12 +95,14 @@
     <Compile Include="Controls\GenerationMenu.cs" />
     <Compile Include="Helpers\ImageFader.cs" />
     <Compile Include="Managers\PlayerNameDisplayManager.cs" />
+    <Compile Include="Managers\ProgressDisplayManager.cs" />
     <Compile Include="Managers\SpeechManager.cs" />
     <Compile Include="Models\PlayerNameStyle.cs" />
     <Compile Include="Models\PokemonCard.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Models\PokemonGeneration.cs" />
+    <Compile Include="Models\ProgressDisplayStyle.cs" />
     <Compile Include="OldClasses\DatabaseHelper.cs" />
     <Compile Include="OldClasses\PokemonApiClient.cs" />
     <Compile Include="Program.cs" />

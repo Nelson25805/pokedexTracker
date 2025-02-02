@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using PokedexTracker.DisplayManagers;  // Contains PlayerNameDisplayManager and PlayerNameStyle
+using PokedexTracker.DisplayManagers;  // Contains PlayerNameDisplayManager and ProgressDisplayManager
 
 namespace PokedexTracker
 {
@@ -12,6 +12,7 @@ namespace PokedexTracker
         private readonly GameManager _gameManager;
         private readonly AssetManager _assetManager;
         private readonly PlayerNameDisplayManager _nameDisplayManager;
+        private readonly ProgressDisplayManager _progressDisplayManager;
         private string playerName;
 
         /// <summary>
@@ -25,10 +26,9 @@ namespace PokedexTracker
             {
                 _nameDisplayManager.UpdatePlayerNameLabel(selectedGame, lblPlayerName, playerName);
             }
-
+            // Set lblPlayerName to be drawn on top of trainerCard.
             lblPlayerName.Parent = trainerCard;
             lblPlayerName.BackColor = Color.Transparent;
-
         }
 
         /// <summary>
@@ -44,10 +44,11 @@ namespace PokedexTracker
             InitializeComponent();
 
             _gameManager = new GameManager(_dbManager);
-            // Create the player name display manager instance.
+            // Create the player name and progress display manager instances.
             _nameDisplayManager = new PlayerNameDisplayManager();
+            _progressDisplayManager = new ProgressDisplayManager();
 
-            // Optionally, lock the form size (if desired)
+            // Optionally, lock the form size.
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimumSize = this.Size;
@@ -72,12 +73,20 @@ namespace PokedexTracker
             {
                 LoadPokemonCards(gameName);
 
-                // Make lblPlayerName a child of trainerCard so its transparency is relative to it.
+                // Ensure player name transparency is relative to the trainer card
                 lblPlayerName.Parent = trainerCard;
                 lblPlayerName.BackColor = Color.Transparent;
 
-                // Then update the player name label style.
+                // Ensure progress label transparency is relative to the trainer card
+                lblProgress.Parent = trainerCard;
+                lblProgress.BackColor = Color.Transparent;
+
+                // Update labels with the new game
                 _nameDisplayManager.UpdatePlayerNameLabel(gameName, lblPlayerName, playerName);
+
+                var (pokemonData, total, caught) = _gameManager.GetPokemonData(gameName);
+                string progressText = $"{caught} / {total}";
+                _progressDisplayManager.UpdateProgressLabel(gameName, lblProgress, progressText);
             }
         }
 
@@ -90,8 +99,9 @@ namespace PokedexTracker
             // Get data from the GameManager.
             var (pokemonData, total, caught) = _gameManager.GetPokemonData(gameName);
 
-            // Update the progress label and trainer sprite.
-            UpdateProgressBar(caught, total);
+            // Update the progress display and trainer sprite.
+            string progressText = $"{caught} / {total}";
+            _progressDisplayManager.UpdateProgressLabel(gameName, lblProgress, progressText);
             UpdateTrainerSprite(caught, total, gameName);
 
             // Show the trainer card and progress label.
@@ -115,7 +125,8 @@ namespace PokedexTracker
 
                     // Refresh progress and trainer sprite.
                     var (updatedData, updatedTotal, updatedCaught) = _gameManager.GetPokemonData(gameName);
-                    UpdateProgressBar(updatedCaught, updatedTotal);
+                    string updatedProgress = $"{updatedCaught} / {updatedTotal}";
+                    _progressDisplayManager.UpdateProgressLabel(gameName, lblProgress, updatedProgress);
                     UpdateTrainerSprite(updatedCaught, updatedTotal, gameName);
                 };
 
@@ -135,13 +146,17 @@ namespace PokedexTracker
         {
             trainerCard.Visible = true;
             lblProgress.Visible = true;
+
+            // Make sure the progress label appears above the trainer card
+            lblProgress.Parent = trainerCard;
+            lblProgress.BackColor = Color.Transparent;
             lblProgress.BringToFront();
         }
 
-        private void UpdateProgressBar(int caught, int total)
-        {
-            lblProgress.Text = $"{caught} / {total}";
-        }
+
+        // The original UpdateProgressBar method is now replaced by the call to the ProgressDisplayManager.
+        // (You can remove this method if no longer needed.)
+        // private void UpdateProgressBar(int caught, int total) { lblProgress.Text = $"{caught} / {total}"; }
 
         private void UpdateTrainerSprite(int caughtCount, int totalCount, string currentGameName)
         {
