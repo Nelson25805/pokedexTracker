@@ -45,6 +45,12 @@ namespace PokedexTracker.DisplayManagers
                     FontSize = 7,
                     Size = new Size(300, 50)
                 } },
+                { "Crystal", new PlayerNameStyle {
+                    Location = new Point(84, 18),
+                    FontFileName = "PKMN RBYGSC.ttf",
+                    FontSize = 7,
+                    Size = new Size(300, 50)
+                } },
                 // Add more styles for other games as needed.
             };
         }

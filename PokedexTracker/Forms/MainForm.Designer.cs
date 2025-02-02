@@ -47,6 +47,8 @@
             this.lblProgress = new System.Windows.Forms.Label();
             this.trainerCard = new System.Windows.Forms.PictureBox();
             this.lblPlayerName = new System.Windows.Forms.Label();
+            this.rdoGirl = new System.Windows.Forms.RadioButton();
+            this.rdoBoy = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.trainerCard)).BeginInit();
             this.SuspendLayout();
             // 
@@ -140,12 +142,37 @@
             this.lblPlayerName.Size = new System.Drawing.Size(0, 32);
             this.lblPlayerName.TabIndex = 0;
             // 
+            // rdoGirl
+            // 
+            this.rdoGirl.AutoSize = true;
+            this.rdoGirl.Location = new System.Drawing.Point(134, 560);
+            this.rdoGirl.Name = "rdoGirl";
+            this.rdoGirl.Size = new System.Drawing.Size(96, 36);
+            this.rdoGirl.TabIndex = 4;
+            this.rdoGirl.TabStop = true;
+            this.rdoGirl.Text = "Girl";
+            this.rdoGirl.UseVisualStyleBackColor = true;
+            this.rdoGirl.CheckedChanged += new System.EventHandler(this.rdoGender_CheckedChanged);
+            // 
+            // rdoBoy
+            // 
+            this.rdoBoy.AutoSize = true;
+            this.rdoBoy.Location = new System.Drawing.Point(12, 560);
+            this.rdoBoy.Name = "rdoBoy";
+            this.rdoBoy.Size = new System.Drawing.Size(100, 36);
+            this.rdoBoy.TabIndex = 5;
+            this.rdoBoy.Text = "Boy";
+            this.rdoBoy.UseVisualStyleBackColor = true;
+            this.rdoBoy.CheckedChanged += new System.EventHandler(this.rdoGender_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.ClientSize = new System.Drawing.Size(1825, 1379);
+            this.Controls.Add(this.rdoBoy);
+            this.Controls.Add(this.rdoGirl);
             this.Controls.Add(this.lblPlayerName);
             this.Controls.Add(this.trainerCard);
             this.Controls.Add(this.lblProgress);
@@ -163,5 +190,7 @@
         #endregion
 
         private System.Windows.Forms.Label lblPlayerName;
+        private System.Windows.Forms.RadioButton rdoGirl;
+        private System.Windows.Forms.RadioButton rdoBoy;
     }
 }
