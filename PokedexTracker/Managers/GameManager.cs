@@ -32,6 +32,7 @@ namespace PokedexTracker
       AND Sprites.GameName = @spriteGameName
     ORDER BY Pokemon.Number";
 
+            // For certain games like Red/Blue, the sprite path may need special handling.
             string spriteGameName = (gameName == "Red" || gameName == "Blue") ? "Red/Blue" : gameName;
 
             using (var connection = _dbManager.GetConnection())
@@ -58,18 +59,79 @@ namespace PokedexTracker
                             fullSpritePath = fullSpritePath.Replace("\\", Path.DirectorySeparatorChar.ToString());
 
                             // Ensure the final path is correctly formed by trimming redundant directory separators
-                            fullSpritePath = Path.GetFullPath(fullSpritePath); // This will normalize the path
+                            fullSpritePath = Path.GetFullPath(fullSpritePath);
 
                             if (!File.Exists(fullSpritePath))
                             {
                                 Console.WriteLine($"Sprite not found: {fullSpritePath}");
                             }
 
-                            // Add the Pokémon data to the result list
                             result.Add((
                                 reader["Name"].ToString(),
                                 reader["Number"].ToString(),
-                                fullSpritePath,  // Now using full path for loading the image
+                                fullSpritePath,
+                                isCaught
+                            ));
+
+                            total++;
+                            if (isCaught) caught++;
+                        }
+                    }
+                }
+            }
+
+            return (result, total, caught);
+        }
+
+        /// <summary>
+        /// Retrieves the shiny data by querying the Shiny_Pokedex_Status and Shiny_Sprites tables.
+        /// </summary>
+        public (List<(string Name, string Number, string SpritePath, bool IsCaught)> PokemonData, int Total, int Caught) GetShinyPokemonData(string gameName)
+        {
+            var result = new List<(string, string, string, bool)>();
+            int total = 0, caught = 0;
+
+            string query = @"
+    SELECT Pokemon.Name, Pokemon.Number, Shiny_Sprites.FilePath, Shiny_Pokedex_Status.Is_Caught
+    FROM Pokemon
+    JOIN Shiny_Pokedex_Status ON Shiny_Pokedex_Status.Pokemon_Number = Pokemon.Number
+    JOIN Shiny_Sprites ON Shiny_Sprites.PokemonId = Pokemon.Number
+    WHERE Shiny_Pokedex_Status.Game_Id = (SELECT Id FROM Game WHERE Name = @gameName)
+      AND Shiny_Sprites.GameName = @spriteGameName
+    ORDER BY Pokemon.Number";
+
+            // Use the same logic for spriteGameName as before.
+            string spriteGameName = (gameName == "Red" || gameName == "Blue") ? "Red/Blue" : gameName;
+
+            using (var connection = _dbManager.GetConnection())
+            {
+                connection.Open();
+                using (var cmd = new SQLiteCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@gameName", gameName);
+                    cmd.Parameters.AddWithValue("@spriteGameName", spriteGameName);
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            bool isCaught = reader["Is_Caught"] != DBNull.Value && Convert.ToInt32(reader["Is_Caught"]) == 1;
+
+                            string relativeSpritePath = reader["FilePath"].ToString();
+
+                            string fullSpritePath = Path.Combine(_assetsPath, relativeSpritePath.TrimStart(Path.DirectorySeparatorChar));
+                            fullSpritePath = fullSpritePath.Replace("\\", Path.DirectorySeparatorChar.ToString());
+                            fullSpritePath = Path.GetFullPath(fullSpritePath);
+
+                            if (!File.Exists(fullSpritePath))
+                            {
+                                Console.WriteLine($"Shiny sprite not found: {fullSpritePath}");
+                            }
+
+                            result.Add((
+                                reader["Name"].ToString(),
+                                reader["Number"].ToString(),
+                                fullSpritePath,
                                 isCaught
                             ));
 
@@ -87,6 +149,27 @@ namespace PokedexTracker
         {
             string query = @"
                 UPDATE Pokedex_Status
+                SET Is_Caught = @newStatus
+                WHERE Pokemon_Number = @pokemonNumber
+                AND Game_Id = (SELECT Id FROM Game WHERE Name = @gameName)";
+
+            var parameters = new[]
+            {
+                new SQLiteParameter("@newStatus", newStatus ? 1 : 0),
+                new SQLiteParameter("@pokemonNumber", pokemonNumber),
+                new SQLiteParameter("@gameName", gameName)
+            };
+
+            _dbManager.ExecuteNonQuery(query, parameters);
+        }
+
+        /// <summary>
+        /// Toggles the caught status for shiny data in the Shiny_Pokedex_Status table.
+        /// </summary>
+        public void ToggleShinyCaughtStatus(string pokemonNumber, string gameName, bool newStatus)
+        {
+            string query = @"
+                UPDATE Shiny_Pokedex_Status
                 SET Is_Caught = @newStatus
                 WHERE Pokemon_Number = @pokemonNumber
                 AND Game_Id = (SELECT Id FROM Game WHERE Name = @gameName)";

@@ -49,6 +49,7 @@
             this.lblPlayerName = new System.Windows.Forms.Label();
             this.rdoGirl = new System.Windows.Forms.RadioButton();
             this.rdoBoy = new System.Windows.Forms.RadioButton();
+            this.chkShiny = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.trainerCard)).BeginInit();
             this.SuspendLayout();
             // 
@@ -165,12 +166,24 @@
             this.rdoBoy.UseVisualStyleBackColor = true;
             this.rdoBoy.CheckedChanged += new System.EventHandler(this.rdoGender_CheckedChanged);
             // 
+            // chkShiny
+            // 
+            this.chkShiny.AutoSize = true;
+            this.chkShiny.Location = new System.Drawing.Point(22, 654);
+            this.chkShiny.Name = "chkShiny";
+            this.chkShiny.Size = new System.Drawing.Size(124, 36);
+            this.chkShiny.TabIndex = 6;
+            this.chkShiny.Text = "Shiny";
+            this.chkShiny.UseVisualStyleBackColor = true;
+            this.chkShiny.CheckedChanged += new System.EventHandler(this.chkShiny_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.ClientSize = new System.Drawing.Size(1825, 1379);
+            this.Controls.Add(this.chkShiny);
             this.Controls.Add(this.rdoBoy);
             this.Controls.Add(this.rdoGirl);
             this.Controls.Add(this.lblPlayerName);
@@ -192,5 +205,6 @@
         private System.Windows.Forms.Label lblPlayerName;
         private System.Windows.Forms.RadioButton rdoGirl;
         private System.Windows.Forms.RadioButton rdoBoy;
+        private System.Windows.Forms.CheckBox chkShiny;
     }
 }

@@ -34,10 +34,23 @@ namespace PokedexTracker
             return Path.Combine(_baseAssetsPath, gameName, "Sprites", spriteName);
         }
 
-        public string GetTrainerBadgePath(string gameName, int badgeCount)
+        public string GetTrainerBadgePath(string gameName, int badgeCount, string gender)
         {
-            return Path.Combine(GetTrainerCardPath(), gameName, $"Trainer_{badgeCount}.png");
+            string trainerCardPath = GetTrainerCardPath();
+            string basePath = Path.Combine(trainerCardPath, gameName);
+
+            int crystalIndex = Array.IndexOf(new string[] { "Red", "Blue", "Yellow", "Gold", "Silver", "Crystal" }, "Crystal");
+            int gameIndex = Array.IndexOf(new string[] { "Red", "Blue", "Yellow", "Gold", "Silver", "Crystal" }, gameName);
+
+            // If game is Crystal or later, include gender folder
+            if (gameIndex >= crystalIndex)
+            {
+                basePath = Path.Combine(basePath, gender);
+            }
+
+            return Path.Combine(basePath, $"Trainer_{badgeCount}.png");
         }
+
 
         public string GetProfessorImagePath(int index)
         {

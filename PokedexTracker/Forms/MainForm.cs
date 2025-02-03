@@ -15,7 +15,7 @@ namespace PokedexTracker
         private readonly ProgressDisplayManager _progressDisplayManager;
         private string playerName;
 
-        // New field to store the selected gender ("Boy" or "Girl"). Default is "Boy".
+        // Field to store the selected gender ("Boy" or "Girl"). Default is "Boy".
         private string selectedGender = "Boy";
 
         /// <summary>
@@ -24,12 +24,11 @@ namespace PokedexTracker
         public MainForm(string name) : this()
         {
             playerName = name;
-            // Immediately update the player name display using the currently selected game (if any)
             if (comboBoxGames.SelectedItem is string selectedGame)
             {
                 _nameDisplayManager.UpdatePlayerNameLabel(selectedGame, lblPlayerName, playerName);
             }
-            // Ensure the labels are drawn on top of the trainer card.
+            // Ensure labels are drawn on top of the trainer card.
             lblPlayerName.Parent = trainerCard;
             lblPlayerName.BackColor = Color.Transparent;
             lblProgress.Parent = trainerCard;
@@ -49,7 +48,6 @@ namespace PokedexTracker
             InitializeComponent();
 
             _gameManager = new GameManager(_dbManager);
-            // Create the display manager instances.
             _nameDisplayManager = new PlayerNameDisplayManager();
             _progressDisplayManager = new ProgressDisplayManager();
 
@@ -62,7 +60,6 @@ namespace PokedexTracker
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            // Pre-select a default game if available.
             if (comboBoxGames.Items.Count > 0)
             {
                 comboBoxGames.SelectedIndex = 0;
@@ -70,7 +67,7 @@ namespace PokedexTracker
         }
 
         /// <summary>
-        /// Event handler for when the user selects a game from the dropdown.
+        /// Handles when the user selects a game from the dropdown.
         /// </summary>
         private void comboBoxGames_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -78,78 +75,98 @@ namespace PokedexTracker
             {
                 LoadPokemonCards(gameName);
 
-                // Make labels children of trainerCard so their transparency is relative to it.
+                // Set labels as children of trainerCard for proper transparency.
                 lblPlayerName.Parent = trainerCard;
                 lblPlayerName.BackColor = Color.Transparent;
                 lblProgress.Parent = trainerCard;
                 lblProgress.BackColor = Color.Transparent;
 
-                // Update the player name display.
                 _nameDisplayManager.UpdatePlayerNameLabel(gameName, lblPlayerName, playerName);
 
-                // Determine if this game supports gender selection.
+                // Determine if this game supports shiny mode.
+                int yellowIndex = comboBoxGames.Items.IndexOf("Yellow");
+                if (comboBoxGames.SelectedIndex >= yellowIndex)
+                {
+                    chkShiny.Enabled = true;
+                }
+                else
+                {
+                    chkShiny.Enabled = false;
+                    chkShiny.Checked = false;
+                }
+
+                // Update gender selection: enable for games after "Gold".
                 int goldIndex = comboBoxGames.Items.IndexOf("Gold");
                 if (comboBoxGames.SelectedIndex > goldIndex)
                 {
-                    // Enable gender selection.
                     rdoBoy.Enabled = true;
                     rdoGirl.Enabled = true;
-                    // Restore the stored gender selection.
                     rdoBoy.Checked = (selectedGender == "Boy");
                     rdoGirl.Checked = (selectedGender == "Girl");
                 }
                 else
                 {
-                    // For earlier games, disable gender selection.
                     rdoBoy.Enabled = false;
                     rdoGirl.Enabled = false;
                     rdoBoy.Checked = false;
                     rdoGirl.Checked = false;
                 }
 
-                // Update the progress display.
-                var (pokemonData, total, caught) = _gameManager.GetPokemonData(gameName);
-                string progressText = $"{caught} / {total}";
-                _progressDisplayManager.UpdateProgressLabel(gameName, lblProgress, progressText);
+                // Update progress display and trainer card.
+                UpdateProgressAndTrainer(gameName);
             }
         }
 
+        /// <summary>
+        /// Loads Pokémon cards depending on whether shiny mode is active.
+        /// </summary>
         private void LoadPokemonCards(string gameName)
         {
-            // Clear previous Pokémon cards.
             panelCards.Controls.Clear();
 
-            // Get data from the GameManager.
-            var (pokemonData, total, caught) = _gameManager.GetPokemonData(gameName);
+            bool useShiny = chkShiny.Enabled && chkShiny.Checked;
+            // Retrieve data and then extract the tuple elements.
+            var data = useShiny ? _gameManager.GetShinyPokemonData(gameName)
+                                : _gameManager.GetPokemonData(gameName);
+            var pokemonData = data.PokemonData;
+            int total = data.Total;
+            int caught = data.Caught;
 
-            // Update the progress display and trainer sprite.
-            string progressText = $"{caught} / {total}";
-            _progressDisplayManager.UpdateProgressLabel(gameName, lblProgress, progressText);
-            UpdateTrainerSprite(caught, total, gameName);
+            UpdateProgressAndTrainer(gameName, total, caught);
 
-            // Show the trainer card and progress label.
             SetTrainerVisibility();
 
             int xPos = 10, yPos = 10, count = 0;
             int cardsPerRow = panelCards.Width / 130;
 
-            // Create and add Pokémon card controls.
-            foreach (var (name, number, spritePath, isCaught) in pokemonData)
+            foreach (var item in pokemonData)
             {
+                // Each item is a tuple: (string Name, string Number, string SpritePath, bool IsCaught)
+                string name = item.Name;
+                string number = item.Number;
+                string spritePath = item.SpritePath;
+                bool isCaught = item.IsCaught;
+
                 var card = new PokemonCard(name, number, spritePath, isCaught);
                 card.Location = new Point(xPos, yPos);
 
-                // Toggle caught status when a card is clicked.
                 card.Click += (s, e) =>
                 {
-                    var newStatus = !card.IsCaught;
+                    bool newStatus = !card.IsCaught;
                     card.UpdateCaughtStatus(newStatus);
-                    _gameManager.ToggleCaughtStatus(number, gameName, newStatus);
 
-                    var (updatedData, updatedTotal, updatedCaught) = _gameManager.GetPokemonData(gameName);
-                    string updatedProgress = $"{updatedCaught} / {updatedTotal}";
-                    _progressDisplayManager.UpdateProgressLabel(gameName, lblProgress, updatedProgress);
-                    UpdateTrainerSprite(updatedCaught, updatedTotal, gameName);
+                    if (useShiny)
+                        _gameManager.ToggleShinyCaughtStatus(number, gameName, newStatus);
+                    else
+                        _gameManager.ToggleCaughtStatus(number, gameName, newStatus);
+
+                    var updatedData = useShiny ? _gameManager.GetShinyPokemonData(gameName)
+                                               : _gameManager.GetPokemonData(gameName);
+                    int updatedTotal = updatedData.Total;
+                    int updatedCaught = updatedData.Caught;
+
+                    lblProgress.Visible = false;
+                    UpdateProgressAndTrainer(gameName, updatedTotal, updatedCaught);
                 };
 
                 panelCards.Controls.Add(card);
@@ -164,6 +181,38 @@ namespace PokedexTracker
             }
         }
 
+        /// <summary>
+        /// Updates both the progress display and the trainer card image.
+        /// </summary>
+        private void UpdateProgressAndTrainer(string gameName, int total = 0, int caught = 0)
+        {
+            // If total and caught are not provided, retrieve them.
+            if (total == 0 && caught == 0)
+            {
+                bool useShiny = chkShiny.Enabled && chkShiny.Checked;
+                var data = useShiny ? _gameManager.GetShinyPokemonData(gameName)
+                                    : _gameManager.GetPokemonData(gameName);
+                total = data.Total;
+                caught = data.Caught;
+            }
+
+            lblProgress.Visible = false;
+
+            UpdateTrainerSprite(caught, total, gameName);
+
+            // Defer progress update until trainer card is updated.
+            this.BeginInvoke(new Action(() =>
+            {
+                string progressText = $"{caught} / {total}";
+                bool useShiny = chkShiny.Enabled && chkShiny.Checked;
+                _progressDisplayManager.UpdateProgressLabel(gameName, lblProgress, progressText);
+                lblProgress.Visible = true;
+            }));
+        }
+
+        /// <summary>
+        /// Simple helper to show the trainer card and progress label.
+        /// </summary>
         private void SetTrainerVisibility()
         {
             trainerCard.Visible = true;
@@ -173,7 +222,7 @@ namespace PokedexTracker
 
         /// <summary>
         /// Updates the trainer sprite image.
-        /// For games that support gender selection (i.e. those after "Gold"), the image path includes the gender folder.
+        /// For shiny mode, builds the path with the "shiny" folder; otherwise, uses the original path.
         /// </summary>
         private void UpdateTrainerSprite(int caughtCount, int totalCount, string currentGameName)
         {
@@ -187,23 +236,8 @@ namespace PokedexTracker
             int badgeThreshold = totalCount / 8;
             int badgeCount = Math.Min(caughtCount / badgeThreshold, 8);
 
-            string badgeImagePath;
-            int goldIndex = comboBoxGames.Items.IndexOf("Gold");
-            if (comboBoxGames.SelectedIndex > goldIndex)
-            {
-                // For games that support gender selection, use the stored selectedGender.
-                badgeImagePath = Path.Combine(
-                    _assetManager.GetTrainerCardPath(),
-                    currentGameName,
-                    selectedGender,  // Use the stored value ("Boy" or "Girl")
-                    $"Trainer_{badgeCount}.png"
-                );
-            }
-            else
-            {
-                // For earlier games, use the default trainer card path.
-                badgeImagePath = _assetManager.GetTrainerBadgePath(currentGameName, badgeCount);
-            }
+            // Get correct badge path using AssetManager
+            string badgeImagePath = _assetManager.GetTrainerBadgePath(currentGameName, badgeCount, selectedGender);
 
             if (File.Exists(badgeImagePath))
             {
@@ -215,30 +249,39 @@ namespace PokedexTracker
             }
         }
 
+
         /// <summary>
-        /// Event handler for when the gender radio button selection changes.
-        /// When the selection changes (and if enabled), update the stored gender and refresh the trainer card.
+        /// Handles the shiny checkbox state change.
+        /// When changed (if enabled), reloads the cards and updates the display.
+        /// </summary>
+        private void chkShiny_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkShiny.Enabled)
+            {
+                if (comboBoxGames.SelectedItem is string gameName)
+                {
+                    LoadPokemonCards(gameName);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Handles the gender radio button state changes.
+        /// Updates the stored gender and refreshes the trainer card.
         /// </summary>
         private void rdoGender_CheckedChanged(object sender, EventArgs e)
         {
-            // Only update if gender selection is enabled.
             if (rdoBoy.Enabled || rdoGirl.Enabled)
             {
-                // Update the stored selectedGender.
                 if (rdoBoy.Checked)
-                {
                     selectedGender = "Boy";
-                }
                 else if (rdoGirl.Checked)
-                {
                     selectedGender = "Girl";
-                }
 
-                // Refresh the trainer sprite with the updated gender.
                 if (comboBoxGames.SelectedItem is string gameName)
                 {
-                    var (pokemonData, total, caught) = _gameManager.GetPokemonData(gameName);
-                    UpdateTrainerSprite(caught, total, gameName);
+                    var data = _gameManager.GetPokemonData(gameName);
+                    UpdateTrainerSprite(data.Caught, data.Total, gameName);
                 }
             }
         }
