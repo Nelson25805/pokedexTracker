@@ -84,8 +84,8 @@ namespace PokedexTracker
                 _nameDisplayManager.UpdatePlayerNameLabel(gameName, lblPlayerName, playerName);
 
                 // Determine if this game supports shiny mode.
-                int yellowIndex = comboBoxGames.Items.IndexOf("Yellow");
-                if (comboBoxGames.SelectedIndex >= yellowIndex)
+                int silverIndex = comboBoxGames.Items.IndexOf("Silver");
+                if (comboBoxGames.SelectedIndex >= silverIndex)
                 {
                     chkShiny.Enabled = true;
                 }
