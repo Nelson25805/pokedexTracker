@@ -21,7 +21,7 @@ namespace PokedexTracker.DisplayManagers
                 { "Red", new ProgressDisplayStyle
                     {
                         Location = new Point(120, 45),
-                        FontFileName = "PKMN RBYGSC.ttf",
+                        FontFileName = "Gen1+2.ttf",
                         FontSize = 7,
                         BackColor = Color.Transparent
                     }
@@ -29,7 +29,7 @@ namespace PokedexTracker.DisplayManagers
                 { "Blue", new ProgressDisplayStyle
                     {
                         Location = new Point(120, 45),
-                        FontFileName = "PKMN RBYGSC.ttf",
+                        FontFileName = "Gen1+2.ttf",
                         FontSize = 7,
                         BackColor = Color.Transparent
                     }
@@ -37,7 +37,7 @@ namespace PokedexTracker.DisplayManagers
                 { "Yellow", new ProgressDisplayStyle
                     {
                         Location = new Point(120, 45),
-                        FontFileName = "PKMN RBYGSC.ttf",
+                        FontFileName = "Gen1+2.ttf",
                         FontSize = 7,
                         BackColor = Color.Transparent
                     }
@@ -45,7 +45,7 @@ namespace PokedexTracker.DisplayManagers
                 { "Gold", new ProgressDisplayStyle
                     {
                         Location = new Point(123, 39),
-                        FontFileName = "PKMN RBYGSC.ttf",
+                        FontFileName = "Gen1+2.ttf",
                         //FontSize = 7,
                         FontSize = 6.7F,
                         BackColor = Color.Transparent
@@ -54,7 +54,7 @@ namespace PokedexTracker.DisplayManagers
                 { "Silver", new ProgressDisplayStyle
                     {
                         Location = new Point(123, 39),
-                        FontFileName = "PKMN RBYGSC.ttf",
+                        FontFileName = "Gen1+2.ttf",
                         //FontSize = 7,
                         FontSize = 6.7F,
                         BackColor = Color.Transparent
@@ -63,7 +63,7 @@ namespace PokedexTracker.DisplayManagers
                 { "Crystal", new ProgressDisplayStyle
                     {
                         Location = new Point(123, 39),
-                        FontFileName = "PKMN RBYGSC.ttf",
+                        FontFileName = "Gen1+2.ttf",
                         //FontSize = 7,
                         FontSize = 6.7F,
                         BackColor = Color.Transparent
