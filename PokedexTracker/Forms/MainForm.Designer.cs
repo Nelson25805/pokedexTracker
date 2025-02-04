@@ -146,6 +146,7 @@
             // rdoGirl
             // 
             this.rdoGirl.AutoSize = true;
+            this.rdoGirl.Enabled = false;
             this.rdoGirl.Location = new System.Drawing.Point(134, 560);
             this.rdoGirl.Name = "rdoGirl";
             this.rdoGirl.Size = new System.Drawing.Size(96, 36);
@@ -158,6 +159,7 @@
             // rdoBoy
             // 
             this.rdoBoy.AutoSize = true;
+            this.rdoBoy.Enabled = false;
             this.rdoBoy.Location = new System.Drawing.Point(12, 560);
             this.rdoBoy.Name = "rdoBoy";
             this.rdoBoy.Size = new System.Drawing.Size(100, 36);
@@ -169,6 +171,7 @@
             // chkShiny
             // 
             this.chkShiny.AutoSize = true;
+            this.chkShiny.Enabled = false;
             this.chkShiny.Location = new System.Drawing.Point(22, 654);
             this.chkShiny.Name = "chkShiny";
             this.chkShiny.Size = new System.Drawing.Size(124, 36);
