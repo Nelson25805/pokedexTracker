@@ -17,37 +17,37 @@ namespace PokedexTracker.DisplayManagers
             {
                 { "Red", new PlayerNameStyle {
                     Location = new Point(90, 22),
-                    FontFileName = "PKMN RBYGSC.ttf",
+                    FontFileName = "Gen1+2.ttf",
                     FontSize = 7,
                     Size = new Size(300, 50)
                 } },
                 { "Blue", new PlayerNameStyle {
                     Location = new Point(90, 22),
-                    FontFileName = "PKMN RBYGSC.ttf",
+                    FontFileName = "Gen1+2.ttf",
                     FontSize = 7,
                     Size = new Size(300, 50)
                 } },
                 { "Yellow", new PlayerNameStyle {
                     Location = new Point(90, 22),
-                    FontFileName = "PKMN RBYGSC.ttf",
+                    FontFileName = "Gen1+2.ttf",
                     FontSize = 7,
                     Size = new Size(300, 50)
                 } },
                 { "Gold", new PlayerNameStyle {
                     Location = new Point(84, 18),
-                    FontFileName = "PKMN RBYGSC.ttf",
+                    FontFileName = "Gen1+2.ttf",
                     FontSize = 7,
                     Size = new Size(300, 50)
                 } },
                 { "Silver", new PlayerNameStyle {
                     Location = new Point(84, 18),
-                    FontFileName = "PKMN RBYGSC.ttf",
+                    FontFileName = "Gen1+2.ttf",
                     FontSize = 7,
                     Size = new Size(300, 50)
                 } },
                 { "Crystal", new PlayerNameStyle {
                     Location = new Point(84, 18),
-                    FontFileName = "PKMN RBYGSC.ttf",
+                    FontFileName = "Gen1+2.ttf",
                     FontSize = 7,
                     Size = new Size(300, 50)
                 } },
