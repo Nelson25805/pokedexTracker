@@ -69,6 +69,51 @@ namespace PokedexTracker.DisplayManagers
                         BackColor = Color.Transparent
                     }
                 },
+                { "Ruby", new ProgressDisplayStyle
+                    {
+                        Location = new Point(123, 39),
+                        FontFileName = "Gen3.ttf",
+                        //FontSize = 7,
+                        FontSize = 6.7F,
+                        BackColor = Color.Transparent
+                    }
+                },
+                { "Sapphire", new ProgressDisplayStyle
+                    {
+                        Location = new Point(123, 39),
+                        FontFileName = "Gen3.ttf",
+                        //FontSize = 7,
+                        FontSize = 6.7F,
+                        BackColor = Color.Transparent
+                    }
+                },
+                { "Emerald", new ProgressDisplayStyle
+                    {
+                        Location = new Point(123, 39),
+                        FontFileName = "Gen3.ttf",
+                        //FontSize = 7,
+                        FontSize = 6.7F,
+                        BackColor = Color.Transparent
+                    }
+                },
+                { "Fire Red", new ProgressDisplayStyle
+                    {
+                        Location = new Point(123, 39),
+                        FontFileName = "Gen3.ttf",
+                        //FontSize = 7,
+                        FontSize = 6.7F,
+                        BackColor = Color.Transparent
+                    }
+                },
+                { "Leaf Green", new ProgressDisplayStyle
+                    {
+                        Location = new Point(123, 39),
+                        FontFileName = "Gen3.ttf",
+                        //FontSize = 7,
+                        FontSize = 6.7F,
+                        BackColor = Color.Transparent
+                    }
+                },
                 // Add additional styles for other games as needed.
             };
         }

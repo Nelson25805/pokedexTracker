@@ -51,6 +51,36 @@ namespace PokedexTracker.DisplayManagers
                     FontSize = 7,
                     Size = new Size(300, 50)
                 } },
+                { "Ruby", new PlayerNameStyle {
+                    Location = new Point(84, 18),
+                    FontFileName = "Gen3.ttf",
+                    FontSize = 7,
+                    Size = new Size(300, 50)
+                } },
+                { "Sapphire", new PlayerNameStyle {
+                    Location = new Point(84, 18),
+                    FontFileName = "Gen3.ttf",
+                    FontSize = 7,
+                    Size = new Size(300, 50)
+                } },
+                { "Emerald", new PlayerNameStyle {
+                    Location = new Point(84, 18),
+                    FontFileName = "Gen3.ttf",
+                    FontSize = 7,
+                    Size = new Size(300, 50)
+                } },
+                { "Fire Red", new PlayerNameStyle {
+                    Location = new Point(84, 18),
+                    FontFileName = "Gen3.ttf",
+                    FontSize = 7,
+                    Size = new Size(300, 50)
+                } },
+                { "Leaf Green", new PlayerNameStyle {
+                    Location = new Point(84, 18),
+                    FontFileName = "Gen3.ttf",
+                    FontSize = 7,
+                    Size = new Size(300, 50)
+                } },
                 // Add more styles for other games as needed.
             };
         }

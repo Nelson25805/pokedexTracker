@@ -18,6 +18,9 @@ namespace PokedexTracker
             _assetsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Assets");
         }
 
+        /// <summary>
+        /// Retrieves Pokémon data from the standard tables.
+        /// </summary>
         public (List<(string Name, string Number, string SpritePath, bool IsCaught)> PokemonData, int Total, int Caught) GetPokemonData(string gameName)
         {
             var result = new List<(string, string, string, bool)>();
@@ -32,8 +35,7 @@ namespace PokedexTracker
       AND Sprites.GameName = @spriteGameName
     ORDER BY Pokemon.Number";
 
-            // For certain games like Red/Blue, the sprite path may need special handling.
-            string spriteGameName = (gameName == "Red" || gameName == "Blue") ? "Red/Blue" : gameName;
+            string spriteGameName = BuildSpriteGameName(gameName);
 
             using (var connection = _dbManager.GetConnection())
             {
@@ -52,13 +54,11 @@ namespace PokedexTracker
                             // Get the relative path from the database
                             string relativeSpritePath = reader["FilePath"].ToString();
 
-                            // Combine _assetsPath with the relative path from the database
+                            // Combine _assetsPath with the relative path
                             string fullSpritePath = Path.Combine(_assetsPath, relativeSpritePath.TrimStart(Path.DirectorySeparatorChar));
 
-                            // Normalize the path by replacing any double slashes with the correct separator
+                            // Normalize the path
                             fullSpritePath = fullSpritePath.Replace("\\", Path.DirectorySeparatorChar.ToString());
-
-                            // Ensure the final path is correctly formed by trimming redundant directory separators
                             fullSpritePath = Path.GetFullPath(fullSpritePath);
 
                             if (!File.Exists(fullSpritePath))
@@ -84,7 +84,7 @@ namespace PokedexTracker
         }
 
         /// <summary>
-        /// Retrieves the shiny data by querying the Shiny_Pokedex_Status and Shiny_Sprites tables.
+        /// Retrieves shiny Pokémon data by querying the Shiny_Pokedex_Status and Shiny_Sprites tables.
         /// </summary>
         public (List<(string Name, string Number, string SpritePath, bool IsCaught)> PokemonData, int Total, int Caught) GetShinyPokemonData(string gameName)
         {
@@ -100,8 +100,8 @@ namespace PokedexTracker
       AND Shiny_Sprites.GameName = @spriteGameName
     ORDER BY Pokemon.Number";
 
-            // Use the same logic for spriteGameName as before.
-            string spriteGameName = (gameName == "Red" || gameName == "Blue") ? "Red/Blue" : gameName;
+            // Use the same naming logic as the standard query.
+            string spriteGameName = BuildSpriteGameName(gameName);
 
             using (var connection = _dbManager.GetConnection())
             {
@@ -143,6 +143,25 @@ namespace PokedexTracker
             }
 
             return (result, total, caught);
+        }
+
+        /// <summary>
+        /// Builds the sprite game name according to the following rules:
+        /// - If gameName is Red or Blue → "Red-Blue"
+        /// - If gameName is Ruby or Sapphire → "Ruby-Sapphire"
+        /// - If gameName is FireRed or LeafGreen → "FireRed-LeafGreen"
+        /// - Otherwise, return gameName.
+        /// </summary>
+        private string BuildSpriteGameName(string gameName)
+        {
+            if (gameName == "Red" || gameName == "Blue")
+                return "Red-Blue";
+            else if (gameName == "Ruby" || gameName == "Sapphire")
+                return "Ruby-Sapphire";
+            else if (gameName == "Fire Red" || gameName == "Leaf Green")
+                return "FireRed-LeafGreen";
+            else
+                return gameName;
         }
 
         public void ToggleCaughtStatus(string pokemonNumber, string gameName, bool newStatus)
