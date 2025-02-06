@@ -15,64 +15,56 @@ namespace PokedexTracker.DisplayManagers
             _assetManager = new AssetManager();
             _styles = new Dictionary<string, PlayerNameStyle>
             {
+                // For Gen1/2 games, use one font; for Gen3 games, use another.
                 { "Red", new PlayerNameStyle {
-                    Location = new Point(90, 22),
+                    Location = new Point(90, 20),
                     FontFileName = "Gen1+2.ttf",
-                    FontSize = 7,
-                    Size = new Size(300, 50)
+                    FontSize = 9,
                 } },
                 { "Blue", new PlayerNameStyle {
-                    Location = new Point(90, 22),
+                    Location = new Point(90, 20),
                     FontFileName = "Gen1+2.ttf",
-                    FontSize = 7,
-                    Size = new Size(300, 50)
+                    FontSize = 9,
                 } },
                 { "Yellow", new PlayerNameStyle {
-                    Location = new Point(90, 22),
+                    Location = new Point(90, 20),
                     FontFileName = "Gen1+2.ttf",
-                    FontSize = 7,
-                    Size = new Size(300, 50)
+                    FontSize = 9,
                 } },
                 { "Gold", new PlayerNameStyle {
-                    Location = new Point(84, 18),
+                    Location = new Point(84, 16),
                     FontFileName = "Gen1+2.ttf",
-                    FontSize = 7,
-                    Size = new Size(300, 50)
+                    FontSize = 9,
                 } },
                 { "Silver", new PlayerNameStyle {
-                    Location = new Point(84, 18),
+                    Location = new Point(84, 16),
                     FontFileName = "Gen1+2.ttf",
-                    FontSize = 7,
-                    Size = new Size(300, 50)
+                    FontSize = 9,
                 } },
                 { "Crystal", new PlayerNameStyle {
-                    Location = new Point(84, 18),
+                    Location = new Point(84, 16),
                     FontFileName = "Gen1+2.ttf",
-                    FontSize = 7,
-                    Size = new Size(300, 50)
+                    FontSize = 9,
                 } },
                 { "Ruby", new PlayerNameStyle {
-                    Location = new Point(84, 18),
+                    Location = new Point(59, 47),
                     FontFileName = "Gen3.ttf",
-                    FontSize = 7,
-                    Size = new Size(300, 50)
+                    FontSize = 12,
                 } },
                 { "Sapphire", new PlayerNameStyle {
-                    Location = new Point(84, 18),
+                    Location = new Point(59, 47),
                     FontFileName = "Gen3.ttf",
-                    FontSize = 7,
-                    Size = new Size(300, 50)
+                    FontSize = 12,
                 } },
                 { "Emerald", new PlayerNameStyle {
-                    Location = new Point(84, 18),
+                    Location = new Point(59, 47),
                     FontFileName = "Gen3.ttf",
-                    FontSize = 7,
-                    Size = new Size(300, 50)
+                    FontSize = 12,
                 } },
                 { "Fire Red", new PlayerNameStyle {
-                    Location = new Point(84, 18),
+                    Location = new Point(70, 40),
                     FontFileName = "Gen3.ttf",
-                    FontSize = 7,
+                    FontSize = 11,
                     Size = new Size(300, 50)
                 } },
                 { "Leaf Green", new PlayerNameStyle {
@@ -81,12 +73,12 @@ namespace PokedexTracker.DisplayManagers
                     FontSize = 7,
                     Size = new Size(300, 50)
                 } },
-                // Add more styles for other games as needed.
+                // Add more styles as needed.
             };
         }
 
         /// <summary>
-        /// Applies the player name display style based on the game name.
+        /// Updates the player name label using a fixed base font loaded from an embedded resource.
         /// </summary>
         public void UpdatePlayerNameLabel(string gameName, Label playerNameLabel, string playerName)
         {
@@ -98,11 +90,20 @@ namespace PokedexTracker.DisplayManagers
                     playerNameLabel.Size = style.Size.Value;
                 }
 
-                // Build the full font file path using AssetManager.
-                string fontPath = _assetManager.GetFontPath(style.FontFileName);
-                Font customFont = FontLoader.LoadFont(fontPath, style.FontSize, style.FontStyle);
+                // Build the resource name. 
+                // (Assuming the font file is in the "Fonts" folder and the namespace is PokedexTracker)
+                string resourceName = $"PokedexTracker.Assets.Fonts.{style.FontFileName}";
 
-                // If loading failed, fall back to a default font.
+                // Always create a new font from the fixed base settings.
+                Font customFont = null;
+                try
+                {
+                    customFont = FontLoader.LoadEmbeddedFont(resourceName, style.FontSize);
+                }
+                catch (System.Exception ex)
+                {
+                    MessageBox.Show($"Error loading font '{resourceName}': {ex.Message}", "Font Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
                 playerNameLabel.Font = customFont ?? new Font("Arial", style.FontSize, style.FontStyle);
                 playerNameLabel.Text = playerName;
                 playerNameLabel.Visible = true;
