@@ -1,40 +1,49 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Text;
+using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 namespace PokedexTracker.Helpers
 {
     public static class FontLoader
     {
+        private static PrivateFontCollection _privateFontCollection = new PrivateFontCollection();
+
         /// <summary>
-        /// Loads a font from a TTF file.
+        /// Loads an embedded font from a resource.
+        /// resourceName must be the full resource name (e.g. "PokedexTracker.Fonts.Gen3.ttf").
         /// </summary>
-        /// <param name="fontFilePath">The full path to the TTF file.</param>
-        /// <param name="fontSize">The desired font size.</param>
-        /// <param name="fontStyle">The font style (Regular, Bold, etc.).</param>
-        /// <returns>A Font object if successful; otherwise, null.</returns>
-        public static Font LoadFont(string fontFilePath, float fontSize, FontStyle fontStyle)
+        public static Font LoadEmbeddedFont(string resourceName, float size)
         {
-            try
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            using (Stream fontStream = assembly.GetManifestResourceStream(resourceName))
             {
-                PrivateFontCollection pfc = new PrivateFontCollection();
-                pfc.AddFontFile(fontFilePath);
-                if (pfc.Families.Length > 0)
+                if (fontStream == null)
+                    throw new Exception("Font resource not found: " + resourceName);
+                byte[] fontData = new byte[fontStream.Length];
+                fontStream.Read(fontData, 0, fontData.Length);
+
+                // Pin the byte array so that its address remains fixed.
+                GCHandle handle = GCHandle.Alloc(fontData, GCHandleType.Pinned);
+                try
                 {
-                    return new Font(pfc.Families[0], fontSize, fontStyle);
+                    IntPtr pFontData = handle.AddrOfPinnedObject();
+                    _privateFontCollection.AddMemoryFont(pFontData, fontData.Length);
                 }
-                else
+                finally
                 {
-                    throw new Exception("No font families found in the file.");
+                    handle.Free();
                 }
             }
-            catch (Exception ex)
+
+            if (_privateFontCollection.Families.Length > 0)
             {
-                // Handle exceptions (e.g., log the error) as needed.
-                System.Diagnostics.Debug.WriteLine("Error loading font: " + ex.Message);
-                return null;
+                FontFamily family = _privateFontCollection.Families[_privateFontCollection.Families.Length - 1];
+                return new Font(family, size);
             }
+            throw new Exception("No font families found in resource: " + resourceName);
         }
     }
 }
