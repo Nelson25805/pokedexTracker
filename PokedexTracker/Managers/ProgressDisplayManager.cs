@@ -20,11 +20,11 @@ namespace PokedexTracker.DisplayManagers
                 { "Gold", ("Gen1+2.ttf", 9f, new Point(125, 36)) },
                 { "Silver", ("Gen1+2.ttf", 9f, new Point(125, 36)) },
                 { "Crystal", ("Gen1+2.ttf", 9f, new Point(125, 36)) },
-                { "Ruby", ("Gen3.ttf", 16f, new Point(80, 55)) },
-                { "Sapphire", ("Gen3.ttf", 16f, new Point(80, 55)) },
-                { "Emerald", ("Gen3.ttf", 16f, new Point(80, 55)) },
-                { "Fire Red", ("Gen3.ttf", 11f, new Point(85, 52)) },
-                { "Leaf Green", ("Gen3.ttf", 11f, new Point(85, 52)) }
+                { "Ruby", ("Gen3.ttf", 12f, new Point(77, 73)) },
+                { "Sapphire", ("Gen3.ttf", 12f, new Point(77, 73)) },
+                { "Emerald", ("Gen3.ttf", 12f, new Point(77, 73)) },
+                { "Fire Red", ("Gen3.ttf", 11f, new Point(85, 70)) },
+                { "Leaf Green", ("Gen3.ttf", 11f, new Point(85, 70)) }
             };
         }
 

@@ -65,13 +65,11 @@ namespace PokedexTracker.DisplayManagers
                     Location = new Point(70, 40),
                     FontFileName = "Gen3.ttf",
                     FontSize = 11,
-                    Size = new Size(300, 50)
                 } },
                 { "Leaf Green", new PlayerNameStyle {
-                    Location = new Point(84, 18),
+                    Location = new Point(70, 40),
                     FontFileName = "Gen3.ttf",
-                    FontSize = 7,
-                    Size = new Size(300, 50)
+                    FontSize = 11,
                 } },
                 // Add more styles as needed.
             };
