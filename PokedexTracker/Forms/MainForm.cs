@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 using PokedexTracker.DisplayManagers;  // Contains PlayerNameDisplayManager and ProgressDisplayManager
 
@@ -236,9 +237,16 @@ namespace PokedexTracker
             int badgeThreshold = totalCount / 8;
             int badgeCount = Math.Min(caughtCount / badgeThreshold, 8);
 
-            // Get correct badge path using AssetManager
-            string badgeImagePath = _assetManager.GetTrainerBadgePath(currentGameName, badgeCount, selectedGender);
+            // Check if shiny mode is enabled
+            bool isShiny = chkShiny.Checked;
 
+            // Use AssetManager to get the path, considering shiny mode
+            string badgeImagePath;
+
+            badgeImagePath = _assetManager.GetTrainerBadgePath(currentGameName, badgeCount, selectedGender);
+
+
+            // Check if the image exists
             if (File.Exists(badgeImagePath))
             {
                 trainerCard.Image = Image.FromFile(badgeImagePath);
@@ -248,6 +256,7 @@ namespace PokedexTracker
                 MessageBox.Show($"Badge image not found: {badgeImagePath}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
 
         /// <summary>
@@ -280,11 +289,14 @@ namespace PokedexTracker
 
                 if (comboBoxGames.SelectedItem is string gameName)
                 {
-                    var data = _gameManager.GetPokemonData(gameName);
+                    bool useShiny = chkShiny.Checked;
+
+                    var data = useShiny ? _gameManager.GetShinyPokemonData(gameName) : _gameManager.GetPokemonData(gameName);
                     UpdateTrainerSprite(data.Caught, data.Total, gameName);
                 }
             }
         }
+
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
