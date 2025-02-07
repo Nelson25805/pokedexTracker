@@ -74,29 +74,20 @@ namespace PokedexTracker
         {
             if (comboBoxGames.SelectedItem is string gameName)
             {
-                LoadPokemonCards(gameName);
-
-                // Set labels as children of trainerCard for proper transparency.
-                lblPlayerName.Parent = trainerCard;
-                lblPlayerName.BackColor = Color.Transparent;
-                lblProgress.Parent = trainerCard;
-                lblProgress.BackColor = Color.Transparent;
-
-                _nameDisplayManager.UpdatePlayerNameLabel(gameName, lblPlayerName, playerName);
-
-                // Determine if this game supports shiny mode.
+                // First, update the shiny checkbox state based on the selected game.
                 int silverIndex = comboBoxGames.Items.IndexOf("Silver");
                 if (comboBoxGames.SelectedIndex >= silverIndex)
                 {
                     chkShiny.Enabled = true;
+                    // Optionally, you can leave chkShiny.Checked as-is or set it to true if desired.
                 }
                 else
                 {
                     chkShiny.Enabled = false;
-                    chkShiny.Checked = false;
+                    chkShiny.Checked = false;  // Ensure shiny is off for non-shiny games.
                 }
 
-                // Update gender selection: enable for games after "Gold".
+                // Similarly, update the gender radio buttons.
                 int goldIndex = comboBoxGames.Items.IndexOf("Gold");
                 if (comboBoxGames.SelectedIndex > goldIndex)
                 {
@@ -113,10 +104,18 @@ namespace PokedexTracker
                     rdoGirl.Checked = false;
                 }
 
-                // Update progress display and trainer card.
+                // Now that the controls reflect the selected game,
+                // load the Pokémon cards using the correct shiny mode.
+                LoadPokemonCards(gameName);
+
+                // Update the player name display.
+                _nameDisplayManager.UpdatePlayerNameLabel(gameName, lblPlayerName, playerName);
+
+                // Update progress and trainer card display.
                 UpdateProgressAndTrainer(gameName);
             }
         }
+
 
         /// <summary>
         /// Loads Pokémon cards depending on whether shiny mode is active.
