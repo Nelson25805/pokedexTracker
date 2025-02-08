@@ -200,13 +200,15 @@ namespace PokedexTracker
 
         private void RepositionPokemonCards()
         {
-            int cardWidth = 130;   // Adjust if your card control has a different fixed width.
-            int cardHeight = 160;  // Adjust if your card control has a different fixed height.
+            // Remove the preservation of the old scroll position:
+            // int scrollY = panelCards.VerticalScroll.Value;
+
+            int cardWidth = 130;
+            int cardHeight = 160;
             int spacingX = 10;
             int spacingY = 10;
             int count = 0;
 
-            // Compute how many cards can fit in a row.
             int cardsPerRow = Math.Max(1, (panelCards.ClientSize.Width - spacingX) / cardWidth);
             int xPos = spacingX;
             int yPos = spacingY;
@@ -226,12 +228,14 @@ namespace PokedexTracker
                 }
             }
 
-            // Calculate the total number of rows.
             int totalRows = (int)Math.Ceiling((double)panelCards.Controls.Count / cardsPerRow);
-            // Set the minimum scrollable size so the panel knows it has more content.
             int totalHeight = spacingY + (totalRows * cardHeight);
             panelCards.AutoScrollMinSize = new Size(0, totalHeight);
+
+            // Reset the scroll position to the top:
+            panelCards.AutoScrollPosition = new Point(0, 0);
         }
+
 
 
 
