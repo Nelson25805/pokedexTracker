@@ -56,7 +56,7 @@
             // comboBoxGames
             // 
             this.comboBoxGames.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxGames.Font = new System.Drawing.Font("PKMN RBYGSC", 8.1F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBoxGames.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.1F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxGames.FormattingEnabled = true;
             this.comboBoxGames.Items.AddRange(new object[] {
             "Red",
@@ -99,7 +99,7 @@
             "Legends: Z-A"});
             this.comboBoxGames.Location = new System.Drawing.Point(12, 459);
             this.comboBoxGames.Name = "comboBoxGames";
-            this.comboBoxGames.Size = new System.Drawing.Size(487, 38);
+            this.comboBoxGames.Size = new System.Drawing.Size(487, 39);
             this.comboBoxGames.TabIndex = 0;
             this.comboBoxGames.SelectedIndexChanged += new System.EventHandler(this.comboBoxGames_SelectedIndexChanged);
             // 
@@ -108,7 +108,7 @@
             this.panelCards.AutoScroll = true;
             this.panelCards.Location = new System.Drawing.Point(716, 12);
             this.panelCards.Name = "panelCards";
-            this.panelCards.Size = new System.Drawing.Size(1108, 1329);
+            this.panelCards.Size = new System.Drawing.Size(1154, 1363);
             this.panelCards.TabIndex = 1;
             // 
             // lblProgress
@@ -185,7 +185,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.ClientSize = new System.Drawing.Size(1825, 1379);
+            this.ClientSize = new System.Drawing.Size(1876, 1379);
             this.Controls.Add(this.chkShiny);
             this.Controls.Add(this.rdoBoy);
             this.Controls.Add(this.rdoGirl);

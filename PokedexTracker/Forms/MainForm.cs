@@ -3,7 +3,8 @@ using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
-using PokedexTracker.DisplayManagers;  // Contains PlayerNameDisplayManager and ProgressDisplayManager
+using PokedexTracker.DisplayManagers; 
+using PokedexTracker.Helpers;
 
 namespace PokedexTracker
 {
@@ -15,6 +16,8 @@ namespace PokedexTracker
         private readonly PlayerNameDisplayManager _nameDisplayManager;
         private readonly ProgressDisplayManager _progressDisplayManager;
         private string playerName;
+        private UILayoutManager _layoutManager;
+
 
         // Field to store the selected gender ("Boy" or "Girl"). Default is "Boy".
         private string selectedGender = "Boy";
@@ -41,22 +44,28 @@ namespace PokedexTracker
         /// </summary>
         public MainForm()
         {
-            // Initialize asset manager and related database components.
+            // Initialize asset manager, database, etc.
             _assetManager = new AssetManager();
             string databasePath = _assetManager.GetDatabasePath();
             _dbManager = new DatabaseManager($@"Data Source={databasePath}");
 
             InitializeComponent();
 
+            // Initialize the layout manager for the form.
+            _layoutManager = new UILayoutManager(this);
+
+            // Subscribe to panelCards resize to reflow the Pokemon cards.
+            panelCards.Resize += panelCards_Resize;
+
             _gameManager = new GameManager(_dbManager);
             _nameDisplayManager = new PlayerNameDisplayManager();
             _progressDisplayManager = new ProgressDisplayManager();
 
             // Optionally, lock the form size.
-            this.FormBorderStyle = FormBorderStyle.FixedSingle;
-            this.MaximizeBox = false;
-            this.MinimumSize = this.Size;
-            this.MaximumSize = this.Size;
+            //this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            //this.MaximizeBox = false;
+            //this.MinimumSize = this.Size;
+            //this.MaximumSize = this.Size;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -122,10 +131,17 @@ namespace PokedexTracker
         /// </summary>
         private void LoadPokemonCards(string gameName)
         {
+            // Reset the scroll position before making changes.
+            panelCards.AutoScrollPosition = new Point(0, 0);
+
+            // Suspend layout and hide the panel to avoid interim redraws.
+            panelCards.SuspendLayout();
+            panelCards.Visible = false;
+
             panelCards.Controls.Clear();
 
             bool useShiny = chkShiny.Enabled && chkShiny.Checked;
-            // Retrieve data and then extract the tuple elements.
+            // Retrieve the data.
             var data = useShiny ? _gameManager.GetShinyPokemonData(gameName)
                                 : _gameManager.GetPokemonData(gameName);
             var pokemonData = data.PokemonData;
@@ -133,22 +149,18 @@ namespace PokedexTracker
             int caught = data.Caught;
 
             UpdateProgressAndTrainer(gameName, total, caught);
-
             SetTrainerVisibility();
 
-            int xPos = 10, yPos = 10, count = 0;
-            int cardsPerRow = panelCards.Width / 130;
-
+            // Add each Pokemon card. (Setting a temporary location.)
             foreach (var item in pokemonData)
             {
-                // Each item is a tuple: (string Name, string Number, string SpritePath, bool IsCaught)
                 string name = item.Name;
                 string number = item.Number;
                 string spritePath = item.SpritePath;
                 bool isCaught = item.IsCaught;
 
                 var card = new PokemonCard(name, number, spritePath, isCaught);
-                card.Location = new Point(xPos, yPos);
+                card.Location = new Point(0, 0); // Temporary; will be reflowed.
 
                 card.Click += (s, e) =>
                 {
@@ -170,16 +182,59 @@ namespace PokedexTracker
                 };
 
                 panelCards.Controls.Add(card);
+            }
 
-                xPos += 130;
+            // Reposition cards now that they are all added.
+            RepositionPokemonCards();
+
+            // Resume layout and show the panel.
+            panelCards.ResumeLayout(true);
+            panelCards.Visible = true;
+        }
+
+
+        private void panelCards_Resize(object sender, EventArgs e)
+        {
+            RepositionPokemonCards();
+        }
+
+        private void RepositionPokemonCards()
+        {
+            int cardWidth = 130;   // Adjust if your card control has a different fixed width.
+            int cardHeight = 160;  // Adjust if your card control has a different fixed height.
+            int spacingX = 10;
+            int spacingY = 10;
+            int count = 0;
+
+            // Compute how many cards can fit in a row.
+            int cardsPerRow = Math.Max(1, (panelCards.ClientSize.Width - spacingX) / cardWidth);
+            int xPos = spacingX;
+            int yPos = spacingY;
+
+            foreach (Control ctrl in panelCards.Controls)
+            {
+                ctrl.Location = new Point(xPos, yPos);
                 count++;
                 if (count % cardsPerRow == 0)
                 {
-                    xPos = 10;
-                    yPos += 160;
+                    xPos = spacingX;
+                    yPos += cardHeight;
+                }
+                else
+                {
+                    xPos += cardWidth;
                 }
             }
+
+            // Calculate the total number of rows.
+            int totalRows = (int)Math.Ceiling((double)panelCards.Controls.Count / cardsPerRow);
+            // Set the minimum scrollable size so the panel knows it has more content.
+            int totalHeight = spacingY + (totalRows * cardHeight);
+            panelCards.AutoScrollMinSize = new Size(0, totalHeight);
         }
+
+
+
 
         /// <summary>
         /// Updates both the progress display and the trainer card image.
