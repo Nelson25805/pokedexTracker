@@ -365,3 +365,6 @@ FodyWeavers.xsd
 # Database (Until project is done)
 pokedex.db
 /PokedexTracker/Assets/pokedex.db
+
+# Assets (Until project is done)
+/PokedexTracker/Assets
