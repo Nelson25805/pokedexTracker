@@ -367,4 +367,5 @@ pokedex.db
 /PokedexTracker/Assets/pokedex.db
 
 # Assets (Until project is done)
-/PokedexTracker/PokedexTracker/Assets/sprites/
+/PokedexTracker/Assets/sprites/pokemon/versions
+
