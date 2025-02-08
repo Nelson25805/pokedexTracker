@@ -366,6 +366,4 @@ FodyWeavers.xsd
 pokedex.db
 /PokedexTracker/Assets/pokedex.db
 
-# Assets (Until project is done)
-/PokedexTracker/Assets/sprites/pokemon/versions
 
