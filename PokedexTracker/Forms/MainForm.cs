@@ -51,12 +51,6 @@ namespace PokedexTracker
 
             InitializeComponent();
 
-            // Initialize the layout manager for the form.
-            _layoutManager = new UILayoutManager(this);
-
-            // Subscribe to panelCards resize to reflow the Pokemon cards.
-            panelCards.Resize += panelCards_Resize;
-
             _gameManager = new GameManager(_dbManager);
             _nameDisplayManager = new PlayerNameDisplayManager();
             _progressDisplayManager = new ProgressDisplayManager();
@@ -190,13 +184,9 @@ namespace PokedexTracker
             // Resume layout and show the panel.
             panelCards.ResumeLayout(true);
             panelCards.Visible = true;
+
         }
 
-
-        private void panelCards_Resize(object sender, EventArgs e)
-        {
-            RepositionPokemonCards();
-        }
 
         private void RepositionPokemonCards()
         {
@@ -236,8 +226,10 @@ namespace PokedexTracker
             panelCards.AutoScrollPosition = new Point(0, 0);
         }
 
-
-
+        private void panelCards_Resize(object sender, EventArgs e)
+        {
+            RepositionPokemonCards();
+        }
 
 
         /// <summary>

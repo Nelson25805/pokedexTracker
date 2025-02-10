@@ -105,11 +105,15 @@
             // 
             // panelCards
             // 
+            this.panelCards.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panelCards.AutoScroll = true;
-            this.panelCards.Location = new System.Drawing.Point(716, 12);
+            this.panelCards.Location = new System.Drawing.Point(716, 8);
             this.panelCards.Name = "panelCards";
             this.panelCards.Size = new System.Drawing.Size(1154, 1363);
             this.panelCards.TabIndex = 1;
+            this.panelCards.Resize += new System.EventHandler(this.panelCards_Resize);
             // 
             // lblProgress
             // 
