@@ -189,41 +189,46 @@ namespace PokedexTracker
 
         private void RepositionPokemonCards()
         {
-            // Remove the preservation of the old scroll position:
-            // int scrollY = panelCards.VerticalScroll.Value;
+            // Use the actual size of your PokemonCard.
+            int cardWidth = 120;
+            int cardHeight = 170;
 
-            int cardWidth = 130;
-            int cardHeight = 160;
-            int spacingX = 10;
-            int spacingY = 10;
+            // Define the desired padding between cards.
+            int paddingX = 10;
+            int paddingY = 10;
+
+            // Calculate how many cards can fit per row.
+            int cardsPerRow = Math.Max(1, (panelCards.ClientSize.Width + paddingX) / (cardWidth + paddingX));
+
+            int xPos = paddingX;
+            int yPos = paddingY;
             int count = 0;
 
-            int cardsPerRow = Math.Max(1, (panelCards.ClientSize.Width - spacingX) / cardWidth);
-            int xPos = spacingX;
-            int yPos = spacingY;
-
+            // Position each card with the padding applied.
             foreach (Control ctrl in panelCards.Controls)
             {
                 ctrl.Location = new Point(xPos, yPos);
                 count++;
+
                 if (count % cardsPerRow == 0)
                 {
-                    xPos = spacingX;
-                    yPos += cardHeight;
+                    // Move to the next row: reset x and increment y by cardHeight plus vertical padding.
+                    xPos = paddingX;
+                    yPos += cardHeight + paddingY;
                 }
                 else
                 {
-                    xPos += cardWidth;
+                    // Move to the next column: increment x by cardWidth plus horizontal padding.
+                    xPos += cardWidth + paddingX;
                 }
             }
 
+            // Adjust the AutoScrollMinSize to ensure scrolling works correctly.
             int totalRows = (int)Math.Ceiling((double)panelCards.Controls.Count / cardsPerRow);
-            int totalHeight = spacingY + (totalRows * cardHeight);
+            int totalHeight = paddingY + totalRows * (cardHeight + paddingY);
             panelCards.AutoScrollMinSize = new Size(0, totalHeight);
-
-            // Reset the scroll position to the top:
-            panelCards.AutoScrollPosition = new Point(0, 0);
         }
+
 
         private void panelCards_Resize(object sender, EventArgs e)
         {

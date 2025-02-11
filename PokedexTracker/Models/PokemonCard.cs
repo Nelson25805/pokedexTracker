@@ -18,12 +18,14 @@ namespace PokedexTracker
             SpritePath = spritePath;
             IsCaught = isCaught;
 
-            Size = new Size(120, 150);
+            // Increase the card's height to give more room
+            Size = new Size(120, 170);
             BorderStyle = BorderStyle.FixedSingle;
             BackColor = isCaught ? Color.Green : Color.LightGray;
 
+            AddNumberLabel();
             AddSprite();
-            AddLabel();
+            AddNameLabel();
         }
 
         private void AddSprite()
@@ -32,7 +34,8 @@ namespace PokedexTracker
             {
                 SizeMode = PictureBoxSizeMode.StretchImage,
                 Size = new Size(100, 100),
-                Location = new Point(10, 10),
+                // Move the sprite down to avoid overlapping the number label.
+                Location = new Point(10, 35), // Changed from (10, 10) or (10, 25) to (10, 35)
                 Enabled = false
             };
 
@@ -44,18 +47,36 @@ namespace PokedexTracker
             Controls.Add(sprite);
         }
 
-        private void AddLabel()
+        private void AddNumberLabel()
         {
-            var label = new Label
+            var numberLabel = new Label
             {
-                Text = $"{PokemonName} #{PokemonNumber}",
-                Location = new Point(10, 115),
-                Size = new Size(100, 20),
-                TextAlign = ContentAlignment.MiddleCenter,
-                Enabled = false
+                Text = $"#{PokemonNumber}",
+                Location = new Point(5, 5), // Top left corner
+                AutoSize = true,
+                Font = new Font("Arial", 10, FontStyle.Bold),
+                BackColor = Color.Transparent,
+                ForeColor = Color.Black
             };
 
-            Controls.Add(label);
+            Controls.Add(numberLabel);
+        }
+
+        private void AddNameLabel()
+        {
+            var nameLabel = new Label
+            {
+                Text = PokemonName,
+                Size = new Size(120, 20),
+                // Position the name label at the bottom of the card.
+                Location = new Point(0, Height - 25),
+                TextAlign = ContentAlignment.MiddleCenter,
+                Font = new Font("Arial", 10, FontStyle.Bold),
+                BackColor = Color.Transparent,
+                ForeColor = Color.Black
+            };
+
+            Controls.Add(nameLabel);
         }
 
         public void UpdateCaughtStatus(bool isCaught)
