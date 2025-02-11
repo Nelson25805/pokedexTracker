@@ -16,7 +16,6 @@ namespace PokedexTracker
         private readonly PlayerNameDisplayManager _nameDisplayManager;
         private readonly ProgressDisplayManager _progressDisplayManager;
         private string playerName;
-        private UILayoutManager _layoutManager;
 
 
         // Field to store the selected gender ("Boy" or "Girl"). Default is "Boy".

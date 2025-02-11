@@ -97,7 +97,6 @@
     <Compile Include="Managers\PlayerNameDisplayManager.cs" />
     <Compile Include="Managers\ProgressDisplayManager.cs" />
     <Compile Include="Managers\SpeechManager.cs" />
-    <Compile Include="Managers\UILayoutManager.cs" />
     <Compile Include="Models\PlayerNameStyle.cs" />
     <Compile Include="Models\PokemonCard.cs">
       <SubType>Component</SubType>
