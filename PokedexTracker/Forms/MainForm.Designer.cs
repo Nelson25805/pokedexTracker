@@ -7,13 +7,6 @@
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        // Remove these game button declarations if no longer needed:
-        // private System.Windows.Forms.Button btnRed;
-        // private System.Windows.Forms.Button btnBlue;
-        // private System.Windows.Forms.Button btnYellow;
-        // private System.Windows.Forms.Button btnSilver;
-        // private System.Windows.Forms.Button btnGold;
-        // private System.Windows.Forms.Button btnCrystal;
 
         // Instead, add a ComboBox for game selection:
         private System.Windows.Forms.ComboBox comboBoxGames;
