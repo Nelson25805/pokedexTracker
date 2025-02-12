@@ -7,17 +7,20 @@
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-
-        // Instead, add a ComboBox for game selection:
         private System.Windows.Forms.ComboBox comboBoxGames;
-
         private System.Windows.Forms.Panel panelCards;
         private System.Windows.Forms.Label lblProgress;
         private System.Windows.Forms.PictureBox trainerCard;
+        private System.Windows.Forms.Label lblPlayerName;
+        private System.Windows.Forms.CheckBox chkShiny;
+        // Only the custom PokeballRadioButton controls are used.
+        private PokeballRadioButton pokeballRadioButtonBoy;
+        private PokeballRadioButton pokeballRadioButtonGirl;
 
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -40,9 +43,9 @@
             this.lblProgress = new System.Windows.Forms.Label();
             this.trainerCard = new System.Windows.Forms.PictureBox();
             this.lblPlayerName = new System.Windows.Forms.Label();
-            this.rdoGirl = new System.Windows.Forms.RadioButton();
-            this.rdoBoy = new System.Windows.Forms.RadioButton();
             this.chkShiny = new System.Windows.Forms.CheckBox();
+            this.pokeballRadioButtonGirl = new PokeballRadioButton();
+            this.pokeballRadioButtonBoy = new PokeballRadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.trainerCard)).BeginInit();
             this.SuspendLayout();
             // 
@@ -140,31 +143,6 @@
             this.lblPlayerName.Size = new System.Drawing.Size(0, 32);
             this.lblPlayerName.TabIndex = 0;
             // 
-            // rdoGirl
-            // 
-            this.rdoGirl.AutoSize = true;
-            this.rdoGirl.Enabled = false;
-            this.rdoGirl.Location = new System.Drawing.Point(134, 560);
-            this.rdoGirl.Name = "rdoGirl";
-            this.rdoGirl.Size = new System.Drawing.Size(96, 36);
-            this.rdoGirl.TabIndex = 4;
-            this.rdoGirl.TabStop = true;
-            this.rdoGirl.Text = "Girl";
-            this.rdoGirl.UseVisualStyleBackColor = true;
-            this.rdoGirl.CheckedChanged += new System.EventHandler(this.rdoGender_CheckedChanged);
-            // 
-            // rdoBoy
-            // 
-            this.rdoBoy.AutoSize = true;
-            this.rdoBoy.Enabled = false;
-            this.rdoBoy.Location = new System.Drawing.Point(12, 560);
-            this.rdoBoy.Name = "rdoBoy";
-            this.rdoBoy.Size = new System.Drawing.Size(100, 36);
-            this.rdoBoy.TabIndex = 5;
-            this.rdoBoy.Text = "Boy";
-            this.rdoBoy.UseVisualStyleBackColor = true;
-            this.rdoBoy.CheckedChanged += new System.EventHandler(this.rdoGender_CheckedChanged);
-            // 
             // chkShiny
             // 
             this.chkShiny.AutoSize = true;
@@ -172,10 +150,36 @@
             this.chkShiny.Location = new System.Drawing.Point(22, 654);
             this.chkShiny.Name = "chkShiny";
             this.chkShiny.Size = new System.Drawing.Size(124, 36);
-            this.chkShiny.TabIndex = 6;
+            this.chkShiny.TabIndex = 4;
             this.chkShiny.Text = "Shiny";
             this.chkShiny.UseVisualStyleBackColor = true;
             this.chkShiny.CheckedChanged += new System.EventHandler(this.chkShiny_CheckedChanged);
+            // 
+            // pokeballRadioButtonGirl
+            // 
+            this.pokeballRadioButtonGirl.CheckedImage = null;
+            this.pokeballRadioButtonGirl.Location = new System.Drawing.Point(208, 538);
+            this.pokeballRadioButtonGirl.Name = "pokeballRadioButtonGirl";
+            this.pokeballRadioButtonGirl.Size = new System.Drawing.Size(175, 50);
+            this.pokeballRadioButtonGirl.TabIndex = 6;
+            this.pokeballRadioButtonGirl.TabStop = true;
+            this.pokeballRadioButtonGirl.Text = "Girl";
+            this.pokeballRadioButtonGirl.UncheckedImage = null;
+            this.pokeballRadioButtonGirl.UseVisualStyleBackColor = true;
+            this.pokeballRadioButtonGirl.CheckedChanged += new System.EventHandler(this.rdoGender_CheckedChanged);
+            // 
+            // pokeballRadioButtonBoy
+            // 
+            this.pokeballRadioButtonBoy.CheckedImage = null;
+            this.pokeballRadioButtonBoy.Location = new System.Drawing.Point(12, 538);
+            this.pokeballRadioButtonBoy.Name = "pokeballRadioButtonBoy";
+            this.pokeballRadioButtonBoy.Size = new System.Drawing.Size(180, 50);
+            this.pokeballRadioButtonBoy.TabIndex = 5;
+            this.pokeballRadioButtonBoy.TabStop = true;
+            this.pokeballRadioButtonBoy.Text = "Boy";
+            this.pokeballRadioButtonBoy.UncheckedImage = null;
+            this.pokeballRadioButtonBoy.UseVisualStyleBackColor = true;
+            this.pokeballRadioButtonBoy.CheckedChanged += new System.EventHandler(this.rdoGender_CheckedChanged);
             // 
             // MainForm
             // 
@@ -183,9 +187,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.ClientSize = new System.Drawing.Size(1876, 1379);
+            this.Controls.Add(this.pokeballRadioButtonGirl);
+            this.Controls.Add(this.pokeballRadioButtonBoy);
             this.Controls.Add(this.chkShiny);
-            this.Controls.Add(this.rdoBoy);
-            this.Controls.Add(this.rdoGirl);
             this.Controls.Add(this.lblPlayerName);
             this.Controls.Add(this.trainerCard);
             this.Controls.Add(this.lblProgress);
@@ -202,10 +206,5 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Label lblPlayerName;
-        private System.Windows.Forms.RadioButton rdoGirl;
-        private System.Windows.Forms.RadioButton rdoBoy;
-        private System.Windows.Forms.CheckBox chkShiny;
     }
 }

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
-using System.Reflection;
 using System.Windows.Forms;
-using PokedexTracker.DisplayManagers; 
+using PokedexTracker.DisplayManagers;
 using PokedexTracker.Helpers;
 
 namespace PokedexTracker
@@ -16,7 +15,6 @@ namespace PokedexTracker
         private readonly PlayerNameDisplayManager _nameDisplayManager;
         private readonly ProgressDisplayManager _progressDisplayManager;
         private string playerName;
-
 
         // Field to store the selected gender ("Boy" or "Girl"). Default is "Boy".
         private string selectedGender = "Boy";
@@ -36,6 +34,9 @@ namespace PokedexTracker
             lblPlayerName.BackColor = Color.Transparent;
             lblProgress.Parent = trainerCard;
             lblProgress.BackColor = Color.Transparent;
+
+            // Set the images for the custom radio buttons.
+            SetRadioButtonImages();
         }
 
         /// <summary>
@@ -54,11 +55,8 @@ namespace PokedexTracker
             _nameDisplayManager = new PlayerNameDisplayManager();
             _progressDisplayManager = new ProgressDisplayManager();
 
-            // Optionally, lock the form size.
-            //this.FormBorderStyle = FormBorderStyle.FixedSingle;
-            //this.MaximizeBox = false;
-            //this.MinimumSize = this.Size;
-            //this.MaximumSize = this.Size;
+            // Set the custom radio button images.
+            SetRadioButtonImages();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -70,18 +68,40 @@ namespace PokedexTracker
         }
 
         /// <summary>
+        /// Loads the images for the custom radio buttons.
+        /// </summary>
+        private void SetRadioButtonImages()
+        {
+            // Get the file paths from AssetManager.
+            string checkedPath = _assetManager.GetRadioButtonImagePath("checkedPokeball.png");
+            string uncheckedPath = _assetManager.GetRadioButtonImagePath("uncheckedPokeball.png");
+
+            // Load images from the file paths.
+            Image checkedImage = Image.FromFile(checkedPath);
+            Image uncheckedImage = Image.FromFile(uncheckedPath);
+
+            // Assign the images to your custom radio buttons.
+            pokeballRadioButtonBoy.CheckedImage = checkedImage;
+            pokeballRadioButtonBoy.UncheckedImage = uncheckedImage;
+            pokeballRadioButtonBoy.Text = "Boy";
+
+            pokeballRadioButtonGirl.CheckedImage = checkedImage;
+            pokeballRadioButtonGirl.UncheckedImage = uncheckedImage;
+            pokeballRadioButtonGirl.Text = "Girl";
+        }
+
+        /// <summary>
         /// Handles when the user selects a game from the dropdown.
         /// </summary>
         private void comboBoxGames_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboBoxGames.SelectedItem is string gameName)
             {
-                // First, update the shiny checkbox state based on the selected game.
+                // Update the shiny checkbox state based on the selected game.
                 int silverIndex = comboBoxGames.Items.IndexOf("Silver");
                 if (comboBoxGames.SelectedIndex >= silverIndex)
                 {
                     chkShiny.Enabled = true;
-                    // Optionally, you can leave chkShiny.Checked as-is or set it to true if desired.
                 }
                 else
                 {
@@ -89,25 +109,24 @@ namespace PokedexTracker
                     chkShiny.Checked = false;  // Ensure shiny is off for non-shiny games.
                 }
 
-                // Similarly, update the gender radio buttons.
+                // Update the gender radio buttons based on the selected game.
                 int goldIndex = comboBoxGames.Items.IndexOf("Gold");
                 if (comboBoxGames.SelectedIndex > goldIndex)
                 {
-                    rdoBoy.Enabled = true;
-                    rdoGirl.Enabled = true;
-                    rdoBoy.Checked = (selectedGender == "Boy");
-                    rdoGirl.Checked = (selectedGender == "Girl");
+                    pokeballRadioButtonBoy.Enabled = true;
+                    pokeballRadioButtonGirl.Enabled = true;
+                    pokeballRadioButtonBoy.Checked = (selectedGender == "Boy");
+                    pokeballRadioButtonGirl.Checked = (selectedGender == "Girl");
                 }
                 else
                 {
-                    rdoBoy.Enabled = false;
-                    rdoGirl.Enabled = false;
-                    rdoBoy.Checked = false;
-                    rdoGirl.Checked = false;
+                    pokeballRadioButtonBoy.Enabled = false;
+                    pokeballRadioButtonGirl.Enabled = false;
+                    pokeballRadioButtonBoy.Checked = false;
+                    pokeballRadioButtonGirl.Checked = false;
                 }
 
-                // Now that the controls reflect the selected game,
-                // load the Pokémon cards using the correct shiny mode.
+                // Load the Pokémon cards (which also updates progress and trainer card display).
                 LoadPokemonCards(gameName);
 
                 // Update the player name display.
@@ -117,7 +136,6 @@ namespace PokedexTracker
                 UpdateProgressAndTrainer(gameName);
             }
         }
-
 
         /// <summary>
         /// Loads Pokémon cards depending on whether shiny mode is active.
@@ -144,7 +162,7 @@ namespace PokedexTracker
             UpdateProgressAndTrainer(gameName, total, caught);
             SetTrainerVisibility();
 
-            // Add each Pokemon card. (Setting a temporary location.)
+            // Add each Pokémon card.
             foreach (var item in pokemonData)
             {
                 string name = item.Name;
@@ -153,7 +171,7 @@ namespace PokedexTracker
                 bool isCaught = item.IsCaught;
 
                 var card = new PokemonCard(name, number, spritePath, isCaught);
-                card.Location = new Point(0, 0); // Temporary; will be reflowed.
+                card.Location = new Point(0, 0); // Temporary; will be repositioned.
 
                 card.Click += (s, e) =>
                 {
@@ -177,34 +195,29 @@ namespace PokedexTracker
                 panelCards.Controls.Add(card);
             }
 
-            // Reposition cards now that they are all added.
+            // Reposition cards.
             RepositionPokemonCards();
 
             // Resume layout and show the panel.
             panelCards.ResumeLayout(true);
             panelCards.Visible = true;
-
         }
 
-
+        /// <summary>
+        /// Repositions the Pokémon cards within the panel.
+        /// </summary>
         private void RepositionPokemonCards()
         {
-            // Use the actual size of your PokemonCard.
             int cardWidth = 120;
             int cardHeight = 170;
-
-            // Define the desired padding between cards.
             int paddingX = 10;
             int paddingY = 10;
 
-            // Calculate how many cards can fit per row.
             int cardsPerRow = Math.Max(1, (panelCards.ClientSize.Width + paddingX) / (cardWidth + paddingX));
-
             int xPos = paddingX;
             int yPos = paddingY;
             int count = 0;
 
-            // Position each card with the padding applied.
             foreach (Control ctrl in panelCards.Controls)
             {
                 ctrl.Location = new Point(xPos, yPos);
@@ -212,36 +225,30 @@ namespace PokedexTracker
 
                 if (count % cardsPerRow == 0)
                 {
-                    // Move to the next row: reset x and increment y by cardHeight plus vertical padding.
                     xPos = paddingX;
                     yPos += cardHeight + paddingY;
                 }
                 else
                 {
-                    // Move to the next column: increment x by cardWidth plus horizontal padding.
                     xPos += cardWidth + paddingX;
                 }
             }
 
-            // Adjust the AutoScrollMinSize to ensure scrolling works correctly.
             int totalRows = (int)Math.Ceiling((double)panelCards.Controls.Count / cardsPerRow);
             int totalHeight = paddingY + totalRows * (cardHeight + paddingY);
             panelCards.AutoScrollMinSize = new Size(0, totalHeight);
         }
-
 
         private void panelCards_Resize(object sender, EventArgs e)
         {
             RepositionPokemonCards();
         }
 
-
         /// <summary>
         /// Updates both the progress display and the trainer card image.
         /// </summary>
         private void UpdateProgressAndTrainer(string gameName, int total = 0, int caught = 0)
         {
-            // If total and caught are not provided, retrieve them.
             if (total == 0 && caught == 0)
             {
                 bool useShiny = chkShiny.Enabled && chkShiny.Checked;
@@ -252,10 +259,8 @@ namespace PokedexTracker
             }
 
             lblProgress.Visible = false;
-
             UpdateTrainerSprite(caught, total, gameName);
 
-            // Defer progress update until trainer card is updated.
             this.BeginInvoke(new Action(() =>
             {
                 string progressText = $"{caught} / {total}";
@@ -266,7 +271,7 @@ namespace PokedexTracker
         }
 
         /// <summary>
-        /// Simple helper to show the trainer card and progress label.
+        /// Makes the trainer card and progress label visible.
         /// </summary>
         private void SetTrainerVisibility()
         {
@@ -276,8 +281,7 @@ namespace PokedexTracker
         }
 
         /// <summary>
-        /// Updates the trainer sprite image.
-        /// For shiny mode, builds the path with the "shiny" folder; otherwise, uses the original path.
+        /// Updates the trainer sprite image based on the current progress and gender.
         /// </summary>
         private void UpdateTrainerSprite(int caughtCount, int totalCount, string currentGameName)
         {
@@ -290,17 +294,10 @@ namespace PokedexTracker
 
             int badgeThreshold = totalCount / 8;
             int badgeCount = Math.Min(caughtCount / badgeThreshold, 8);
-
-            // Check if shiny mode is enabled
             bool isShiny = chkShiny.Checked;
 
-            // Use AssetManager to get the path, considering shiny mode
-            string badgeImagePath;
+            string badgeImagePath = _assetManager.GetTrainerBadgePath(currentGameName, badgeCount, selectedGender);
 
-            badgeImagePath = _assetManager.GetTrainerBadgePath(currentGameName, badgeCount, selectedGender);
-
-
-            // Check if the image exists
             if (File.Exists(badgeImagePath))
             {
                 trainerCard.Image = Image.FromFile(badgeImagePath);
@@ -311,11 +308,8 @@ namespace PokedexTracker
             }
         }
 
-
-
         /// <summary>
         /// Handles the shiny checkbox state change.
-        /// When changed (if enabled), reloads the cards and updates the display.
         /// </summary>
         private void chkShiny_CheckedChanged(object sender, EventArgs e)
         {
@@ -330,27 +324,26 @@ namespace PokedexTracker
 
         /// <summary>
         /// Handles the gender radio button state changes.
-        /// Updates the stored gender and refreshes the trainer card.
+        /// This event is now attached to the custom PokeballRadioButton controls.
         /// </summary>
         private void rdoGender_CheckedChanged(object sender, EventArgs e)
         {
-            if (rdoBoy.Enabled || rdoGirl.Enabled)
+            // Only proceed if at least one of the custom radio buttons is enabled.
+            if (pokeballRadioButtonBoy.Enabled || pokeballRadioButtonGirl.Enabled)
             {
-                if (rdoBoy.Checked)
+                if (pokeballRadioButtonBoy.Checked)
                     selectedGender = "Boy";
-                else if (rdoGirl.Checked)
+                else if (pokeballRadioButtonGirl.Checked)
                     selectedGender = "Girl";
 
                 if (comboBoxGames.SelectedItem is string gameName)
                 {
                     bool useShiny = chkShiny.Checked;
-
                     var data = useShiny ? _gameManager.GetShinyPokemonData(gameName) : _gameManager.GetPokemonData(gameName);
                     UpdateTrainerSprite(data.Caught, data.Total, gameName);
                 }
             }
         }
-
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {

@@ -106,5 +106,17 @@ namespace PokedexTracker
         {
             return Path.Combine(GetFontsPath(), fontFileName);
         }
+
+        public string GetRadioButtonsPath()
+        {
+            return Path.Combine(_baseAssetsPath, "RadioButtons");
+        }
+
+        public string GetRadioButtonImagePath(string imageFileName)
+        {
+            return Path.Combine(GetRadioButtonsPath(), imageFileName);
+        }
+
+
     }
 }
