@@ -18,14 +18,37 @@ namespace PokedexTracker
             SpritePath = spritePath;
             IsCaught = isCaught;
 
-            // Increase the card's height to give more room
+            // Set size and border.
             Size = new Size(120, 170);
             BorderStyle = BorderStyle.FixedSingle;
             BackColor = isCaught ? Color.Green : Color.LightGray;
 
-            AddNumberLabel();
+            // Set the pokeball background using the panel's BackgroundImage.
+            SetPokeballBackground();
+
+            // Add the sprite and labels.
             AddSprite();
+            AddNumberLabel();
             AddNameLabel();
+        }
+
+        private void SetPokeballBackground()
+        {
+            AssetManager assetManager = new AssetManager();
+            // Assuming the pokeball background image is stored as "pokeballBg.png" in the Assets folder.
+            string pokeballBgPath = Path.Combine(assetManager.GetBaseAssetsPath(), "pokeballBg.png");
+
+            if (File.Exists(pokeballBgPath))
+            {
+                // Load the image and assign it as the panel's background.
+                BackgroundImage = Image.FromFile(pokeballBgPath);
+                BackgroundImageLayout = ImageLayout.Stretch;
+            }
+            else
+            {
+                // If the image file isn't found, set a fallback background color.
+                BackColor = Color.LightBlue;
+            }
         }
 
         private void AddSprite()
@@ -34,8 +57,9 @@ namespace PokedexTracker
             {
                 SizeMode = PictureBoxSizeMode.StretchImage,
                 Size = new Size(100, 100),
-                // Move the sprite down to avoid overlapping the number label.
-                Location = new Point(10, 35), // Changed from (10, 10) or (10, 25) to (10, 35)
+                // Position the sprite so it appears over the background.
+                Location = new Point(10, 35),
+                BackColor = Color.Transparent,
                 Enabled = false
             };
 
@@ -45,6 +69,7 @@ namespace PokedexTracker
             }
 
             Controls.Add(sprite);
+            sprite.BringToFront();
         }
 
         private void AddNumberLabel()
@@ -52,7 +77,7 @@ namespace PokedexTracker
             var numberLabel = new Label
             {
                 Text = $"#{PokemonNumber}",
-                Location = new Point(5, 5), // Top left corner
+                Location = new Point(5, 5),
                 AutoSize = true,
                 Font = new Font("Arial", 10, FontStyle.Bold),
                 BackColor = Color.Transparent,
@@ -60,6 +85,7 @@ namespace PokedexTracker
             };
 
             Controls.Add(numberLabel);
+            numberLabel.BringToFront();
         }
 
         private void AddNameLabel()
@@ -77,6 +103,7 @@ namespace PokedexTracker
             };
 
             Controls.Add(nameLabel);
+            nameLabel.BringToFront();
         }
 
         public void UpdateCaughtStatus(bool isCaught)
