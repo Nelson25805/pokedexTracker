@@ -241,6 +241,7 @@ namespace PokedexTracker
 
         private void panelCards_Resize(object sender, EventArgs e)
         {
+            panelCards.AutoScrollPosition = new Point(0, 0);
             RepositionPokemonCards();
         }
 
