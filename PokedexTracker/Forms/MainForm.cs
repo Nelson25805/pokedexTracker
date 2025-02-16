@@ -208,16 +208,21 @@ namespace PokedexTracker
         /// </summary>
         private void RepositionPokemonCards()
         {
+            // Clear any previous AutoScrollMinSize to avoid accumulation.
+            panelCards.AutoScrollMinSize = Size.Empty;
+
             int cardWidth = 120;
             int cardHeight = 170;
             int paddingX = 10;
             int paddingY = 10;
 
+            // Calculate how many cards per row fit in the current client width.
             int cardsPerRow = Math.Max(1, (panelCards.ClientSize.Width + paddingX) / (cardWidth + paddingX));
             int xPos = paddingX;
             int yPos = paddingY;
             int count = 0;
 
+            // Reposition each card.
             foreach (Control ctrl in panelCards.Controls)
             {
                 ctrl.Location = new Point(xPos, yPos);
@@ -234,16 +239,37 @@ namespace PokedexTracker
                 }
             }
 
+            // Calculate the total number of rows needed.
             int totalRows = (int)Math.Ceiling((double)panelCards.Controls.Count / cardsPerRow);
-            int totalHeight = paddingY + totalRows * (cardHeight + paddingY);
+            // Compute the height required by the content.
+            int computedHeight = paddingY + totalRows * (cardHeight + paddingY);
+            // Ensure that the scrollable height is at least as big as the panel's client height.
+            int totalHeight = Math.Max(computedHeight, panelCards.ClientSize.Height);
+
+            // Set the scrollable area.
             panelCards.AutoScrollMinSize = new Size(0, totalHeight);
+
+            // Reset the scroll position.
+            panelCards.AutoScrollPosition = new Point(0, 0);
+            panelCards.Invalidate();
         }
+
 
         private void panelCards_Resize(object sender, EventArgs e)
         {
+            panelCards.SuspendLayout();
+            // Reset the scroll position.
             panelCards.AutoScrollPosition = new Point(0, 0);
             RepositionPokemonCards();
+            // Force the first card into view.
+            if (panelCards.Controls.Count > 0)
+            {
+                panelCards.ScrollControlIntoView(panelCards.Controls[0]);
+            }
+            panelCards.ResumeLayout();
         }
+
+
 
         /// <summary>
         /// Updates both the progress display and the trainer card image.
