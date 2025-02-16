@@ -193,12 +193,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\pokeballBgBig.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\pokeballBgNormal.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Assets\pokeballBg.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
