@@ -207,17 +207,25 @@ namespace PokedexTracker
                     bool newStatus = !card.IsCaught;
                     card.UpdateCaughtStatus(newStatus);
 
+                    // Update the corresponding record in _allPokemonData.
+                    int index = _allPokemonData.FindIndex(p => p.Number == item.Number);
+                    if (index != -1)
+                    {
+                        _allPokemonData[index] = (item.Name, item.Number, item.SpritePath, newStatus);
+                    }
+
                     if (chkShiny.Enabled && chkShiny.Checked)
                         _gameManager.ToggleShinyCaughtStatus(item.Number, comboBoxGames.SelectedItem.ToString(), newStatus);
                     else
                         _gameManager.ToggleCaughtStatus(item.Number, comboBoxGames.SelectedItem.ToString(), newStatus);
 
-                    // Optionally, update overall progress after toggling.
-                    var useShiny = chkShiny.Enabled && chkShiny.Checked;
+                    // Update the progress display (remains overall)
+                    bool useShiny = chkShiny.Enabled && chkShiny.Checked;
                     var updatedData = useShiny ? _gameManager.GetShinyPokemonData(comboBoxGames.SelectedItem.ToString())
                                                : _gameManager.GetPokemonData(comboBoxGames.SelectedItem.ToString());
                     UpdateProgressAndTrainer(comboBoxGames.SelectedItem.ToString(), updatedData.Total, updatedData.Caught);
                 };
+
 
                 panelCards.Controls.Add(card);
             }
