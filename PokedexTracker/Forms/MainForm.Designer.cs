@@ -46,6 +46,7 @@
             this.chkShiny = new System.Windows.Forms.CheckBox();
             this.pokeballRadioButtonGirl = new PokeballRadioButton();
             this.pokeballRadioButtonBoy = new PokeballRadioButton();
+            this.searchTextBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.trainerCard)).BeginInit();
             this.SuspendLayout();
             // 
@@ -181,12 +182,21 @@
             this.pokeballRadioButtonBoy.UseVisualStyleBackColor = true;
             this.pokeballRadioButtonBoy.CheckedChanged += new System.EventHandler(this.rdoGender_CheckedChanged);
             // 
+            // searchTextBox
+            // 
+            this.searchTextBox.Location = new System.Drawing.Point(169, 798);
+            this.searchTextBox.Name = "searchTextBox";
+            this.searchTextBox.Size = new System.Drawing.Size(382, 38);
+            this.searchTextBox.TabIndex = 7;
+            this.searchTextBox.TextChanged += new System.EventHandler(this.searchTextBox_TextChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.ClientSize = new System.Drawing.Size(1876, 1379);
+            this.Controls.Add(this.searchTextBox);
             this.Controls.Add(this.pokeballRadioButtonGirl);
             this.Controls.Add(this.pokeballRadioButtonBoy);
             this.Controls.Add(this.chkShiny);
@@ -206,5 +216,7 @@
         }
 
         #endregion
+
+        private System.Windows.Forms.TextBox searchTextBox;
     }
 }

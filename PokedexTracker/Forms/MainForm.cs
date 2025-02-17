@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using PokedexTracker.DisplayManagers;
 using PokedexTracker.Helpers;
@@ -15,6 +17,10 @@ namespace PokedexTracker
         private readonly PlayerNameDisplayManager _nameDisplayManager;
         private readonly ProgressDisplayManager _progressDisplayManager;
         private string playerName;
+
+        // Holds the full list of Pokemon data from the last query.
+        private List<(string Name, string Number, string SpritePath, bool IsCaught)> _allPokemonData;
+
 
         // Field to store the selected gender ("Boy" or "Girl"). Default is "Boy".
         private string selectedGender = "Boy";
@@ -142,66 +148,92 @@ namespace PokedexTracker
         /// </summary>
         private void LoadPokemonCards(string gameName)
         {
-            // Reset the scroll position before making changes.
+            // Reset scroll position before making changes.
             panelCards.AutoScrollPosition = new Point(0, 0);
-
-            // Suspend layout and hide the panel to avoid interim redraws.
             panelCards.SuspendLayout();
             panelCards.Visible = false;
-
             panelCards.Controls.Clear();
 
             bool useShiny = chkShiny.Enabled && chkShiny.Checked;
-            // Retrieve the data.
-            var data = useShiny ? _gameManager.GetShinyPokemonData(gameName)
-                                : _gameManager.GetPokemonData(gameName);
-            var pokemonData = data.PokemonData;
-            int total = data.Total;
-            int caught = data.Caught;
+            var dataResult = useShiny ? _gameManager.GetShinyPokemonData(gameName)
+                                      : _gameManager.GetPokemonData(gameName);
+            var pokemonData = dataResult.PokemonData;
+            int total = dataResult.Total;
+            int caught = dataResult.Caught;
 
+            // Update progress/trainer display as before.
             UpdateProgressAndTrainer(gameName, total, caught);
             SetTrainerVisibility();
 
-            // Add each Pokémon card.
-            foreach (var item in pokemonData)
+            // Store the full list for filtering.
+            _allPokemonData = pokemonData;
+
+            // Display all Pokemon (or the filtered set if there's text in searchTextBox).
+            DisplayFilteredPokemon(searchTextBox.Text.Trim());
+
+            panelCards.ResumeLayout(true);
+            panelCards.Visible = true;
+        }
+
+        private void DisplayFilteredPokemon(string filter)
+        {
+            // Clear existing cards.
+            panelCards.Controls.Clear();
+
+            IEnumerable<(string Name, string Number, string SpritePath, bool IsCaught)> filteredList;
+
+            if (string.IsNullOrWhiteSpace(filter))
             {
-                string name = item.Name;
-                string number = item.Number;
-                string spritePath = item.SpritePath;
-                bool isCaught = item.IsCaught;
+                // No filtering – display the full list.
+                filteredList = _allPokemonData;
+            }
+            else
+            {
+                // Convert filter to lowercase for case-insensitive search.
+                string lowerFilter = filter.ToLower();
+                filteredList = _allPokemonData.Where(p =>
+                    p.Name.ToLower().Contains(lowerFilter) ||
+                    p.Number.Contains(lowerFilter));
+            }
 
-                var card = new PokemonCard(name, number, spritePath, isCaught);
-                card.Location = new Point(0, 0); // Temporary; will be repositioned.
+            // Add a PokemonCard for each filtered item.
+            foreach (var item in filteredList)
+            {
+                var card = new PokemonCard(item.Name, item.Number, item.SpritePath, item.IsCaught);
 
+                // (Optional) Attach your click event to toggle caught status:
                 card.Click += (s, e) =>
                 {
                     bool newStatus = !card.IsCaught;
                     card.UpdateCaughtStatus(newStatus);
 
-                    if (useShiny)
-                        _gameManager.ToggleShinyCaughtStatus(number, gameName, newStatus);
+                    if (chkShiny.Enabled && chkShiny.Checked)
+                        _gameManager.ToggleShinyCaughtStatus(item.Number, comboBoxGames.SelectedItem.ToString(), newStatus);
                     else
-                        _gameManager.ToggleCaughtStatus(number, gameName, newStatus);
+                        _gameManager.ToggleCaughtStatus(item.Number, comboBoxGames.SelectedItem.ToString(), newStatus);
 
-                    var updatedData = useShiny ? _gameManager.GetShinyPokemonData(gameName)
-                                               : _gameManager.GetPokemonData(gameName);
-                    int updatedTotal = updatedData.Total;
-                    int updatedCaught = updatedData.Caught;
-
-                    lblProgress.Visible = false;
-                    UpdateProgressAndTrainer(gameName, updatedTotal, updatedCaught);
+                    // Optionally, update overall progress after toggling.
+                    var useShiny = chkShiny.Enabled && chkShiny.Checked;
+                    var updatedData = useShiny ? _gameManager.GetShinyPokemonData(comboBoxGames.SelectedItem.ToString())
+                                               : _gameManager.GetPokemonData(comboBoxGames.SelectedItem.ToString());
+                    UpdateProgressAndTrainer(comboBoxGames.SelectedItem.ToString(), updatedData.Total, updatedData.Caught);
                 };
 
                 panelCards.Controls.Add(card);
             }
 
-            // Reposition cards.
+            // Reposition the cards according to your layout logic.
             RepositionPokemonCards();
-
-            // Resume layout and show the panel.
-            panelCards.ResumeLayout(true);
-            panelCards.Visible = true;
         }
+
+        private void searchTextBox_TextChanged(object sender, EventArgs e)
+        {
+            // Filter the displayed cards based on the current text.
+            DisplayFilteredPokemon(searchTextBox.Text.Trim());
+        }
+
+
+
 
         /// <summary>
         /// Repositions the Pokémon cards within the panel.
