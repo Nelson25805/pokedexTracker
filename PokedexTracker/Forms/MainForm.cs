@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using PokedexTracker.DisplayManagers;
 using PokedexTracker.Helpers;
@@ -20,6 +21,14 @@ namespace PokedexTracker
 
         // Holds the full list of Pokemon data from the last query.
         private List<(string Name, string Number, string SpritePath, bool IsCaught)> _allPokemonData;
+
+        // A simple cache keyed by game name.
+        private Dictionary<string, (List<(string Name, string Number, string SpritePath, bool IsCaught)> Data, int Total, int Caught)> _pokemonCache
+            = new Dictionary<string, (List<(string, string, string, bool)>, int, int)>();
+
+        private int _lastBadgeCount = -1;
+
+
 
 
         // Field to store the selected gender ("Boy" or "Girl"). Default is "Boy".
@@ -133,7 +142,7 @@ namespace PokedexTracker
                 }
 
                 // Load the Pokémon cards (which also updates progress and trainer card display).
-                LoadPokemonCards(gameName);
+                LoadPokemonCardsAsync(gameName);
 
                 // Update the player name display.
                 _nameDisplayManager.UpdatePlayerNameLabel(gameName, lblPlayerName, playerName);
@@ -146,29 +155,49 @@ namespace PokedexTracker
         /// <summary>
         /// Loads Pokémon cards depending on whether shiny mode is active.
         /// </summary>
-        private void LoadPokemonCards(string gameName)
+        private async void LoadPokemonCardsAsync(string gameName)
         {
-            // Reset scroll position before making changes.
+            // Reset scroll position and suspend layout.
             panelCards.AutoScrollPosition = new Point(0, 0);
             panelCards.SuspendLayout();
             panelCards.Visible = false;
             panelCards.Controls.Clear();
 
-            bool useShiny = chkShiny.Enabled && chkShiny.Checked;
-            var dataResult = useShiny ? _gameManager.GetShinyPokemonData(gameName)
-                                      : _gameManager.GetPokemonData(gameName);
-            var pokemonData = dataResult.PokemonData;
-            int total = dataResult.Total;
-            int caught = dataResult.Caught;
+            (List<(string Name, string Number, string SpritePath, bool IsCaught)> pokemonData, int total, int caught) dataResult;
 
-            // Update progress/trainer display as before.
-            UpdateProgressAndTrainer(gameName, total, caught);
+            bool useShiny = chkShiny.Enabled && chkShiny.Checked;
+
+            // Check if we have cached data
+            if (_pokemonCache.ContainsKey(gameName) && !useShiny)
+            {
+                dataResult = _pokemonCache[gameName];
+            }
+            else
+            {
+                // Run the database query on a background thread.
+                dataResult = await Task.Run(() =>
+                {
+                    return useShiny
+                        ? _gameManager.GetShinyPokemonData(gameName)
+                        : _gameManager.GetPokemonData(gameName);
+                });
+
+                // Cache the data if not shiny (or adjust your caching strategy as needed)
+                if (!useShiny)
+                {
+                    _pokemonCache[gameName] = dataResult;
+                }
+            }
+
+            // Update progress display.
+            UpdateProgressAndTrainer(gameName, dataResult.Item2, dataResult.Item3);
             SetTrainerVisibility();
 
-            // Store the full list for filtering.
-            _allPokemonData = pokemonData;
+            // Store full list for search filtering.
+            _allPokemonData = dataResult.Item1;
 
-            // Display all Pokemon (or the filtered set if there's text in searchTextBox).
+
+            // Display all cards (or filtered based on searchTextBox).
             DisplayFilteredPokemon(searchTextBox.Text.Trim());
 
             panelCards.ResumeLayout(true);
@@ -321,12 +350,13 @@ namespace PokedexTracker
                 bool useShiny = chkShiny.Enabled && chkShiny.Checked;
                 var data = useShiny ? _gameManager.GetShinyPokemonData(gameName)
                                     : _gameManager.GetPokemonData(gameName);
-                total = data.Total;
-                caught = data.Caught;
+                total = data.Item2;
+                caught = data.Item3;
             }
 
+
             lblProgress.Visible = false;
-            UpdateTrainerSprite(caught, total, gameName);
+            UpdateTrainerSpriteAsync(caught, total, gameName);
 
             this.BeginInvoke(new Action(() =>
             {
@@ -350,30 +380,47 @@ namespace PokedexTracker
         /// <summary>
         /// Updates the trainer sprite image based on the current progress and gender.
         /// </summary>
-        private void UpdateTrainerSprite(int caughtCount, int totalCount, string currentGameName)
+        private async void UpdateTrainerSpriteAsync(int caughtCount, int totalCount, string currentGameName)
         {
-            if (trainerCard == null)
-            {
-                MessageBox.Show("Trainer card PictureBox is not initialized.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            if (trainerCard == null || totalCount == 0)
                 return;
-            }
-            if (totalCount == 0) return;
 
             int badgeThreshold = totalCount / 8;
-            int badgeCount = Math.Min(caughtCount / badgeThreshold, 8);
-            bool isShiny = chkShiny.Checked;
+            // Calculate the new badge count.
+            int newBadgeCount = Math.Min(caughtCount / badgeThreshold, 8);
 
-            string badgeImagePath = _assetManager.GetTrainerBadgePath(currentGameName, badgeCount, selectedGender);
+            // If the badge count hasn't changed, don't update the image.
+            if (newBadgeCount == _lastBadgeCount)
+                return;
 
-            if (File.Exists(badgeImagePath))
-            {
-                trainerCard.Image = Image.FromFile(badgeImagePath);
-            }
-            else
+            // Badge count changed, so update our stored value.
+            _lastBadgeCount = newBadgeCount;
+
+            // Optionally, hide the trainer card briefly to show the update.
+            // (This is optional; if hiding causes flicker, you might choose not to hide it.)
+            trainerCard.Visible = false;
+
+            // Get the badge image path using the newBadgeCount.
+            string badgeImagePath = _assetManager.GetTrainerBadgePath(currentGameName, newBadgeCount, selectedGender);
+            if (!File.Exists(badgeImagePath))
             {
                 MessageBox.Show($"Badge image not found: {badgeImagePath}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
+
+            // Load the image asynchronously.
+            Image badgeImage = await Task.Run(() => Image.FromFile(badgeImagePath));
+
+            // Update the trainer card image on the UI thread.
+            trainerCard.Invoke((MethodInvoker)(() =>
+            {
+                trainerCard.Image = badgeImage;
+                trainerCard.Visible = true;
+            }));
         }
+
+
+
 
         /// <summary>
         /// Handles the shiny checkbox state change.
@@ -384,7 +431,7 @@ namespace PokedexTracker
             {
                 if (comboBoxGames.SelectedItem is string gameName)
                 {
-                    LoadPokemonCards(gameName);
+                    LoadPokemonCardsAsync(gameName);
                 }
             }
         }
@@ -407,7 +454,7 @@ namespace PokedexTracker
                 {
                     bool useShiny = chkShiny.Checked;
                     var data = useShiny ? _gameManager.GetShinyPokemonData(gameName) : _gameManager.GetPokemonData(gameName);
-                    UpdateTrainerSprite(data.Caught, data.Total, gameName);
+                    UpdateTrainerSpriteAsync(data.Caught, data.Total, gameName);
                 }
             }
         }
