@@ -19,6 +19,9 @@ namespace PokedexTracker
         private readonly ProgressDisplayManager _progressDisplayManager;
         private string playerName;
 
+        private string lastSelectedGender = "Boy";
+
+
         // Holds the full list of Pokemon data from the last query.
         private List<(string Name, string Number, string SpritePath, bool IsCaught)> _allPokemonData;
 
@@ -125,8 +128,8 @@ namespace PokedexTracker
                 }
 
                 // Update the gender radio buttons based on the selected game.
-                int goldIndex = comboBoxGames.Items.IndexOf("Gold");
-                if (comboBoxGames.SelectedIndex > goldIndex)
+                int crystalIndex = comboBoxGames.Items.IndexOf("Crystal");
+                if (comboBoxGames.SelectedIndex >= crystalIndex)
                 {
                     pokeballRadioButtonBoy.Enabled = true;
                     pokeballRadioButtonGirl.Enabled = true;
@@ -140,6 +143,7 @@ namespace PokedexTracker
                     pokeballRadioButtonBoy.Checked = false;
                     pokeballRadioButtonGirl.Checked = false;
                 }
+
 
                 // Load the Pokémon cards (which also updates progress and trainer card display).
                 LoadPokemonCardsAsync(gameName);
@@ -386,21 +390,19 @@ namespace PokedexTracker
                 return;
 
             int badgeThreshold = totalCount / 8;
-            // Calculate the new badge count.
             int newBadgeCount = Math.Min(caughtCount / badgeThreshold, 8);
 
-            // If the badge count hasn't changed, don't update the image.
-            if (newBadgeCount == _lastBadgeCount)
+            // If both the badge count and the gender haven't changed, no update is needed.
+            if (newBadgeCount == _lastBadgeCount && selectedGender == lastSelectedGender)
                 return;
 
-            // Badge count changed, so update our stored value.
+            // Update our stored values.
             _lastBadgeCount = newBadgeCount;
+            lastSelectedGender = selectedGender;  // <-- update the last selected gender
 
-            // Optionally, hide the trainer card briefly to show the update.
-            // (This is optional; if hiding causes flicker, you might choose not to hide it.)
             trainerCard.Visible = false;
 
-            // Get the badge image path using the newBadgeCount.
+            // Get the badge image path using the newBadgeCount and current selectedGender.
             string badgeImagePath = _assetManager.GetTrainerBadgePath(currentGameName, newBadgeCount, selectedGender);
             if (!File.Exists(badgeImagePath))
             {
@@ -418,6 +420,7 @@ namespace PokedexTracker
                 trainerCard.Visible = true;
             }));
         }
+
 
 
 
