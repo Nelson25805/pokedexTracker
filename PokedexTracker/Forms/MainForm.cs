@@ -19,7 +19,8 @@ namespace PokedexTracker
         private readonly ProgressDisplayManager _progressDisplayManager;
         private string playerName;
 
-        private string lastSelectedGender = "Boy";
+        private (int BadgeCount, string Gender, string GameName) lastTrainerState = (-1, "Boy", string.Empty);
+
 
 
         // Holds the full list of Pokemon data from the last query.
@@ -28,11 +29,6 @@ namespace PokedexTracker
         // A simple cache keyed by game name.
         private Dictionary<string, (List<(string Name, string Number, string SpritePath, bool IsCaught)> Data, int Total, int Caught)> _pokemonCache
             = new Dictionary<string, (List<(string, string, string, bool)>, int, int)>();
-
-        private int _lastBadgeCount = -1;
-
-
-
 
         // Field to store the selected gender ("Boy" or "Girl"). Default is "Boy".
         private string selectedGender = "Boy";
@@ -392,13 +388,16 @@ namespace PokedexTracker
             int badgeThreshold = totalCount / 8;
             int newBadgeCount = Math.Min(caughtCount / badgeThreshold, 8);
 
-            // If both the badge count and the gender haven't changed, no update is needed.
-            if (newBadgeCount == _lastBadgeCount && selectedGender == lastSelectedGender)
+            // If badge count, gender, and game name haven't changed, no update is needed.
+            if (newBadgeCount == lastTrainerState.BadgeCount &&
+                selectedGender == lastTrainerState.Gender &&
+                currentGameName == lastTrainerState.GameName)
+            {
                 return;
+            }
 
-            // Update our stored values.
-            _lastBadgeCount = newBadgeCount;
-            lastSelectedGender = selectedGender;  // <-- update the last selected gender
+            // Update our stored state.
+            lastTrainerState = (newBadgeCount, selectedGender, currentGameName);
 
             trainerCard.Visible = false;
 
@@ -420,9 +419,6 @@ namespace PokedexTracker
                 trainerCard.Visible = true;
             }));
         }
-
-
-
 
 
         /// <summary>
