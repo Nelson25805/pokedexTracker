@@ -47,6 +47,9 @@
             this.pokeballRadioButtonGirl = new PokeballRadioButton();
             this.pokeballRadioButtonBoy = new PokeballRadioButton();
             this.searchTextBox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.trainerCard)).BeginInit();
             this.SuspendLayout();
             // 
@@ -94,7 +97,7 @@
             "Scarlet",
             "Violet",
             "Legends: Z-A"});
-            this.comboBoxGames.Location = new System.Drawing.Point(12, 459);
+            this.comboBoxGames.Location = new System.Drawing.Point(19, 510);
             this.comboBoxGames.Name = "comboBoxGames";
             this.comboBoxGames.Size = new System.Drawing.Size(487, 39);
             this.comboBoxGames.TabIndex = 0;
@@ -148,7 +151,7 @@
             // 
             this.chkShiny.AutoSize = true;
             this.chkShiny.Enabled = false;
-            this.chkShiny.Location = new System.Drawing.Point(22, 654);
+            this.chkShiny.Location = new System.Drawing.Point(19, 721);
             this.chkShiny.Name = "chkShiny";
             this.chkShiny.Size = new System.Drawing.Size(124, 36);
             this.chkShiny.TabIndex = 4;
@@ -159,7 +162,7 @@
             // pokeballRadioButtonGirl
             // 
             this.pokeballRadioButtonGirl.CheckedImage = null;
-            this.pokeballRadioButtonGirl.Location = new System.Drawing.Point(208, 538);
+            this.pokeballRadioButtonGirl.Location = new System.Drawing.Point(219, 632);
             this.pokeballRadioButtonGirl.Name = "pokeballRadioButtonGirl";
             this.pokeballRadioButtonGirl.Size = new System.Drawing.Size(175, 50);
             this.pokeballRadioButtonGirl.TabIndex = 6;
@@ -172,7 +175,7 @@
             // pokeballRadioButtonBoy
             // 
             this.pokeballRadioButtonBoy.CheckedImage = null;
-            this.pokeballRadioButtonBoy.Location = new System.Drawing.Point(12, 538);
+            this.pokeballRadioButtonBoy.Location = new System.Drawing.Point(19, 632);
             this.pokeballRadioButtonBoy.Name = "pokeballRadioButtonBoy";
             this.pokeballRadioButtonBoy.Size = new System.Drawing.Size(180, 50);
             this.pokeballRadioButtonBoy.TabIndex = 5;
@@ -184,11 +187,38 @@
             // 
             // searchTextBox
             // 
-            this.searchTextBox.Location = new System.Drawing.Point(169, 798);
+            this.searchTextBox.Location = new System.Drawing.Point(19, 859);
             this.searchTextBox.Name = "searchTextBox";
             this.searchTextBox.Size = new System.Drawing.Size(382, 38);
             this.searchTextBox.TabIndex = 7;
             this.searchTextBox.TextChanged += new System.EventHandler(this.searchTextBox_TextChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(13, 586);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(206, 32);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Chose Gender:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(13, 463);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(308, 32);
+            this.label2.TabIndex = 9;
+            this.label2.Text = "Choose Game Version:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(13, 803);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(239, 32);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "Search Pokemon:";
             // 
             // MainForm
             // 
@@ -196,6 +226,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.ClientSize = new System.Drawing.Size(1876, 1379);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.searchTextBox);
             this.Controls.Add(this.pokeballRadioButtonGirl);
             this.Controls.Add(this.pokeballRadioButtonBoy);
@@ -218,5 +251,8 @@
         #endregion
 
         private System.Windows.Forms.TextBox searchTextBox;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
     }
 }
