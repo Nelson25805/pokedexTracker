@@ -162,7 +162,7 @@
             // pokeballRadioButtonGirl
             // 
             this.pokeballRadioButtonGirl.CheckedImage = null;
-            this.pokeballRadioButtonGirl.Location = new System.Drawing.Point(219, 632);
+            this.pokeballRadioButtonGirl.Location = new System.Drawing.Point(203, 632);
             this.pokeballRadioButtonGirl.Name = "pokeballRadioButtonGirl";
             this.pokeballRadioButtonGirl.Size = new System.Drawing.Size(175, 50);
             this.pokeballRadioButtonGirl.TabIndex = 6;
@@ -175,7 +175,7 @@
             // pokeballRadioButtonBoy
             // 
             this.pokeballRadioButtonBoy.CheckedImage = null;
-            this.pokeballRadioButtonBoy.Location = new System.Drawing.Point(19, 632);
+            this.pokeballRadioButtonBoy.Location = new System.Drawing.Point(3, 632);
             this.pokeballRadioButtonBoy.Name = "pokeballRadioButtonBoy";
             this.pokeballRadioButtonBoy.Size = new System.Drawing.Size(180, 50);
             this.pokeballRadioButtonBoy.TabIndex = 5;
