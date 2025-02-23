@@ -5,8 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using PokedexTracker.DisplayManagers;
-using PokedexTracker.Managers;  // Our new PokemonCardsManager.
+using PokedexTracker.Managers;
 using PokedexTracker.Helpers;
+using System.Threading;
 
 namespace PokedexTracker
 {
@@ -18,6 +19,9 @@ namespace PokedexTracker
         private readonly PlayerNameDisplayManager _nameDisplayManager;
         private readonly ProgressDisplayManager _progressDisplayManager;
         private PokemonCardsManager _pokemonCardsManager; // Will be instantiated in the constructor.
+
+        private CancellationTokenSource _gameSelectionCTS;
+
 
         private string playerName;
         private (int BadgeCount, string Gender, string GameName) lastTrainerState = (-1, "Boy", string.Empty);
@@ -111,19 +115,18 @@ namespace PokedexTracker
         {
             if (comboBoxGames.SelectedItem is string gameName)
             {
-                // Enable shiny checkbox for games from "Silver" onward.
-                int silverIndex = comboBoxGames.Items.IndexOf("Silver");
-                if (comboBoxGames.SelectedIndex >= silverIndex)
-                {
-                    chkShiny.Enabled = true;
-                }
-                else
-                {
-                    chkShiny.Enabled = false;
-                    chkShiny.Checked = false;
-                }
+                // Cancel any previous loading task.
+                _gameSelectionCTS?.Cancel();
+                _gameSelectionCTS?.Dispose();
+                _gameSelectionCTS = new CancellationTokenSource();
+                var token = _gameSelectionCTS.Token;
 
-                // Enable gender radio buttons for games from "Crystal" onward.
+                // Enable/disable shiny and gender options as before.
+                int silverIndex = comboBoxGames.Items.IndexOf("Silver");
+                chkShiny.Enabled = comboBoxGames.SelectedIndex >= silverIndex;
+                if (!chkShiny.Enabled)
+                    chkShiny.Checked = false;
+
                 int crystalIndex = comboBoxGames.Items.IndexOf("Crystal");
                 if (comboBoxGames.SelectedIndex >= crystalIndex)
                 {
@@ -141,14 +144,22 @@ namespace PokedexTracker
                 }
 
                 bool useShiny = chkShiny.Enabled && chkShiny.Checked;
-                // Delegate loading of Pokémon cards to the manager.
-                await _pokemonCardsManager.LoadPokemonCardsAsync(gameName, useShiny);
+                try
+                {
+                    // Pass the token to LoadPokemonCardsAsync.
+                    await _pokemonCardsManager.LoadPokemonCardsAsync(gameName, useShiny, token);
 
-                // Update player name and trainer card.
-                _nameDisplayManager.UpdatePlayerNameLabel(gameName, lblPlayerName, playerName);
-                UpdateProgressAndTrainer(gameName);
+                    // Update UI elements after successful load.
+                    _nameDisplayManager.UpdatePlayerNameLabel(gameName, lblPlayerName, playerName);
+                    UpdateProgressAndTrainer(gameName);
+                }
+                catch (OperationCanceledException)
+                {
+                    // Loading was canceled because a new selection occurred.
+                }
             }
         }
+
 
         /// <summary>
         /// Filters the displayed Pokémon cards based on search input.
@@ -253,9 +264,14 @@ namespace PokedexTracker
         {
             if (chkShiny.Enabled && comboBoxGames.SelectedItem is string gameName)
             {
-                _ = _pokemonCardsManager.LoadPokemonCardsAsync(gameName, chkShiny.Checked);
+                _gameSelectionCTS?.Cancel();
+                _gameSelectionCTS = new CancellationTokenSource();
+                var token = _gameSelectionCTS.Token;
+
+                _ = _pokemonCardsManager.LoadPokemonCardsAsync(gameName, chkShiny.Checked, token);
             }
         }
+
 
         /// <summary>
         /// Handles gender radio button state changes.

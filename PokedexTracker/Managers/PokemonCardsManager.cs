@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using PokedexTracker.Helpers;
@@ -34,7 +35,7 @@ namespace PokedexTracker.Managers
         /// <summary>
         /// Loads the Pokémon cards from the database (or cache) and displays them.
         /// </summary>
-        public async Task LoadPokemonCardsAsync(string gameName, bool useShiny)
+        public async Task LoadPokemonCardsAsync(string gameName, bool useShiny, CancellationToken token)
         {
             _currentGameName = gameName;
 
@@ -44,11 +45,11 @@ namespace PokedexTracker.Managers
             _panel.Visible = false;
             _panel.Controls.Clear();
 
-            // The returned tuple has the fields:
-            // (List<(string Name, string Number, string SpritePath, bool IsCaught)> PokemonData, int Total, int Caught)
+            // Check for cancellation before starting.
+            token.ThrowIfCancellationRequested();
+
             (List<(string Name, string Number, string SpritePath, bool IsCaught)> PokemonData, int Total, int Caught) dataResult;
 
-            // Use cache when not in shiny mode.
             if (_pokemonCache.ContainsKey(gameName) && !useShiny)
             {
                 var cached = _pokemonCache[gameName];
@@ -58,10 +59,11 @@ namespace PokedexTracker.Managers
             {
                 dataResult = await Task.Run(() =>
                 {
+                    token.ThrowIfCancellationRequested();
                     return useShiny
                         ? _gameManager.GetShinyPokemonData(gameName)
                         : _gameManager.GetPokemonData(gameName);
-                });
+                }, token);
 
                 if (!useShiny)
                 {
@@ -69,17 +71,21 @@ namespace PokedexTracker.Managers
                 }
             }
 
+            // Check for cancellation before updating the UI.
+            token.ThrowIfCancellationRequested();
+
             _allPokemonData = dataResult.PokemonData;
 
-            // Notify listeners (e.g. MainForm) to update progress display.
+            // Notify the MainForm about the new progress data.
             ProgressUpdated?.Invoke(dataResult.Total, dataResult.Caught);
 
-            // Display cards (initially with no filter).
+            // Display cards with no filter initially.
             DisplayFilteredPokemon(string.Empty);
 
             _panel.ResumeLayout(true);
             _panel.Visible = true;
         }
+
 
         /// <summary>
         /// Filters the full Pokémon list and adds cards to the panel.
