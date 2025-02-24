@@ -29,7 +29,14 @@ namespace PokedexTracker.DisplayManagers
                 { "Sapphire",  ("Gen3.ttf",   12f, new Point(59, 47)) },
                 { "Emerald",   ("Gen3.ttf",   12f, new Point(59, 47)) },
                 { "Fire Red",  ("Gen3.ttf",   11f, new Point(70, 40)) },
-                { "Leaf Green",("Gen3.ttf",   11f, new Point(70, 40)) }
+                { "Leaf Green",("Gen3.ttf",   11f, new Point(70, 40)) },
+                // For Gen4 games
+                { "Diamond",      ("Gen3.ttf",   12f, new Point(59, 47)) },
+                { "Pearl",  ("Gen3.ttf",   12f, new Point(59, 47)) },
+                { "Platinum",      ("Gen3.ttf",   12f, new Point(59, 47)) },
+                { "Heart Gold",  ("Gen3.ttf",   12f, new Point(59, 47)) },
+                { "Soul Silver",  ("Gen3.ttf",   12f, new Point(59, 47)) }
+
                 // Add more styles for additional games as needed.
             };
         }

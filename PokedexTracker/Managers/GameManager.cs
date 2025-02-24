@@ -160,6 +160,10 @@ namespace PokedexTracker
                 return "Ruby-Sapphire";
             else if (gameName == "Fire Red" || gameName == "Leaf Green")
                 return "FireRed-LeafGreen";
+            else if (gameName == "Diamond" || gameName == "Pearl")
+                return "Diamond-Pearl";
+            else if (gameName == "Heart Gold" || gameName == "Soul Silver")
+                return "HeartGold-SoulSilver";
             else
                 return gameName;
         }

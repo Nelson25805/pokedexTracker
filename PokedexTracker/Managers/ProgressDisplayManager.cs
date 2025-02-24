@@ -24,7 +24,12 @@ namespace PokedexTracker.DisplayManagers
                 { "Sapphire", ("Gen3.ttf", 12f, new Point(77, 73)) },
                 { "Emerald", ("Gen3.ttf", 12f, new Point(77, 73)) },
                 { "Fire Red", ("Gen3.ttf", 11f, new Point(85, 70)) },
-                { "Leaf Green", ("Gen3.ttf", 11f, new Point(85, 70)) }
+                { "Leaf Green", ("Gen3.ttf", 11f, new Point(85, 70)) },
+                { "Diamond", ("Gen3.ttf", 11f, new Point(85, 70)) },
+                { "Pearl", ("Gen3.ttf", 11f, new Point(85, 70)) },
+                { "Platinum", ("Gen3.ttf", 11f, new Point(85, 70)) },
+                { "Heart Gold", ("Gen3.ttf", 11f, new Point(85, 70)) },
+                { "Soul Silver", ("Gen3.ttf", 11f, new Point(85, 70)) }
             };
         }
 

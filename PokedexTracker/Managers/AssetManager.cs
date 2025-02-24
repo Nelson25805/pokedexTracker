@@ -64,6 +64,10 @@ namespace PokedexTracker
                 folderName = "Ruby-Sapphire";
             else if (gameName == "Fire Red" || gameName == "Leaf Green")
                 folderName = "FireRed-LeafGreen";
+            else if (gameName == "Diamond" || gameName == "Pearl")
+                folderName = "Diamond-Pearl";
+            else if (gameName == "Heart Gold" || gameName == "Soul Silver")
+                folderName = "HeartGold-SoulSilver";
             else
                 folderName = gameName;
 
