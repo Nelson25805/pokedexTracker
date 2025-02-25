@@ -19,6 +19,9 @@ namespace PokedexTracker.Forms
         private int textCharIndex = 0;
         private string playerName = "Trainer";
 
+        private bool isErrorMessage = false;
+
+
         // UI Elements for fade effect
         private float imageOpacity = 0f;
         private const float fadeStep = 0.05f;
@@ -126,17 +129,26 @@ namespace PokedexTracker.Forms
             else
             {
                 timer1.Stop();
-                advanceButton.Visible = true;
-                // For example, if you want to reveal name input on a specific speech index:
-                if (_speechManager.CurrentIndex == 3)
+                if (!isErrorMessage)
                 {
-                    nameTextBox.Visible = true;
-                    submitButton.Visible = true;
-                    nameTextBox.Focus();
-                    advanceButton.Visible = false;
+                    advanceButton.Visible = true;
+                    // For example, if you want to reveal name input on a specific speech index:
+                    if (_speechManager.CurrentIndex == 3)
+                    {
+                        nameTextBox.Visible = true;
+                        submitButton.Visible = true;
+                        nameTextBox.Focus();
+                        advanceButton.Visible = false;
+                    }
+                }
+                else
+                {
+                    // Finished typing error message; reset flag so the user can try again.
+                    isErrorMessage = false;
                 }
             }
         }
+
 
         private void AdvanceButton_Click(object sender, EventArgs e)
         {
@@ -172,11 +184,36 @@ namespace PokedexTracker.Forms
 
         private void SubmitButton_Click(object sender, EventArgs e)
         {
-            playerName = nameTextBox.Text;
+            string enteredName = nameTextBox.Text.Trim();
+
+            if (enteredName.Length < 1)
+            {
+                isErrorMessage = true;
+                currentText = "Your name must be at least 1 character long. Please try again.";
+                professorLabel.Text = "";
+                textCharIndex = 0;
+                timer1.Start();
+                nameTextBox.Focus();
+                return;
+            }
+            else if (enteredName.Length > 7)
+            {
+                isErrorMessage = true;
+                currentText = "Your name cannot be more than 7 characters long. Please try again.";
+                professorLabel.Text = "";
+                textCharIndex = 0;
+                timer1.Start();
+                nameTextBox.Focus();
+                return;
+            }
+
+            // If valid, save and continue.
+            playerName = enteredName;
             Properties.Settings.Default.playerName = playerName;
             Properties.Settings.Default.Save();
             AdvanceButton_Click(sender, e);
         }
+
 
         private void UpdateProfessorImage()
         {
