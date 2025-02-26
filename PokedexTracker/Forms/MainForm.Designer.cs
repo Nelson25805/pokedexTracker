@@ -44,12 +44,12 @@
             this.trainerCard = new System.Windows.Forms.PictureBox();
             this.lblPlayerName = new System.Windows.Forms.Label();
             this.chkShiny = new System.Windows.Forms.CheckBox();
-            this.pokeballRadioButtonGirl = new PokeballRadioButton();
-            this.pokeballRadioButtonBoy = new PokeballRadioButton();
             this.searchTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.pokeballRadioButtonGirl = new PokeballRadioButton();
+            this.pokeballRadioButtonBoy = new PokeballRadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.trainerCard)).BeginInit();
             this.SuspendLayout();
             // 
@@ -159,32 +159,6 @@
             this.chkShiny.UseVisualStyleBackColor = true;
             this.chkShiny.CheckedChanged += new System.EventHandler(this.chkShiny_CheckedChanged);
             // 
-            // pokeballRadioButtonGirl
-            // 
-            this.pokeballRadioButtonGirl.CheckedImage = null;
-            this.pokeballRadioButtonGirl.Location = new System.Drawing.Point(203, 632);
-            this.pokeballRadioButtonGirl.Name = "pokeballRadioButtonGirl";
-            this.pokeballRadioButtonGirl.Size = new System.Drawing.Size(175, 50);
-            this.pokeballRadioButtonGirl.TabIndex = 6;
-            this.pokeballRadioButtonGirl.TabStop = true;
-            this.pokeballRadioButtonGirl.Text = "Girl";
-            this.pokeballRadioButtonGirl.UncheckedImage = null;
-            this.pokeballRadioButtonGirl.UseVisualStyleBackColor = true;
-            this.pokeballRadioButtonGirl.CheckedChanged += new System.EventHandler(this.rdoGender_CheckedChanged);
-            // 
-            // pokeballRadioButtonBoy
-            // 
-            this.pokeballRadioButtonBoy.CheckedImage = null;
-            this.pokeballRadioButtonBoy.Location = new System.Drawing.Point(3, 632);
-            this.pokeballRadioButtonBoy.Name = "pokeballRadioButtonBoy";
-            this.pokeballRadioButtonBoy.Size = new System.Drawing.Size(180, 50);
-            this.pokeballRadioButtonBoy.TabIndex = 5;
-            this.pokeballRadioButtonBoy.TabStop = true;
-            this.pokeballRadioButtonBoy.Text = "Boy";
-            this.pokeballRadioButtonBoy.UncheckedImage = null;
-            this.pokeballRadioButtonBoy.UseVisualStyleBackColor = true;
-            this.pokeballRadioButtonBoy.CheckedChanged += new System.EventHandler(this.rdoGender_CheckedChanged);
-            // 
             // searchTextBox
             // 
             this.searchTextBox.Location = new System.Drawing.Point(19, 859);
@@ -220,11 +194,37 @@
             this.label3.TabIndex = 10;
             this.label3.Text = "Search Pokemon:";
             // 
+            // pokeballRadioButtonGirl
+            // 
+            this.pokeballRadioButtonGirl.CheckedImage = null;
+            this.pokeballRadioButtonGirl.Location = new System.Drawing.Point(203, 632);
+            this.pokeballRadioButtonGirl.Name = "pokeballRadioButtonGirl";
+            this.pokeballRadioButtonGirl.Size = new System.Drawing.Size(175, 50);
+            this.pokeballRadioButtonGirl.TabIndex = 6;
+            this.pokeballRadioButtonGirl.TabStop = true;
+            this.pokeballRadioButtonGirl.Text = "Girl";
+            this.pokeballRadioButtonGirl.UncheckedImage = null;
+            this.pokeballRadioButtonGirl.UseVisualStyleBackColor = true;
+            this.pokeballRadioButtonGirl.CheckedChanged += new System.EventHandler(this.rdoGender_CheckedChanged);
+            // 
+            // pokeballRadioButtonBoy
+            // 
+            this.pokeballRadioButtonBoy.CheckedImage = null;
+            this.pokeballRadioButtonBoy.Location = new System.Drawing.Point(3, 632);
+            this.pokeballRadioButtonBoy.Name = "pokeballRadioButtonBoy";
+            this.pokeballRadioButtonBoy.Size = new System.Drawing.Size(180, 50);
+            this.pokeballRadioButtonBoy.TabIndex = 5;
+            this.pokeballRadioButtonBoy.TabStop = true;
+            this.pokeballRadioButtonBoy.Text = "Boy";
+            this.pokeballRadioButtonBoy.UncheckedImage = null;
+            this.pokeballRadioButtonBoy.UseVisualStyleBackColor = true;
+            this.pokeballRadioButtonBoy.CheckedChanged += new System.EventHandler(this.rdoGender_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1876, 1379);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
