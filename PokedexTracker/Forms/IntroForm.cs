@@ -3,7 +3,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using PokedexTracker.Controls;
 using PokedexTracker.Helpers;
 using PokedexTracker.Managers;
 
@@ -18,33 +17,33 @@ namespace PokedexTracker.Forms
         private string currentText = "";
         private int textCharIndex = 0;
         private string playerName = "Trainer";
-
         private bool isErrorMessage = false;
 
-
-        // UI Elements for fade effect
+        // Variables for fade effect.
         private float imageOpacity = 0f;
         private const float fadeStep = 0.05f;
         private Image originalProfessorImage;
-
-        // The refactored generation menu controller
-        private GenerationMenu generationMenu;
 
         public IntroForm()
         {
             InitializeComponent();
 
+            // Initialize managers.
             _assetManager = new AssetManager();
             _generationManager = new GenerationManager(_assetManager);
 
-            HideAllContent();
-            InitGenerationMenu();
+            // Automatically select Generation 1 since it's the only option.
+            _selectedGeneration = _generationManager.GetGeneration("Generation 1");
 
+            HideAllContent();
+
+            // Hook up button events.
             submitButton.Click += SubmitButton_Click;
             skipIntroButton.Click += SkipIntroButton_Click;
             advanceButton.Click += AdvanceButton_Click;
         }
 
+        // Hide all content initially.
         private void HideAllContent()
         {
             professorLabel.Visible = false;
@@ -55,54 +54,24 @@ namespace PokedexTracker.Forms
             skipIntroButton.Visible = false;
         }
 
-        private void InitGenerationMenu()
+        // On form load, immediately start the intro.
+        private void IntroForm_Load(object sender, EventArgs e)
         {
-            var generationNames = _generationManager.GetAvailableGenerations();
-            generationMenu = new GenerationMenu(generationMenuPanel, generationNames);
-            generationMenu.GenerationClicked += (s, e) => SubmitSelection();
-        }
-
-
-        // Override keyboard handling to move arrow and confirm selection.
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-        {
-            if (keyData == Keys.Up)
-            {
-                generationMenu.MoveUp();
-                return true;
-            }
-            else if (keyData == Keys.Down)
-            {
-                generationMenu.MoveDown();
-                return true;
-            }
-            else if (keyData == Keys.Enter)
-            {
-                SubmitSelection();
-                return true;
-            }
-            return base.ProcessCmdKey(ref msg, keyData);
-        }
-
-        private void SubmitSelection()
-        {
-            string selectedName = generationMenu.GetSelectedGenerationName();
-            _selectedGeneration = _generationManager.GetGeneration(selectedName);
             StartIntro();
         }
 
+        // Begin the intro sequence.
         private void StartIntro()
         {
             if (_selectedGeneration == null)
             {
-                MessageBox.Show("Please select a generation before proceeding.");
+                MessageBox.Show("Generation 1 is not available.");
                 return;
             }
 
-            generationMenuPanel.Visible = false;
             ShowIntroContent();
 
-            // Initialize the SpeechManager with speeches from the selected generation.
+            // Initialize SpeechManager with the single speech option.
             _speechManager = new SpeechManager(_selectedGeneration.Speeches);
             currentText = _speechManager.CurrentSpeech;
             professorLabel.Text = "";
@@ -111,6 +80,7 @@ namespace PokedexTracker.Forms
             timer1.Start();
         }
 
+        // Make the professor and skip button visible.
         private void ShowIntroContent()
         {
             professorLabel.Visible = true;
@@ -118,7 +88,7 @@ namespace PokedexTracker.Forms
             skipIntroButton.Visible = true;
         }
 
-        // Timer tick for “typing” effect.
+        // Timer tick: display text with a typing effect.
         private void timer1_Tick(object sender, EventArgs e)
         {
             if (textCharIndex < currentText.Length)
@@ -132,7 +102,7 @@ namespace PokedexTracker.Forms
                 if (!isErrorMessage)
                 {
                     advanceButton.Visible = true;
-                    // For example, if you want to reveal name input on a specific speech index:
+                    // For example, when the professor asks for the player's name (speech index 3).
                     if (_speechManager.CurrentIndex == 3)
                     {
                         nameTextBox.Visible = true;
@@ -143,19 +113,19 @@ namespace PokedexTracker.Forms
                 }
                 else
                 {
-                    // Finished typing error message; reset flag so the user can try again.
+                    // Reset the error flag so the user can try again.
                     isErrorMessage = false;
                 }
             }
         }
 
-
+        // Advance to the next part of the speech.
         private void AdvanceButton_Click(object sender, EventArgs e)
         {
             _speechManager.Advance();
             if (_speechManager.CurrentIndex < _selectedGeneration.Speeches.Length)
             {
-                // Replace any placeholder with the player's name
+                // Replace any placeholder with the player's name.
                 currentText = _selectedGeneration.Speeches[_speechManager.CurrentIndex].Replace("{playerName}", playerName);
                 professorLabel.Text = "";
                 textCharIndex = 0;
@@ -169,7 +139,7 @@ namespace PokedexTracker.Forms
                 {
                     nameTextBox.Visible = false;
                     submitButton.Visible = false;
-                    // Retrieve player name from settings and update speeches if needed.
+                    // Retrieve the stored player name.
                     playerName = Properties.Settings.Default.playerName;
                     currentText = currentText.Replace("{playerName}", playerName);
                 }
@@ -182,6 +152,7 @@ namespace PokedexTracker.Forms
             }
         }
 
+        // Validate the player's name and advance if valid.
         private void SubmitButton_Click(object sender, EventArgs e)
         {
             string enteredName = nameTextBox.Text.Trim();
@@ -207,14 +178,13 @@ namespace PokedexTracker.Forms
                 return;
             }
 
-            // If valid, save and continue.
             playerName = enteredName;
             Properties.Settings.Default.playerName = playerName;
             Properties.Settings.Default.Save();
             AdvanceButton_Click(sender, e);
         }
 
-
+        // Load and fade in the professor image.
         private void UpdateProfessorImage()
         {
             if (_selectedGeneration != null && professorPictureBox.Image == null)
@@ -236,6 +206,7 @@ namespace PokedexTracker.Forms
             }
         }
 
+        // Skip the intro and navigate to the main form.
         private void SkipIntroButton_Click(object sender, EventArgs e)
         {
             playerName = "Trainer";
@@ -244,6 +215,7 @@ namespace PokedexTracker.Forms
             NavigateToMainForm();
         }
 
+        // Open the main form.
         private void NavigateToMainForm()
         {
             this.Hide();
@@ -257,7 +229,7 @@ namespace PokedexTracker.Forms
             Application.Exit();
         }
 
-        // Timer tick for fading in the professor image.
+        // Fade timer tick: gradually increase the professor image opacity.
         private void fadeTimer_Tick(object sender, EventArgs e)
         {
             if (imageOpacity < 1f)
