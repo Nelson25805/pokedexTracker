@@ -33,7 +33,7 @@
             this.nameTextBox = new System.Windows.Forms.TextBox();
             this.submitButton = new System.Windows.Forms.Button();
             this.skipIntroButton = new System.Windows.Forms.Button();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.typingTimer = new System.Windows.Forms.Timer(this.components);
             this.professorPictureBox = new System.Windows.Forms.PictureBox();
             this.advanceButton = new System.Windows.Forms.Button();
             this.fadeTimer = new System.Windows.Forms.Timer(this.components);
@@ -80,10 +80,10 @@
             this.skipIntroButton.Text = "Skip Intro";
             this.skipIntroButton.UseVisualStyleBackColor = true;
             // 
-            // timer1
+            // typingTimer
             // 
-            this.timer1.Interval = 20;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.typingTimer.Interval = 20;
+            this.typingTimer.Tick += new System.EventHandler(this.typingTimer_Tick);
             // 
             // professorPictureBox
             // 
@@ -137,7 +137,7 @@
         private System.Windows.Forms.TextBox nameTextBox;
         private System.Windows.Forms.Button submitButton;
         private System.Windows.Forms.Button skipIntroButton;
-        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Timer typingTimer;
         private System.Windows.Forms.PictureBox professorPictureBox;
         private System.Windows.Forms.Button advanceButton;
         private System.Windows.Forms.Timer fadeTimer;

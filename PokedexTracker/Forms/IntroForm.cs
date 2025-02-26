@@ -77,7 +77,7 @@ namespace PokedexTracker.Forms
             professorLabel.Text = "";
             textCharIndex = 0;
             advanceButton.Visible = false;
-            timer1.Start();
+            typingTimer.Start();
         }
 
         // Make the professor and skip button visible.
@@ -89,7 +89,7 @@ namespace PokedexTracker.Forms
         }
 
         // Timer tick: display text with a typing effect.
-        private void timer1_Tick(object sender, EventArgs e)
+        private void typingTimer_Tick(object sender, EventArgs e)
         {
             if (textCharIndex < currentText.Length)
             {
@@ -98,7 +98,7 @@ namespace PokedexTracker.Forms
             }
             else
             {
-                timer1.Stop();
+                typingTimer.Stop();
                 if (!isErrorMessage)
                 {
                     advanceButton.Visible = true;
@@ -144,7 +144,7 @@ namespace PokedexTracker.Forms
                     currentText = currentText.Replace("{playerName}", playerName);
                 }
 
-                timer1.Start();
+                typingTimer.Start();
             }
             else
             {
@@ -163,7 +163,7 @@ namespace PokedexTracker.Forms
                 currentText = "Your name must be at least 1 character long. Please try again.";
                 professorLabel.Text = "";
                 textCharIndex = 0;
-                timer1.Start();
+                typingTimer.Start();
                 nameTextBox.Focus();
                 return;
             }
@@ -173,7 +173,7 @@ namespace PokedexTracker.Forms
                 currentText = "Your name cannot be more than 7 characters long. Please try again.";
                 professorLabel.Text = "";
                 textCharIndex = 0;
-                timer1.Start();
+                typingTimer.Start();
                 nameTextBox.Focus();
                 return;
             }
