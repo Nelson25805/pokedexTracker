@@ -167,16 +167,6 @@ namespace PokedexTracker.Forms
                 nameTextBox.Focus();
                 return;
             }
-            else if (enteredName.Length > 7)
-            {
-                isErrorMessage = true;
-                currentText = "Your name cannot be more than 7 characters long. Please try again.";
-                professorLabel.Text = "";
-                textCharIndex = 0;
-                typingTimer.Start();
-                nameTextBox.Focus();
-                return;
-            }
 
             playerName = enteredName;
             Properties.Settings.Default.playerName = playerName;
