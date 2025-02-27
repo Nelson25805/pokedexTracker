@@ -238,9 +238,10 @@
             this.Controls.Add(this.lblProgress);
             this.Controls.Add(this.panelCards);
             this.Controls.Add(this.comboBoxGames);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "MainForm";
+            this.Text = "Pokédex Tracker";
             this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.trainerCard)).EndInit();
             this.ResumeLayout(false);
