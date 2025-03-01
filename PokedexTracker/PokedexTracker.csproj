@@ -110,7 +110,6 @@
     <Compile Include="Managers\DatabaseManager.cs" />
     <Compile Include="Managers\GameManager.cs" />
     <Compile Include="Managers\GenerationManager.cs" />
-    <Compile Include="Controls\GenerationMenu.cs" />
     <Compile Include="Helpers\ImageFader.cs" />
     <Compile Include="Managers\PlayerNameDisplayManager.cs" />
     <Compile Include="Managers\PokemonCardsManager.cs" />
