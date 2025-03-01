@@ -122,8 +122,6 @@
     </Compile>
     <Compile Include="Models\PokemonGeneration.cs" />
     <Compile Include="Models\ProgressDisplayStyle.cs" />
-    <Compile Include="OldClasses\DatabaseHelper.cs" />
-    <Compile Include="OldClasses\PokemonApiClient.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
