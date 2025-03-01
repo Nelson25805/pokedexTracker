@@ -110,21 +110,20 @@ namespace PokedexTracker
             return Path.Combine(GetFontsPath(), fontFileName);
         }
 
-        public string GetRadioButtonsPath()
-        {
-            return Path.Combine(_baseAssetsPath, "RadioButtons");
-        }
-
+        /// <summary>
+        /// Returns the full path for the custom Radio Button images.
+        /// </summary>
         public string GetRadioButtonImagePath(string imageFileName)
         {
-            return Path.Combine(GetRadioButtonsPath(), imageFileName);
+            return Path.Combine(_baseAssetsPath,"RadioButtons", imageFileName);
         }
 
+        /// <summary>
+        /// Returns the full path for the Pokemon card background image.
+        /// </summary>
         public string GetPokemonCardBackgroundPath()
         {
             return Path.Combine(_baseAssetsPath, "PokemonCardBackground", "pokeballBg.png");
         }
-
-
     }
 }
