@@ -31,7 +31,7 @@ namespace PokedexTracker
         /// </summary>
         public string GetDatabasePath()
         {
-            return Path.Combine(_baseAssetsPath, "pokedex.db");
+            return Path.Combine(_baseAssetsPath,"Database", "pokedex.db");
         }
 
         /// <summary>
