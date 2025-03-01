@@ -120,6 +120,11 @@ namespace PokedexTracker
             return Path.Combine(GetRadioButtonsPath(), imageFileName);
         }
 
+        public string GetPokemonCardBackgroundPath()
+        {
+            return Path.Combine(_baseAssetsPath, "PokemonCardBackground", "pokeballBg.png");
+        }
+
 
     }
 }

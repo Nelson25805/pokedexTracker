@@ -36,7 +36,7 @@ namespace PokedexTracker
         {
             AssetManager assetManager = new AssetManager();
             // Assuming the pokeball background image is stored as "pokeballBg.png" in the Assets folder.
-            string pokeballBgPath = Path.Combine(assetManager.GetBaseAssetsPath(), "pokeballBg.png");
+            string pokeballBgPath = assetManager.GetPokemonCardBackgroundPath();
 
             if (File.Exists(pokeballBgPath))
             {
