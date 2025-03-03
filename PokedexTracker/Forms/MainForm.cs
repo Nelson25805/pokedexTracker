@@ -17,7 +17,7 @@ namespace PokedexTracker
         private readonly AssetManager _assetManager;
         private readonly PlayerNameDisplayManager _nameDisplayManager;
         private readonly ProgressDisplayManager _progressDisplayManager;
-        private PokemonCardsManager _pokemonCardsManager; // Will be instantiated in the constructor.
+        private PokemonCardsManager _pokemonCardsManager;
 
         private CancellationTokenSource _gameSelectionCTS;
 

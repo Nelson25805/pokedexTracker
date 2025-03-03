@@ -173,6 +173,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Debug\" />
+    <Folder Include="GithubAssets\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\RadioButtons\checkedPokeball.png" />
