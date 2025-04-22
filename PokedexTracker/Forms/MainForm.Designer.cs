@@ -48,9 +48,11 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.diplomaButton = new System.Windows.Forms.Button();
             this.pokeballRadioButtonGirl = new PokeballRadioButton();
             this.pokeballRadioButtonBoy = new PokeballRadioButton();
-            this.diplomaButton = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.btnChangeName = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.trainerCard)).BeginInit();
             this.SuspendLayout();
             // 
@@ -195,6 +197,16 @@
             this.label3.TabIndex = 10;
             this.label3.Text = "Search Pokemon:";
             // 
+            // diplomaButton
+            // 
+            this.diplomaButton.Enabled = false;
+            this.diplomaButton.Location = new System.Drawing.Point(19, 942);
+            this.diplomaButton.Name = "diplomaButton";
+            this.diplomaButton.Size = new System.Drawing.Size(322, 61);
+            this.diplomaButton.TabIndex = 11;
+            this.diplomaButton.Text = "Diploma";
+            this.diplomaButton.UseVisualStyleBackColor = true;
+            // 
             // pokeballRadioButtonGirl
             // 
             this.pokeballRadioButtonGirl.CheckedImage = null;
@@ -221,15 +233,25 @@
             this.pokeballRadioButtonBoy.UseVisualStyleBackColor = true;
             this.pokeballRadioButtonBoy.CheckedChanged += new System.EventHandler(this.rdoGender_CheckedChanged);
             // 
-            // diplomaButton
+            // menuStrip1
             // 
-            this.diplomaButton.Enabled = false;
-            this.diplomaButton.Location = new System.Drawing.Point(19, 942);
-            this.diplomaButton.Name = "diplomaButton";
-            this.diplomaButton.Size = new System.Drawing.Size(322, 61);
-            this.diplomaButton.TabIndex = 11;
-            this.diplomaButton.Text = "Diploma";
-            this.diplomaButton.UseVisualStyleBackColor = true;
+            this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(40, 40);
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1876, 24);
+            this.menuStrip1.TabIndex = 12;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // btnChangeName
+            // 
+            this.btnChangeName.Location = new System.Drawing.Point(19, 1033);
+            this.btnChangeName.Name = "btnChangeName";
+            this.btnChangeName.Size = new System.Drawing.Size(322, 61);
+            this.btnChangeName.TabIndex = 13;
+            this.btnChangeName.Text = "Change Name";
+            this.btnChangeName.UseVisualStyleBackColor = true;
+            this.btnChangeName.Click += new System.EventHandler(this.btnChangeName_Click);
             // 
             // MainForm
             // 
@@ -237,6 +259,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1876, 1379);
+            this.Controls.Add(this.btnChangeName);
             this.Controls.Add(this.diplomaButton);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -250,7 +273,9 @@
             this.Controls.Add(this.lblProgress);
             this.Controls.Add(this.panelCards);
             this.Controls.Add(this.comboBoxGames);
+            this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Pokédex Tracker";
@@ -268,5 +293,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button diplomaButton;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.Button btnChangeName;
     }
 }

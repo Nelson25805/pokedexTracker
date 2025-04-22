@@ -7,6 +7,7 @@ using PokedexTracker.DisplayManagers;
 using PokedexTracker.Managers;
 using PokedexTracker.Helpers;
 using System.Threading;
+using PokedexTracker.Forms;
 
 namespace PokedexTracker
 {
@@ -294,6 +295,35 @@ namespace PokedexTracker
         {
             base.OnFormClosing(e);
             Application.Exit();
+        }
+
+        private void btnChangeName_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new ChangeNameForm(playerName))
+            {
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    ApplyNewPlayerName(dlg.NewName);
+                }
+            }
+        }
+
+        // Pull out your update logic into one method:
+        private void ApplyNewPlayerName(string newName)
+        {
+            playerName = newName;
+
+            // Persist across sessions
+            Properties.Settings.Default.playerName = playerName;
+            Properties.Settings.Default.Save();
+
+            // Update the on‐screen label
+            if (comboBoxGames.SelectedItem is string game)
+                _nameDisplayManager.UpdatePlayerNameLabel(game, lblPlayerName, playerName);
+
+            // Refresh trainer card in case the name prints elsewhere
+            UpdateProgressAndTrainer(comboBoxGames.SelectedItem as string ?? "",
+                                     total: 0, caught: 0);
         }
     }
 }
