@@ -50,6 +50,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.pokeballRadioButtonGirl = new PokeballRadioButton();
             this.pokeballRadioButtonBoy = new PokeballRadioButton();
+            this.diplomaButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.trainerCard)).BeginInit();
             this.SuspendLayout();
             // 
@@ -220,12 +221,23 @@
             this.pokeballRadioButtonBoy.UseVisualStyleBackColor = true;
             this.pokeballRadioButtonBoy.CheckedChanged += new System.EventHandler(this.rdoGender_CheckedChanged);
             // 
+            // diplomaButton
+            // 
+            this.diplomaButton.Enabled = false;
+            this.diplomaButton.Location = new System.Drawing.Point(19, 942);
+            this.diplomaButton.Name = "diplomaButton";
+            this.diplomaButton.Size = new System.Drawing.Size(322, 61);
+            this.diplomaButton.TabIndex = 11;
+            this.diplomaButton.Text = "Diploma";
+            this.diplomaButton.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1876, 1379);
+            this.Controls.Add(this.diplomaButton);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -255,5 +267,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button diplomaButton;
     }
 }
