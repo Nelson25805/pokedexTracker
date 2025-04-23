@@ -1,4 +1,6 @@
-﻿using System;
+﻿// FontLoader.cs
+using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Text;
 using System.IO;
@@ -9,41 +11,52 @@ namespace PokedexTracker.Helpers
 {
     public static class FontLoader
     {
-        private static PrivateFontCollection _privateFontCollection = new PrivateFontCollection();
-
-        /// <summary>
-        /// Loads an embedded font from a resource.
-        /// resourceName must be the full resource name (e.g. "PokedexTracker.Fonts.Gen3.ttf").
-        /// </summary>
         public static Font LoadEmbeddedFont(string resourceName, float size)
         {
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            using (Stream fontStream = assembly.GetManifestResourceStream(resourceName))
-            {
-                if (fontStream == null)
-                    throw new Exception("Font resource not found: " + resourceName);
-                byte[] fontData = new byte[fontStream.Length];
-                fontStream.Read(fontData, 0, fontData.Length);
+            var coll = LoadFontCollection(new[] { GetFileName(resourceName) });
+            var family = coll.Families[0];
+            return new Font(family, size, FontStyle.Regular, GraphicsUnit.Pixel);
+        }
 
-                // Pin the byte array so that its address remains fixed.
-                GCHandle handle = GCHandle.Alloc(fontData, GCHandleType.Pinned);
-                try
+        public static PrivateFontCollection LoadFontCollection(IEnumerable<string> fontFiles)
+        {
+            var collection = new PrivateFontCollection();
+            var asm = Assembly.GetExecutingAssembly();
+            foreach (var file in fontFiles)
+            {
+                string res = $"PokedexTracker.Assets.Fonts.{file}";
+                using (var stream = asm.GetManifestResourceStream(res))
                 {
-                    IntPtr pFontData = handle.AddrOfPinnedObject();
-                    _privateFontCollection.AddMemoryFont(pFontData, fontData.Length);
-                }
-                finally
-                {
-                    handle.Free();
+                    if (stream == null)
+                        throw new InvalidOperationException($"Font resource not found: {res}");
+                    byte[] data = new byte[stream.Length];
+                    stream.Read(data, 0, data.Length);
+                    var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
+                    try { collection.AddMemoryFont(handle.AddrOfPinnedObject(), data.Length); }
+                    finally { handle.Free(); }
                 }
             }
+            return collection;
+        }
 
-            if (_privateFontCollection.Families.Length > 0)
-            {
-                FontFamily family = _privateFontCollection.Families[_privateFontCollection.Families.Length - 1];
-                return new Font(family, size);
-            }
-            throw new Exception("No font families found in resource: " + resourceName);
+        public static FontFamily GetFamilyFromCollection(
+            PrivateFontCollection coll,
+            string fileName)
+        {
+            var baseName = Path.GetFileNameWithoutExtension(fileName);
+            foreach (var fam in coll.Families)
+                if (fam.Name.Equals(baseName, StringComparison.OrdinalIgnoreCase))
+                    return fam;
+            return coll.Families.Length > 0 ? coll.Families[0]
+                   : throw new InvalidOperationException("No font families available");
+        }
+
+        private static string GetFileName(string resourceName)
+        {
+            int idx = resourceName.LastIndexOf('.');
+            return (idx >= 0 && idx + 1 < resourceName.Length)
+                 ? resourceName.Substring(idx + 1)
+                 : resourceName;
         }
     }
 }

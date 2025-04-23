@@ -111,6 +111,7 @@
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\CardComposer.cs" />
     <Compile Include="Helpers\FontLoader.cs" />
     <Compile Include="Managers\AssetManager.cs" />
     <Compile Include="Managers\DatabaseManager.cs" />

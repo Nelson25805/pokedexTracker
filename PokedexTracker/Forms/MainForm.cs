@@ -33,15 +33,6 @@ namespace PokedexTracker
         public MainForm(string name) : this() // Ensures the parameterless constructor runs.
         {
             playerName = name;
-            if (comboBoxGames.SelectedItem is string selectedGame)
-            {
-                _nameDisplayManager.UpdatePlayerNameLabel(selectedGame, lblPlayerName, playerName);
-            }
-            // Ensure labels are drawn on top of the trainer card.
-            lblPlayerName.Parent = trainerCard;
-            lblPlayerName.BackColor = Color.Transparent;
-            lblProgress.Parent = trainerCard;
-            lblProgress.BackColor = Color.Transparent;
 
             // Set the custom radio button images.
             SetRadioButtonImages();
@@ -149,8 +140,6 @@ namespace PokedexTracker
                     // Pass the token to LoadPokemonCardsAsync.
                     await _pokemonCardsManager.LoadPokemonCardsAsync(gameName, useShiny, token);
 
-                    // Update UI elements after successful load.
-                    _nameDisplayManager.UpdatePlayerNameLabel(gameName, lblPlayerName, playerName);
                     UpdateProgressAndTrainer(gameName);
                 }
                 catch (OperationCanceledException)
@@ -213,49 +202,54 @@ namespace PokedexTracker
             {
                 string progressText = $"{caught} / {total}";
                 bool useShiny = chkShiny.Enabled && chkShiny.Checked;
-                _progressDisplayManager.UpdateProgressLabel(gameName, lblProgress, progressText);
-                lblProgress.Visible = true;
             }));
         }
 
         /// <summary>
         /// Updates the trainer sprite based on progress and gender.
         /// </summary>
-        private async void UpdateTrainerSpriteAsync(int caughtCount, int totalCount, string currentGameName)
+        private async void UpdateTrainerSpriteAsync(int caughtCount, int totalCount, string game)
         {
             if (trainerCard == null || totalCount == 0)
                 return;
 
-            int badgeThreshold = totalCount / 8;
-            int newBadgeCount = Math.Min(caughtCount / badgeThreshold, 8);
+            int threshold = totalCount / 8;
+            int badges = Math.Min(caughtCount / threshold, 8);
 
-            // Avoid unnecessary updates.
-            if (newBadgeCount == lastTrainerState.BadgeCount &&
-                selectedGender == lastTrainerState.Gender &&
-                currentGameName == lastTrainerState.GameName)
-            {
-                return;
-            }
-
-            lastTrainerState = (newBadgeCount, selectedGender, currentGameName);
+            // Always redraw (no early exit)
+            lastTrainerState = (badges, selectedGender, game);
 
             trainerCard.Visible = false;
 
-            string badgeImagePath = _assetManager.GetTrainerBadgePath(currentGameName, newBadgeCount, selectedGender);
-            if (!File.Exists(badgeImagePath))
+            // 1) Load the combined card+badge image
+            string path = _assetManager.GetTrainerBadgePath(game, badges, selectedGender);
+            if (!File.Exists(path))
             {
-                MessageBox.Show($"Badge image not found: {badgeImagePath}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Card not found: {path}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            Image cardImage = await Task.Run(() => Image.FromFile(path));
 
-            Image badgeImage = await Task.Run(() => Image.FromFile(badgeImagePath));
+            // 2) Pull font settings & prepare text
+            var nameSet = _nameDisplayManager.GetFontSettings(game);
+            var progSet = _progressDisplayManager.GetFontSettings(game);
+            string progText = $"{caughtCount} / {totalCount}";
 
-            trainerCard.Invoke((MethodInvoker)(() =>
-            {
-                trainerCard.Image = badgeImage;
-                trainerCard.Visible = true;
-            }));
+            // 3) Compose final bitmap with updated name & progress
+            var finalBmp = CardComposer.ComposeTrainerCard(
+                baseCard: cardImage,
+                badgeImage: null,
+                nameSettings: nameSet,
+                playerName: playerName,
+                progressSettings: progSet,
+                progressText: progText
+            );
+
+            // 4) Display it
+            trainerCard.Image = finalBmp;
+            trainerCard.Visible = true;
         }
+
 
         /// <summary>
         /// Handles changes to the shiny checkbox state.
@@ -316,10 +310,6 @@ namespace PokedexTracker
             // Persist across sessions
             Properties.Settings.Default.playerName = playerName;
             Properties.Settings.Default.Save();
-
-            // Update the on‐screen label
-            if (comboBoxGames.SelectedItem is string game)
-                _nameDisplayManager.UpdatePlayerNameLabel(game, lblPlayerName, playerName);
 
             // Refresh trainer card in case the name prints elsewhere
             UpdateProgressAndTrainer(comboBoxGames.SelectedItem as string ?? "",
