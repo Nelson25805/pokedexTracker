@@ -49,10 +49,10 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.diplomaButton = new System.Windows.Forms.Button();
-            this.pokeballRadioButtonGirl = new PokeballRadioButton();
-            this.pokeballRadioButtonBoy = new PokeballRadioButton();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.btnChangeName = new System.Windows.Forms.Button();
+            this.pokeballRadioButtonGirl = new PokeballRadioButton();
+            this.pokeballRadioButtonBoy = new PokeballRadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.trainerCard)).BeginInit();
             this.SuspendLayout();
             // 
@@ -207,6 +207,26 @@
             this.diplomaButton.Text = "Diploma";
             this.diplomaButton.UseVisualStyleBackColor = true;
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(40, 40);
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1876, 24);
+            this.menuStrip1.TabIndex = 12;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // btnChangeName
+            // 
+            this.btnChangeName.Location = new System.Drawing.Point(19, 1033);
+            this.btnChangeName.Name = "btnChangeName";
+            this.btnChangeName.Size = new System.Drawing.Size(322, 61);
+            this.btnChangeName.TabIndex = 13;
+            this.btnChangeName.Text = "Change Name";
+            this.btnChangeName.UseVisualStyleBackColor = true;
+            this.btnChangeName.Click += new System.EventHandler(this.btnChangeName_Click);
+            // 
             // pokeballRadioButtonGirl
             // 
             this.pokeballRadioButtonGirl.CheckedImage = null;
@@ -232,26 +252,6 @@
             this.pokeballRadioButtonBoy.UncheckedImage = null;
             this.pokeballRadioButtonBoy.UseVisualStyleBackColor = true;
             this.pokeballRadioButtonBoy.CheckedChanged += new System.EventHandler(this.rdoGender_CheckedChanged);
-            // 
-            // menuStrip1
-            // 
-            this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
-            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(40, 40);
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1876, 24);
-            this.menuStrip1.TabIndex = 12;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
-            // btnChangeName
-            // 
-            this.btnChangeName.Location = new System.Drawing.Point(19, 1033);
-            this.btnChangeName.Name = "btnChangeName";
-            this.btnChangeName.Size = new System.Drawing.Size(322, 61);
-            this.btnChangeName.TabIndex = 13;
-            this.btnChangeName.Text = "Change Name";
-            this.btnChangeName.UseVisualStyleBackColor = true;
-            this.btnChangeName.Click += new System.EventHandler(this.btnChangeName_Click);
             // 
             // MainForm
             // 
