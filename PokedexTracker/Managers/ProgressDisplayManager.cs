@@ -11,12 +11,12 @@ namespace PokedexTracker.DisplayManagers
         private readonly Dictionary<string, (string FontFile, float SizePx, Point Loc)> _styles
             = new Dictionary<string, (string, float, Point)>
         {
-            { "Red",         ("Gen1+2.ttf",  9f, new Point(120,43)) },
-            { "Blue",        ("Gen1+2.ttf",  9f, new Point(120,43)) },
-            { "Yellow",      ("Gen1+2.ttf",  9f, new Point(120,43)) },
-            { "Gold",        ("Gen1+2.ttf",  9f, new Point(125,36)) },
-            { "Silver",      ("Gen1+2.ttf",  6f, new Point(73,33)) },
-            { "Crystal",     ("Gen1+2.ttf",  9f, new Point(125,36)) },
+            { "Red",         ("Gen1+2.ttf",  53f, new Point(665,350)) },
+            { "Blue",        ("Gen1+2.ttf",  53f, new Point(665,350)) },
+            { "Yellow",      ("Gen1+2.ttf",  53f, new Point(665,350)) },
+            { "Gold",        ("Gen1+2.ttf",  6f, new Point(69,32)) },
+            { "Silver",      ("Gen1+2.ttf",  6f, new Point(69,32)) },
+            { "Crystal",     ("Gen1+2.ttf",  6f, new Point(69,32)) },
             { "Ruby",        ("Gen3.ttf",   12f, new Point(77,73)) },
             { "Sapphire",    ("Gen3.ttf",   12f, new Point(77,73)) },
             { "Emerald",     ("Gen3.ttf",   12f, new Point(77,73)) },
