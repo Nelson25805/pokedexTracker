@@ -58,5 +58,22 @@ namespace PokedexTracker
 
         public string GetPokemonCardBackgroundPath() =>
             Path.Combine(_baseAssetsPath, "PokemonCardBackground", "pokeballBg.png");
+
+        public string GetDiplomaPath(string gameName)
+        {
+            string path = Path.Combine(_baseAssetsPath, "Diplomas");
+            string folderName;
+            if (gameName == "Ruby" || gameName == "Sapphire")
+                folderName = "Ruby-Sapphire";
+            else if (gameName == "Fire Red" || gameName == "Leaf Green")
+                folderName = "FireRed-LeafGreen";
+            else if (gameName == "Diamond" || gameName == "Pearl")
+                folderName = "Diamond-Pearl";
+            else if (gameName == "Heart Gold" || gameName == "Soul Silver")
+                folderName = "HeartGold-SoulSilver";
+            else
+                folderName = gameName;
+            return Path.Combine(path, $"{folderName}.png");
+        }
     }
 }

@@ -198,6 +198,8 @@ namespace PokedexTracker
             lblProgress.Visible = false;
             UpdateTrainerSpriteAsync(caught, total, gameName);
 
+            diplomaButton.Enabled = (caught == total);
+
             this.BeginInvoke(new Action(() =>
             {
                 string progressText = $"{caught} / {total}";
@@ -315,5 +317,18 @@ namespace PokedexTracker
             UpdateProgressAndTrainer(comboBoxGames.SelectedItem as string ?? "",
                                      total: 0, caught: 0);
         }
+
+        private void diplomaButton_Click(object sender, EventArgs e)
+        {
+            // guard in case somehow it’s clicked when nothing is selected
+            if (comboBoxGames.SelectedItem is string gameName)
+            {
+                using (var dlg = new DiplomaForm(gameName, playerName))
+                {
+                    dlg.ShowDialog();
+                }
+            }
+        }
+
     }
 }

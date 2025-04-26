@@ -206,6 +206,7 @@
             this.diplomaButton.TabIndex = 11;
             this.diplomaButton.Text = "Diploma";
             this.diplomaButton.UseVisualStyleBackColor = true;
+            this.diplomaButton.Click += new System.EventHandler(this.diplomaButton_Click);
             // 
             // menuStrip1
             // 

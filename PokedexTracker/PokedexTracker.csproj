@@ -99,6 +99,12 @@
     <Compile Include="Forms\ChangeNameForm.Designer.cs">
       <DependentUpon>ChangeNameForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\DiplomaForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DiplomaForm.Designer.cs">
+      <DependentUpon>DiplomaForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\IntroForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -115,6 +121,7 @@
     <Compile Include="Helpers\FontLoader.cs" />
     <Compile Include="Managers\AssetManager.cs" />
     <Compile Include="Managers\DatabaseManager.cs" />
+    <Compile Include="Managers\DiplomaNameDisplayManager.cs" />
     <Compile Include="Managers\GameManager.cs" />
     <Compile Include="Managers\GenerationManager.cs" />
     <Compile Include="Helpers\ImageFader.cs" />
@@ -144,6 +151,9 @@
     </Compile>
     <EmbeddedResource Include="Forms\ChangeNameForm.resx">
       <DependentUpon>ChangeNameForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DiplomaForm.resx">
+      <DependentUpon>DiplomaForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\IntroForm.resx">
       <DependentUpon>IntroForm.cs</DependentUpon>
