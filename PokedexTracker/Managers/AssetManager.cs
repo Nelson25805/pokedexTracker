@@ -63,7 +63,9 @@ namespace PokedexTracker
         {
             string path = Path.Combine(_baseAssetsPath, "Diplomas");
             string folderName;
-            if (gameName == "Ruby" || gameName == "Sapphire")
+            if (gameName == "Red" || gameName == "Blue")
+                folderName = "Red-Blue";
+            else if (gameName == "Ruby" || gameName == "Sapphire")
                 folderName = "Ruby-Sapphire";
             else if (gameName == "Fire Red" || gameName == "Leaf Green")
                 folderName = "FireRed-LeafGreen";
