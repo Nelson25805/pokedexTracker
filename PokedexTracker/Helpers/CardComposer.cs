@@ -1,6 +1,7 @@
 ﻿// CardComposer.cs
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Drawing.Text;
 
 namespace PokedexTracker.Helpers
@@ -11,64 +12,81 @@ namespace PokedexTracker.Helpers
         public float Size;
         public Point Location;
         public FontSettings(FontFamily f, float s, Point loc)
-        { Family = f; Size = s; Location = loc; }
+        {
+            Family = f;
+            Size = s;
+            Location = loc;
+        }
     }
 
     public static class CardComposer
     {
         public static Bitmap ComposeTrainerCard(
             Image baseCard,
-            Image badgeImage,
+            Image badgeImage,            // unused; card already has badge
             FontSettings nameSettings,
             string playerName,
             FontSettings progressSettings,
             string progressText)
         {
-            var bmp = new Bitmap(baseCard.Width, baseCard.Height, baseCard.PixelFormat);
+            var bmp = new Bitmap(baseCard.Width, baseCard.Height, PixelFormat.Format32bppArgb);
             using (var g = Graphics.FromImage(bmp))
             {
+                // draw the base first
                 g.PageUnit = GraphicsUnit.Pixel;
-                g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
                 g.InterpolationMode = InterpolationMode.NearestNeighbor;
-                g.SmoothingMode = SmoothingMode.AntiAlias;
+                g.PixelOffsetMode = PixelOffsetMode.None;
+                g.CompositingQuality = CompositingQuality.HighSpeed;
+                g.CompositingMode = CompositingMode.SourceOver;
+                g.SmoothingMode = SmoothingMode.None;
+                g.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
 
-                // draw card+badge
                 g.DrawImage(baseCard, Point.Empty);
 
-                // draw name
-                using (var f = new Font(nameSettings.Family,
-                                         nameSettings.Size,
-                                         FontStyle.Regular,
-                                         GraphicsUnit.Pixel))
+                // === Draw the player name with pure overwrite (no alpha blend!) ===
+                g.CompositingMode = CompositingMode.SourceCopy;
+                g.TextRenderingHint = TextRenderingHint.SingleBitPerPixel;
+                g.SmoothingMode = SmoothingMode.None;
+
+                using (var namePath = new GraphicsPath())
                 {
-                    g.DrawString(playerName, f, Brushes.Black, nameSettings.Location);
+                    namePath.AddString(
+                        playerName,
+                        nameSettings.Family,
+                        (int)FontStyle.Regular,
+                        nameSettings.Size,
+                        new PointF(nameSettings.Location.X, nameSettings.Location.Y),
+                        StringFormat.GenericDefault
+                    );
+
+                    // optional halo
+                    using (var halo = new Pen(Color.White, 3) { LineJoin = LineJoin.Round })
+                        g.DrawPath(halo, namePath);
+
+                    // overwrite with black
+                    g.FillPath(Brushes.Black, namePath);
                 }
 
-                // draw progress WITH 1px outline
-                using (var font = new Font(progressSettings.Family,
-                                           progressSettings.Size,
-                                           FontStyle.Regular,
-                                           GraphicsUnit.Pixel))
-                using (var path = new GraphicsPath())
+                // === Now draw progress normally (grayscale AA) ===
+                g.CompositingMode = CompositingMode.SourceOver;
+                g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+                g.SmoothingMode = SmoothingMode.AntiAlias;
+
+                using (var progPath = new GraphicsPath())
                 {
-                    // 1) build the text path
-                    path.AddString(
+                    progPath.AddString(
                         progressText,
                         progressSettings.Family,
                         (int)FontStyle.Regular,
-                        progressSettings.Size,               // emSize == pixel height
+                        progressSettings.Size,
                         new PointF(progressSettings.Location.X, progressSettings.Location.Y),
                         StringFormat.GenericDefault
                     );
 
-                    // 2) outline (white halo)
-                    using (var pen = new Pen(Color.White, 2) { LineJoin = LineJoin.Round })
-                    {
-                        g.DrawPath(pen, path);
-                    }
+                    using (var outline = new Pen(Color.White, 2) { LineJoin = LineJoin.Round })
+                        g.DrawPath(outline, progPath);
 
-                    // 3) fill (black text)
-                    g.FillPath(Brushes.Black, path);
+                    g.FillPath(Brushes.Black, progPath);
                 }
             }
             return bmp;

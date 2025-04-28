@@ -2,6 +2,7 @@
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.IO;
 using System.Linq;
@@ -71,30 +72,51 @@ namespace PokedexTracker.Forms
                 return;
             }
 
-            // classic using‐blocks to load & compose
+            // Load the base diploma image
             Image baseImg = Image.FromFile(path);
             try
             {
-                var bmp = new Bitmap(baseImg.Width, baseImg.Height, baseImg.PixelFormat);
+                var bmp = new Bitmap(baseImg.Width, baseImg.Height, PixelFormat.Format32bppArgb);
                 using (var g = Graphics.FromImage(bmp))
                 {
+                    // 1) draw the diploma background
                     g.PageUnit = GraphicsUnit.Pixel;
-                    g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
                     g.InterpolationMode = InterpolationMode.NearestNeighbor;
-                    g.SmoothingMode = SmoothingMode.AntiAlias;
-
-                    // draw the blank diploma
+                    g.PixelOffsetMode = PixelOffsetMode.None;
+                    g.CompositingQuality = CompositingQuality.HighSpeed;
+                    g.CompositingMode = CompositingMode.SourceOver;
+                    g.SmoothingMode = SmoothingMode.None;
+                    g.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
                     g.DrawImage(baseImg, Point.Empty);
 
-                    // draw the playerName
+                    // 2) draw the player name with pure overwrite (no colored AA)
                     var fmts = _nameMgr.GetFontSettings(_gameName);
-                    using (var font = new Font(fmts.Family, fmts.Size, FontStyle.Regular, GraphicsUnit.Pixel))
+                    g.CompositingMode = CompositingMode.SourceCopy;
+                    g.SmoothingMode = SmoothingMode.None;
+                    g.TextRenderingHint = TextRenderingHint.SingleBitPerPixel;
+
+                    using (var pathName = new GraphicsPath())
                     {
-                        g.DrawString(_playerName, font, Brushes.Black, fmts.Location);
+                        pathName.AddString(
+                            _playerName,
+                            fmts.Family,
+                            (int)FontStyle.Regular,
+                            fmts.Size,
+                            new PointF(fmts.Location.X, fmts.Location.Y),
+                            StringFormat.GenericDefault
+                        );
+
+                        // overwrite with solid black
+                        g.FillPath(Brushes.Black, pathName);
                     }
+
+                    // 3) switch back so any other drawing (if needed) is normal
+                    g.CompositingMode = CompositingMode.SourceOver;
+                    g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
+                    g.SmoothingMode = SmoothingMode.AntiAlias;
                 }
 
-                // hand it to the UI
+                // display the final composed bitmap
                 pictureBox1.Image = bmp;
             }
             finally
@@ -102,6 +124,7 @@ namespace PokedexTracker.Forms
                 baseImg.Dispose();
             }
         }
+
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
