@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using PokedexTracker.DisplayManagers;
 using PokedexTracker.Helpers;
@@ -17,6 +18,13 @@ namespace PokedexTracker.Forms
         private readonly AssetManager _assets;
         private readonly DiplomaNameDisplayManager _nameMgr;
 
+        // which version to show ("GB" or "SGB")
+        private string _version = "GB";
+
+        // only these games get two versions
+        private static readonly string[] MultiVersionGames =
+            { "Red", "Blue", "Yellow", "Gold", "Silver", "Crystal" };
+
         public DiplomaForm(string gameName, string playerName)
         {
             InitializeComponent();
@@ -24,27 +32,50 @@ namespace PokedexTracker.Forms
             _playerName = playerName;
             _assets = new AssetManager();
             _nameMgr = new DiplomaNameDisplayManager();
-        }
 
-        // DiplomaForm.cs (inside the form’s code‐behind)
+            // wire up the radio‐toggle events
+            radioGB.CheckedChanged += VersionRadio_CheckedChanged;
+            radioSGB.CheckedChanged += VersionRadio_CheckedChanged;
+        }
 
         private void DiplomaForm_Load(object sender, EventArgs e)
         {
-            string path = _assets.GetDiplomaPath(_gameName);
+            // enable toggles only for our multi‐version games
+            bool multi = MultiVersionGames.Contains(_gameName);
+            radioGB.Enabled = multi;
+            radioSGB.Enabled = multi;
+
+            // default to GB
+            radioGB.Checked = true;
+            radioSGB.Checked = false;
+
+            LoadAndComposeDiploma();
+        }
+
+        private void VersionRadio_CheckedChanged(object sender, EventArgs e)
+        {
+            // flip version key and reload diploma
+            if (radioGB.Checked) _version = "GB";
+            if (radioSGB.Checked) _version = "SGB";
+            LoadAndComposeDiploma();
+        }
+
+        private void LoadAndComposeDiploma()
+        {
+            // build path: uses your updated GetDiplomaPath(game, version)
+            string path = _assets.GetDiplomaPath(_gameName, _version);
             if (!File.Exists(path))
             {
-                MessageBox.Show($"Diploma image not found: {path}");
+                MessageBox.Show($"Diploma image not found: {path}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Close();
                 return;
             }
 
-            // Load and draw in classic using-blocks
+            // classic using‐blocks to load & compose
             Image baseImg = Image.FromFile(path);
             try
             {
-                // Create a new bitmap to compose onto
                 var bmp = new Bitmap(baseImg.Width, baseImg.Height, baseImg.PixelFormat);
-
                 using (var g = Graphics.FromImage(bmp))
                 {
                     g.PageUnit = GraphicsUnit.Pixel;
@@ -63,7 +94,7 @@ namespace PokedexTracker.Forms
                     }
                 }
 
-                // Hand the composed image off to the PictureBox
+                // hand it to the UI
                 pictureBox1.Image = bmp;
             }
             finally
@@ -71,6 +102,5 @@ namespace PokedexTracker.Forms
                 baseImg.Dispose();
             }
         }
-
     }
 }

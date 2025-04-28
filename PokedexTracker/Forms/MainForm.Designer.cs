@@ -214,7 +214,7 @@
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(40, 40);
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1876, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1876, 60);
             this.menuStrip1.TabIndex = 12;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -230,27 +230,27 @@
             // 
             // pokeballRadioButtonGirl
             // 
-            this.pokeballRadioButtonGirl.CheckedImage = null;
+            this.pokeballRadioButtonGirl.CheckedImage = global::PokedexTracker.Properties.Resources.checkedPokeball;
             this.pokeballRadioButtonGirl.Location = new System.Drawing.Point(203, 632);
             this.pokeballRadioButtonGirl.Name = "pokeballRadioButtonGirl";
             this.pokeballRadioButtonGirl.Size = new System.Drawing.Size(175, 50);
             this.pokeballRadioButtonGirl.TabIndex = 6;
             this.pokeballRadioButtonGirl.TabStop = true;
             this.pokeballRadioButtonGirl.Text = "Girl";
-            this.pokeballRadioButtonGirl.UncheckedImage = null;
+            this.pokeballRadioButtonGirl.UncheckedImage = global::PokedexTracker.Properties.Resources.uncheckedPokeball;
             this.pokeballRadioButtonGirl.UseVisualStyleBackColor = true;
             this.pokeballRadioButtonGirl.CheckedChanged += new System.EventHandler(this.rdoGender_CheckedChanged);
             // 
             // pokeballRadioButtonBoy
             // 
-            this.pokeballRadioButtonBoy.CheckedImage = null;
+            this.pokeballRadioButtonBoy.CheckedImage = global::PokedexTracker.Properties.Resources.checkedPokeball;
             this.pokeballRadioButtonBoy.Location = new System.Drawing.Point(3, 632);
             this.pokeballRadioButtonBoy.Name = "pokeballRadioButtonBoy";
             this.pokeballRadioButtonBoy.Size = new System.Drawing.Size(180, 50);
             this.pokeballRadioButtonBoy.TabIndex = 5;
             this.pokeballRadioButtonBoy.TabStop = true;
             this.pokeballRadioButtonBoy.Text = "Boy";
-            this.pokeballRadioButtonBoy.UncheckedImage = null;
+            this.pokeballRadioButtonBoy.UncheckedImage = global::PokedexTracker.Properties.Resources.uncheckedPokeball;
             this.pokeballRadioButtonBoy.UseVisualStyleBackColor = true;
             this.pokeballRadioButtonBoy.CheckedChanged += new System.EventHandler(this.rdoGender_CheckedChanged);
             // 

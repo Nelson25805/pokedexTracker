@@ -59,9 +59,13 @@ namespace PokedexTracker
         public string GetPokemonCardBackgroundPath() =>
             Path.Combine(_baseAssetsPath, "PokemonCardBackground", "pokeballBg.png");
 
-        public string GetDiplomaPath(string gameName)
+        // AssetManager.cs
+        public string GetDiplomaPath(string gameName, string version = "GB")
         {
-            string path = Path.Combine(_baseAssetsPath, "Diplomas");
+            // Base diplomas folder
+            string diplomasRoot = Path.Combine(_baseAssetsPath, "Diplomas");
+
+            // Determine folderName exactly as you already do
             string folderName;
             if (gameName == "Red" || gameName == "Blue")
                 folderName = "Red-Blue";
@@ -75,7 +79,11 @@ namespace PokedexTracker
                 folderName = "HeartGold-SoulSilver";
             else
                 folderName = gameName;
-            return Path.Combine(path, $"{folderName}.png");
+
+            // Build the filename: e.g. "Red-Blue-GB.png"
+            string fileName = $"{folderName}-{version}.png";
+            return Path.Combine(diplomasRoot, fileName);
         }
+
     }
 }

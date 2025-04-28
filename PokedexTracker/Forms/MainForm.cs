@@ -33,9 +33,6 @@ namespace PokedexTracker
         public MainForm(string name) : this() // Ensures the parameterless constructor runs.
         {
             playerName = name;
-
-            // Set the custom radio button images.
-            SetRadioButtonImages();
         }
 
         /// <summary>
@@ -66,9 +63,6 @@ namespace PokedexTracker
                     UpdateProgressAndTrainer(gameName, total, caught);
                 }
             };
-
-            // Set the custom radio button images.
-            SetRadioButtonImages();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -79,25 +73,6 @@ namespace PokedexTracker
             }
         }
 
-        /// <summary>
-        /// Loads images for custom radio buttons.
-        /// </summary>
-        private void SetRadioButtonImages()
-        {
-            string checkedPath = _assetManager.GetRadioButtonImagePath("checkedPokeball.png");
-            string uncheckedPath = _assetManager.GetRadioButtonImagePath("uncheckedPokeball.png");
-
-            Image checkedImage = Image.FromFile(checkedPath);
-            Image uncheckedImage = Image.FromFile(uncheckedPath);
-
-            pokeballRadioButtonBoy.CheckedImage = checkedImage;
-            pokeballRadioButtonBoy.UncheckedImage = uncheckedImage;
-            pokeballRadioButtonBoy.Text = "Boy";
-
-            pokeballRadioButtonGirl.CheckedImage = checkedImage;
-            pokeballRadioButtonGirl.UncheckedImage = uncheckedImage;
-            pokeballRadioButtonGirl.Text = "Girl";
-        }
 
         /// <summary>
         /// Handles game selection changes.

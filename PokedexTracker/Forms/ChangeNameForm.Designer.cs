@@ -83,7 +83,7 @@
             this.Controls.Add(this.btnOk);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ChangeNameForm";
-            this.Text = "ChangeNameForm";
+            this.Text = "Change Name";
             this.ResumeLayout(false);
             this.PerformLayout();
 
