@@ -102,5 +102,32 @@ namespace PokedexTracker.Forms
                 baseImg.Dispose();
             }
         }
+
+        private void buttonSave_Click(object sender, EventArgs e)
+        {
+            if (pictureBox1.Image == null)
+                return;
+
+            using (var dlg = new SaveFileDialog())
+            {
+                dlg.Filter = "PNG Image|*.png|JPEG Image|*.jpg;*.jpeg";
+                dlg.FileName = $"{_gameName}_Diploma_{_playerName}.png";
+                if (dlg.ShowDialog(this) == DialogResult.OK)
+                {
+                    // choose format by extension
+                    var ext = Path.GetExtension(dlg.FileName).ToLowerInvariant();
+                    var img = pictureBox1.Image;
+                    if (ext == ".jpg" || ext == ".jpeg")
+                        img.Save(dlg.FileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    else
+                        img.Save(dlg.FileName, System.Drawing.Imaging.ImageFormat.Png);
+                }
+            }
+        }
+
+        private void buttonClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }
