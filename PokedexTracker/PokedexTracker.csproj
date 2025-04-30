@@ -122,6 +122,7 @@
     <Compile Include="Managers\AssetManager.cs" />
     <Compile Include="Managers\DatabaseManager.cs" />
     <Compile Include="Managers\DiplomaNameDisplayManager.cs" />
+    <Compile Include="Managers\DiplomaTimeDisplayManager.cs" />
     <Compile Include="Managers\GameManager.cs" />
     <Compile Include="Managers\GenerationManager.cs" />
     <Compile Include="Helpers\ImageFader.cs" />
@@ -216,6 +217,17 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Diplomas\Red-Blue-GB-Regular.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Diplomas\Yellow-GB-Printer.png" />
+    <Resource Include="Assets\Diplomas\Yellow-GB-Regular.png" />
+    <Resource Include="Assets\Diplomas\Yellow-SGB-Regular.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Diplomas\Yellow-SGB-Printer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Diplomas\Yellow-GB-PrinterMissingMew.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

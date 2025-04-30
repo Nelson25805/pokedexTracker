@@ -205,5 +205,33 @@ namespace PokedexTracker
 
             _dbManager.ExecuteNonQuery(query, parameters);
         }
+
+        /// <summary>
+        /// Returns the Pokédex numbers (as ints) of every Pokémon
+        /// *not* caught in the given game (shiny vs. normal controlled by the flag).
+        /// </summary>
+        public List<int> GetMissingPokemonIds(string gameName, bool shiny = false)
+        {
+            // use whichever data‐getter is appropriate
+            var tuple = shiny
+                ? GetShinyPokemonData(gameName)
+                : GetPokemonData(gameName);
+
+            var list = tuple.PokemonData;
+            var missing = new List<int>(list.Count);
+
+            foreach (var entry in list)
+            {
+                // entry.Number is the Pokédex string (e.g. "151")
+                if (!entry.IsCaught
+                    && int.TryParse(entry.Number, out var dex))
+                {
+                    missing.Add(dex);
+                }
+            }
+
+            return missing;
+        }
+
     }
 }

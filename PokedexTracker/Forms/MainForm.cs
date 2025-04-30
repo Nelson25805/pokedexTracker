@@ -161,26 +161,50 @@ namespace PokedexTracker
         /// </summary>
         private void UpdateProgressAndTrainer(string gameName, int total = 0, int caught = 0)
         {
+            // 1) Fetch totals if not provided
             if (total == 0 && caught == 0)
             {
                 bool useShiny = chkShiny.Enabled && chkShiny.Checked;
-                var data = useShiny ? _gameManager.GetShinyPokemonData(gameName)
-                                    : _gameManager.GetPokemonData(gameName);
+                var data = useShiny
+                    ? _gameManager.GetShinyPokemonData(gameName)
+                    : _gameManager.GetPokemonData(gameName);
                 total = data.Total;
                 caught = data.Caught;
             }
 
+            // 2) Hide old label and redraw trainer sprite
             lblProgress.Visible = false;
             UpdateTrainerSpriteAsync(caught, total, gameName);
 
-            diplomaButton.Enabled = (caught == total);
+            // 3) Diploma‐button logic
+            bool enableDiploma = false;
 
-            this.BeginInvoke(new Action(() =>
+            if (gameName == "Yellow")
             {
-                string progressText = $"{caught} / {total}";
-                bool useShiny = chkShiny.Enabled && chkShiny.Checked;
-            }));
+                if (caught == total)
+                {
+                    // Fully complete (151/151)
+                    enableDiploma = true;
+                }
+                else if (caught == total - 1)
+                {
+                    // Exactly one missing—check it's Mew (#151)
+                    var missing = _gameManager.GetMissingPokemonIds(gameName,
+                                        chkShiny.Enabled && chkShiny.Checked);
+                    enableDiploma = (missing.Count == 1 && missing[0] == 151);
+                }
+            }
+            else
+            {
+                // All other games require 100% completion
+                enableDiploma = (caught == total);
+            }
+
+            diplomaButton.Enabled = enableDiploma;
         }
+
+
+
 
         /// <summary>
         /// Updates the trainer sprite based on progress and gender.
@@ -295,15 +319,28 @@ namespace PokedexTracker
 
         private void diplomaButton_Click(object sender, EventArgs e)
         {
-            // guard in case somehow it’s clicked when nothing is selected
-            if (comboBoxGames.SelectedItem is string gameName)
+            if (!(comboBoxGames.SelectedItem is string gameName))
+                return;
+
+            bool useShiny = chkShiny.Enabled && chkShiny.Checked;
+            var data = useShiny
+                ? _gameManager.GetShinyPokemonData(gameName)
+                : _gameManager.GetPokemonData(gameName);
+
+            // Only for Yellow: missingMew if caught == total–1 *and* that missing is #151
+            bool missingMew = false;
+            if (gameName == "Yellow" && data.Caught == data.Total - 1)
             {
-                using (var dlg = new DiplomaForm(gameName, playerName))
-                {
-                    dlg.ShowDialog();
-                }
+                var missing = _gameManager.GetMissingPokemonIds(gameName, useShiny);
+                missingMew = (missing.Count == 1 && missing[0] == 151);
+            }
+
+            using (var dlg = new DiplomaForm(gameName, playerName, missingMew))
+            {
+                // Force the “Printer” toggle if they were in printer mode before:
+                // (You can still call SetPrinterDefault here if you like.)
+                dlg.ShowDialog(this);
             }
         }
-
     }
 }

@@ -38,6 +38,10 @@
             this.radioRegular = new PokeballRadioButton();
             this.radioSGB = new PokeballRadioButton();
             this.radioGB = new PokeballRadioButton();
+            this.txtHour = new System.Windows.Forms.TextBox();
+            this.txtMinute = new System.Windows.Forms.TextBox();
+            this.lblHour = new System.Windows.Forms.Label();
+            this.lblMinute = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -53,7 +57,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(686, 103);
+            this.label1.Location = new System.Drawing.Point(686, 43);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(354, 32);
             this.label1.TabIndex = 8;
@@ -61,9 +65,9 @@
             // 
             // buttonSave
             // 
-            this.buttonSave.Location = new System.Drawing.Point(713, 425);
+            this.buttonSave.Location = new System.Drawing.Point(706, 591);
             this.buttonSave.Name = "buttonSave";
-            this.buttonSave.Size = new System.Drawing.Size(268, 101);
+            this.buttonSave.Size = new System.Drawing.Size(158, 83);
             this.buttonSave.TabIndex = 9;
             this.buttonSave.Text = "Save Diploma";
             this.buttonSave.UseVisualStyleBackColor = true;
@@ -71,9 +75,9 @@
             // 
             // buttonClose
             // 
-            this.buttonClose.Location = new System.Drawing.Point(713, 573);
+            this.buttonClose.Location = new System.Drawing.Point(891, 591);
             this.buttonClose.Name = "buttonClose";
-            this.buttonClose.Size = new System.Drawing.Size(268, 101);
+            this.buttonClose.Size = new System.Drawing.Size(158, 83);
             this.buttonClose.TabIndex = 10;
             this.buttonClose.Text = "Close";
             this.buttonClose.UseVisualStyleBackColor = true;
@@ -82,7 +86,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(686, 213);
+            this.label2.Location = new System.Drawing.Point(686, 153);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(336, 32);
             this.label2.TabIndex = 13;
@@ -91,7 +95,7 @@
             // radioPrinter
             // 
             this.radioPrinter.CheckedImage = global::PokedexTracker.Properties.Resources.checkedPokeball;
-            this.radioPrinter.Location = new System.Drawing.Point(675, 317);
+            this.radioPrinter.Location = new System.Drawing.Point(675, 257);
             this.radioPrinter.Name = "radioPrinter";
             this.radioPrinter.Size = new System.Drawing.Size(241, 81);
             this.radioPrinter.TabIndex = 12;
@@ -103,7 +107,7 @@
             // radioRegular
             // 
             this.radioRegular.CheckedImage = global::PokedexTracker.Properties.Resources.checkedPokeball;
-            this.radioRegular.Location = new System.Drawing.Point(675, 239);
+            this.radioRegular.Location = new System.Drawing.Point(675, 179);
             this.radioRegular.Name = "radioRegular";
             this.radioRegular.Size = new System.Drawing.Size(241, 81);
             this.radioRegular.TabIndex = 11;
@@ -115,7 +119,7 @@
             // radioSGB
             // 
             this.radioSGB.CheckedImage = global::PokedexTracker.Properties.Resources.checkedPokeball;
-            this.radioSGB.Location = new System.Drawing.Point(825, 129);
+            this.radioSGB.Location = new System.Drawing.Point(825, 69);
             this.radioSGB.Name = "radioSGB";
             this.radioSGB.Size = new System.Drawing.Size(180, 81);
             this.radioSGB.TabIndex = 7;
@@ -127,7 +131,7 @@
             // radioGB
             // 
             this.radioGB.CheckedImage = global::PokedexTracker.Properties.Resources.checkedPokeball;
-            this.radioGB.Location = new System.Drawing.Point(675, 129);
+            this.radioGB.Location = new System.Drawing.Point(675, 69);
             this.radioGB.Name = "radioGB";
             this.radioGB.Size = new System.Drawing.Size(180, 81);
             this.radioGB.TabIndex = 6;
@@ -136,12 +140,49 @@
             this.radioGB.UncheckedImage = global::PokedexTracker.Properties.Resources.uncheckedPokeball;
             this.radioGB.UseVisualStyleBackColor = true;
             // 
+            // txtHour
+            // 
+            this.txtHour.Location = new System.Drawing.Point(681, 384);
+            this.txtHour.Name = "txtHour";
+            this.txtHour.Size = new System.Drawing.Size(150, 38);
+            this.txtHour.TabIndex = 14;
+            // 
+            // txtMinute
+            // 
+            this.txtMinute.Location = new System.Drawing.Point(868, 384);
+            this.txtMinute.MaxLength = 2;
+            this.txtMinute.Name = "txtMinute";
+            this.txtMinute.Size = new System.Drawing.Size(100, 38);
+            this.txtMinute.TabIndex = 15;
+            // 
+            // lblHour
+            // 
+            this.lblHour.AutoSize = true;
+            this.lblHour.Location = new System.Drawing.Point(675, 341);
+            this.lblHour.Name = "lblHour";
+            this.lblHour.Size = new System.Drawing.Size(97, 32);
+            this.lblHour.TabIndex = 16;
+            this.lblHour.Text = "Hours:";
+            // 
+            // lblMinute
+            // 
+            this.lblMinute.AutoSize = true;
+            this.lblMinute.Location = new System.Drawing.Point(862, 341);
+            this.lblMinute.Name = "lblMinute";
+            this.lblMinute.Size = new System.Drawing.Size(122, 32);
+            this.lblMinute.TabIndex = 17;
+            this.lblMinute.Text = "Minutes:";
+            // 
             // DiplomaForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1076, 701);
+            this.Controls.Add(this.lblMinute);
+            this.Controls.Add(this.lblHour);
+            this.Controls.Add(this.txtMinute);
+            this.Controls.Add(this.txtHour);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.radioPrinter);
             this.Controls.Add(this.radioRegular);
@@ -172,5 +213,9 @@
         private System.Windows.Forms.Label label2;
         private PokeballRadioButton radioPrinter;
         private PokeballRadioButton radioRegular;
+        private System.Windows.Forms.TextBox txtHour;
+        private System.Windows.Forms.TextBox txtMinute;
+        private System.Windows.Forms.Label lblHour;
+        private System.Windows.Forms.Label lblMinute;
     }
 }

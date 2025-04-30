@@ -51,6 +51,15 @@ namespace PokedexTracker.Helpers
                    : throw new InvalidOperationException("No font families available");
         }
 
+        public static FontFamily LoadEmbeddedFontFamily(string fontFileName)
+        {
+            // fontFileName should be like "Gen1+2.ttf"
+            var coll = LoadFontCollection(new[] { fontFileName });
+            if (coll.Families.Length == 0)
+                throw new InvalidOperationException($"No font families found for {fontFileName}");
+            return coll.Families[0];
+        }
+
         private static string GetFileName(string resourceName)
         {
             int idx = resourceName.LastIndexOf('.');
