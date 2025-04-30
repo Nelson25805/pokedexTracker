@@ -30,10 +30,10 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DiplomaForm));
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelGameboy = new System.Windows.Forms.Label();
             this.buttonSave = new System.Windows.Forms.Button();
             this.buttonClose = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
+            this.labelDiploma = new System.Windows.Forms.Label();
             this.txtHour = new System.Windows.Forms.TextBox();
             this.txtMinute = new System.Windows.Forms.TextBox();
             this.lblHour = new System.Windows.Forms.Label();
@@ -54,14 +54,14 @@
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
-            // label1
+            // labelGameboy
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(686, 43);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(354, 32);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "Choose Gameboy Version:";
+            this.labelGameboy.AutoSize = true;
+            this.labelGameboy.Location = new System.Drawing.Point(686, 43);
+            this.labelGameboy.Name = "labelGameboy";
+            this.labelGameboy.Size = new System.Drawing.Size(354, 32);
+            this.labelGameboy.TabIndex = 8;
+            this.labelGameboy.Text = "Choose Gameboy Version:";
             // 
             // buttonSave
             // 
@@ -83,14 +83,14 @@
             this.buttonClose.UseVisualStyleBackColor = true;
             this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
             // 
-            // label2
+            // labelDiploma
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(686, 153);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(336, 32);
-            this.label2.TabIndex = 13;
-            this.label2.Text = "Choose Diploma Version:";
+            this.labelDiploma.AutoSize = true;
+            this.labelDiploma.Location = new System.Drawing.Point(686, 153);
+            this.labelDiploma.Name = "labelDiploma";
+            this.labelDiploma.Size = new System.Drawing.Size(336, 32);
+            this.labelDiploma.TabIndex = 13;
+            this.labelDiploma.Text = "Choose Diploma Version:";
             // 
             // txtHour
             // 
@@ -99,6 +99,7 @@
             this.txtHour.Size = new System.Drawing.Size(150, 38);
             this.txtHour.TabIndex = 14;
             this.txtHour.Text = "00";
+            this.txtHour.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // txtMinute
             // 
@@ -181,12 +182,12 @@
             this.Controls.Add(this.lblHour);
             this.Controls.Add(this.txtMinute);
             this.Controls.Add(this.txtHour);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.labelDiploma);
             this.Controls.Add(this.radioPrinter);
             this.Controls.Add(this.radioRegular);
             this.Controls.Add(this.buttonClose);
             this.Controls.Add(this.buttonSave);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.labelGameboy);
             this.Controls.Add(this.radioSGB);
             this.Controls.Add(this.radioGB);
             this.Controls.Add(this.pictureBox1);
@@ -205,10 +206,10 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private PokeballRadioButton radioGB;
         private PokeballRadioButton radioSGB;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelGameboy;
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.Button buttonClose;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label labelDiploma;
         private PokeballRadioButton radioPrinter;
         private PokeballRadioButton radioRegular;
         private System.Windows.Forms.TextBox txtHour;

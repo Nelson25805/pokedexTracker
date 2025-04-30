@@ -56,6 +56,7 @@ namespace PokedexTracker.Forms
             bool sgbOK = SgbGames.Contains(_gameName);
             radioGB.Visible = sgbOK;
             radioSGB.Visible = sgbOK;
+            labelGameboy.Visible = sgbOK;
             if (sgbOK)
                 radioGB.Checked = true;   // default GB
 
@@ -63,6 +64,7 @@ namespace PokedexTracker.Forms
             bool printOK = PrintGames.Contains(_gameName);
             radioRegular.Visible = printOK;
             radioPrinter.Visible = printOK;
+            labelDiploma.Visible = printOK;
 
             if (printOK)
             {
@@ -148,8 +150,6 @@ namespace PokedexTracker.Forms
                             new PointF(nameFmt.Location.X, nameFmt.Location.Y),
                             StringFormat.GenericDefault
                         );
-                        using (var halo = new Pen(Color.White, 3) { LineJoin = LineJoin.Round })
-                            g.DrawPath(halo, gp);
                         g.FillPath(Brushes.Black, gp);
                     }
 
