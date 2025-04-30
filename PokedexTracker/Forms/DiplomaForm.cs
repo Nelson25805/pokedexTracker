@@ -19,12 +19,17 @@ namespace PokedexTracker.Forms
         private readonly AssetManager _assets;
         private readonly DiplomaNameDisplayManager _nameMgr;
 
-        // which version to show ("GB" or "SGB")
-        private string _version = "GB";
+        // two version axes:
+        private string _mediaVersion = "GB";      // or "SGB"
+        private string _printVersion = "Regular"; // or "Printer"
 
-        // only these games get two versions
-        private static readonly string[] MultiVersionGames =
+        // which games get the GB/SGB toggles:
+        private static readonly string[] MediaGames =
             { "Red", "Blue", "Yellow", "Gold", "Silver", "Crystal" };
+
+        // which games get the print toggles:
+        private static readonly string[] PrintGames =
+            { "Yellow", "Gold", "Silver", "Crystal" };
 
         public DiplomaForm(string gameName, string playerName)
         {
@@ -34,37 +39,57 @@ namespace PokedexTracker.Forms
             _assets = new AssetManager();
             _nameMgr = new DiplomaNameDisplayManager();
 
-            // wire up the radio‐toggle events
-            radioGB.CheckedChanged += VersionRadio_CheckedChanged;
-            radioSGB.CheckedChanged += VersionRadio_CheckedChanged;
+            // wire up media‐version radios (pokeball style)
+            radioGB.CheckedChanged += MediaVersion_CheckedChanged;
+            radioSGB.CheckedChanged += MediaVersion_CheckedChanged;
+
+            // wire up print‐version radios
+            radioRegular.CheckedChanged += PrintVersion_CheckedChanged;
+            radioPrinter.CheckedChanged += PrintVersion_CheckedChanged;
         }
 
         private void DiplomaForm_Load(object sender, EventArgs e)
         {
-            // enable toggles only for our multi‐version games
-            bool multi = MultiVersionGames.Contains(_gameName);
-            radioGB.Enabled = multi;
-            radioSGB.Enabled = multi;
+            // enable/disable media toggles
+            bool mediaOK = MediaGames.Contains(_gameName);
+            radioGB.Enabled = mediaOK;
+            radioSGB.Enabled = mediaOK;
 
-            // default to GB
+            // default media selection
             radioGB.Checked = true;
             radioSGB.Checked = false;
+
+            // enable/disable print toggles
+            bool printOK = PrintGames.Contains(_gameName);
+            radioRegular.Enabled = printOK;
+            radioPrinter.Enabled = printOK;
+
+            // default print selection
+            radioRegular.Checked = true;
+            radioPrinter.Checked = false;
 
             LoadAndComposeDiploma();
         }
 
-        private void VersionRadio_CheckedChanged(object sender, EventArgs e)
+        private void MediaVersion_CheckedChanged(object sender, EventArgs e)
         {
-            // flip version key and reload diploma
-            if (radioGB.Checked) _version = "GB";
-            if (radioSGB.Checked) _version = "SGB";
+            if (radioGB.Checked) _mediaVersion = "GB";
+            if (radioSGB.Checked) _mediaVersion = "SGB";
+            LoadAndComposeDiploma();
+        }
+
+        private void PrintVersion_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioRegular.Checked) _printVersion = "Regular";
+            if (radioPrinter.Checked) _printVersion = "Printer";
             LoadAndComposeDiploma();
         }
 
         private void LoadAndComposeDiploma()
         {
-            // build path: uses your updated GetDiplomaPath(game, version)
-            string path = _assets.GetDiplomaPath(_gameName, _version);
+            // build path using both axes:
+            // assumes filenames like "Yellow-GB-Regular.png" or "Yellow-GB-Printer.png"
+            string path = _assets.GetDiplomaPath(_gameName, _mediaVersion, _printVersion);
             if (!File.Exists(path))
             {
                 MessageBox.Show($"Diploma image not found: {path}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -72,14 +97,14 @@ namespace PokedexTracker.Forms
                 return;
             }
 
-            // Load the base diploma image
+            // load & draw exactly as before (with vector name overwrite)
             Image baseImg = Image.FromFile(path);
             try
             {
                 var bmp = new Bitmap(baseImg.Width, baseImg.Height, PixelFormat.Format32bppArgb);
                 using (var g = Graphics.FromImage(bmp))
                 {
-                    // 1) draw the diploma background
+                    // base draw
                     g.PageUnit = GraphicsUnit.Pixel;
                     g.InterpolationMode = InterpolationMode.NearestNeighbor;
                     g.PixelOffsetMode = PixelOffsetMode.None;
@@ -89,15 +114,15 @@ namespace PokedexTracker.Forms
                     g.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
                     g.DrawImage(baseImg, Point.Empty);
 
-                    // 2) draw the player name with pure overwrite (no colored AA)
+                    // name draw (no AA)
                     var fmts = _nameMgr.GetFontSettings(_gameName);
                     g.CompositingMode = CompositingMode.SourceCopy;
-                    g.SmoothingMode = SmoothingMode.None;
                     g.TextRenderingHint = TextRenderingHint.SingleBitPerPixel;
+                    g.SmoothingMode = SmoothingMode.None;
 
-                    using (var pathName = new GraphicsPath())
+                    using (var namePath = new GraphicsPath())
                     {
-                        pathName.AddString(
+                        namePath.AddString(
                             _playerName,
                             fmts.Family,
                             (int)FontStyle.Regular,
@@ -105,18 +130,18 @@ namespace PokedexTracker.Forms
                             new PointF(fmts.Location.X, fmts.Location.Y),
                             StringFormat.GenericDefault
                         );
+                        // optional halo
+                        using (var halo = new Pen(Color.White, 3) { LineJoin = LineJoin.Round })
+                            g.DrawPath(halo, namePath);
 
-                        // overwrite with solid black
-                        g.FillPath(Brushes.Black, pathName);
+                        g.FillPath(Brushes.Black, namePath);
                     }
 
-                    // 3) switch back so any other drawing (if needed) is normal
+                    // restore
                     g.CompositingMode = CompositingMode.SourceOver;
-                    g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
+                    g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
                     g.SmoothingMode = SmoothingMode.AntiAlias;
                 }
-
-                // display the final composed bitmap
                 pictureBox1.Image = bmp;
             }
             finally

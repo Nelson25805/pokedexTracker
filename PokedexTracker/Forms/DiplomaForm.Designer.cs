@@ -33,6 +33,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.buttonSave = new System.Windows.Forms.Button();
             this.buttonClose = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.radioPrinter = new PokeballRadioButton();
+            this.radioRegular = new PokeballRadioButton();
             this.radioSGB = new PokeballRadioButton();
             this.radioGB = new PokeballRadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -42,7 +45,7 @@
             // 
             this.pictureBox1.Location = new System.Drawing.Point(41, 26);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(628, 511);
+            this.pictureBox1.Size = new System.Drawing.Size(628, 648);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
@@ -52,13 +55,13 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(686, 103);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(336, 32);
+            this.label1.Size = new System.Drawing.Size(354, 32);
             this.label1.TabIndex = 8;
-            this.label1.Text = "Choose Diploma Version:";
+            this.label1.Text = "Choose Gameboy Version:";
             // 
             // buttonSave
             // 
-            this.buttonSave.Location = new System.Drawing.Point(737, 228);
+            this.buttonSave.Location = new System.Drawing.Point(713, 425);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(268, 101);
             this.buttonSave.TabIndex = 9;
@@ -68,13 +71,46 @@
             // 
             // buttonClose
             // 
-            this.buttonClose.Location = new System.Drawing.Point(737, 358);
+            this.buttonClose.Location = new System.Drawing.Point(713, 573);
             this.buttonClose.Name = "buttonClose";
             this.buttonClose.Size = new System.Drawing.Size(268, 101);
             this.buttonClose.TabIndex = 10;
             this.buttonClose.Text = "Close";
             this.buttonClose.UseVisualStyleBackColor = true;
             this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(686, 213);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(336, 32);
+            this.label2.TabIndex = 13;
+            this.label2.Text = "Choose Diploma Version:";
+            // 
+            // radioPrinter
+            // 
+            this.radioPrinter.CheckedImage = global::PokedexTracker.Properties.Resources.checkedPokeball;
+            this.radioPrinter.Location = new System.Drawing.Point(675, 317);
+            this.radioPrinter.Name = "radioPrinter";
+            this.radioPrinter.Size = new System.Drawing.Size(241, 81);
+            this.radioPrinter.TabIndex = 12;
+            this.radioPrinter.TabStop = true;
+            this.radioPrinter.Text = "Printer";
+            this.radioPrinter.UncheckedImage = global::PokedexTracker.Properties.Resources.uncheckedPokeball;
+            this.radioPrinter.UseVisualStyleBackColor = true;
+            // 
+            // radioRegular
+            // 
+            this.radioRegular.CheckedImage = global::PokedexTracker.Properties.Resources.checkedPokeball;
+            this.radioRegular.Location = new System.Drawing.Point(675, 239);
+            this.radioRegular.Name = "radioRegular";
+            this.radioRegular.Size = new System.Drawing.Size(241, 81);
+            this.radioRegular.TabIndex = 11;
+            this.radioRegular.TabStop = true;
+            this.radioRegular.Text = "Regular";
+            this.radioRegular.UncheckedImage = global::PokedexTracker.Properties.Resources.uncheckedPokeball;
+            this.radioRegular.UseVisualStyleBackColor = true;
             // 
             // radioSGB
             // 
@@ -105,7 +141,10 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(1048, 571);
+            this.ClientSize = new System.Drawing.Size(1076, 701);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.radioPrinter);
+            this.Controls.Add(this.radioRegular);
             this.Controls.Add(this.buttonClose);
             this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.label1);
@@ -130,5 +169,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.Button buttonClose;
+        private System.Windows.Forms.Label label2;
+        private PokeballRadioButton radioPrinter;
+        private PokeballRadioButton radioRegular;
     }
 }

@@ -212,10 +212,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\Diplomas\Red-Blue-SGB.png" />
+    <Resource Include="Assets\Diplomas\Red-Blue-SGB-Regular.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\Diplomas\Red-Blue-GB.png" />
+    <Resource Include="Assets\Diplomas\Red-Blue-GB-Regular.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
