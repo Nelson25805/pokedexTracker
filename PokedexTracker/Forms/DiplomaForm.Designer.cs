@@ -34,14 +34,14 @@
             this.buttonSave = new System.Windows.Forms.Button();
             this.buttonClose = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.radioPrinter = new PokeballRadioButton();
-            this.radioRegular = new PokeballRadioButton();
-            this.radioSGB = new PokeballRadioButton();
-            this.radioGB = new PokeballRadioButton();
             this.txtHour = new System.Windows.Forms.TextBox();
             this.txtMinute = new System.Windows.Forms.TextBox();
             this.lblHour = new System.Windows.Forms.Label();
             this.lblMinute = new System.Windows.Forms.Label();
+            this.radioPrinter = new PokeballRadioButton();
+            this.radioRegular = new PokeballRadioButton();
+            this.radioSGB = new PokeballRadioButton();
+            this.radioGB = new PokeballRadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -92,60 +92,13 @@
             this.label2.TabIndex = 13;
             this.label2.Text = "Choose Diploma Version:";
             // 
-            // radioPrinter
-            // 
-            this.radioPrinter.CheckedImage = global::PokedexTracker.Properties.Resources.checkedPokeball;
-            this.radioPrinter.Location = new System.Drawing.Point(675, 257);
-            this.radioPrinter.Name = "radioPrinter";
-            this.radioPrinter.Size = new System.Drawing.Size(241, 81);
-            this.radioPrinter.TabIndex = 12;
-            this.radioPrinter.TabStop = true;
-            this.radioPrinter.Text = "Printer";
-            this.radioPrinter.UncheckedImage = global::PokedexTracker.Properties.Resources.uncheckedPokeball;
-            this.radioPrinter.UseVisualStyleBackColor = true;
-            // 
-            // radioRegular
-            // 
-            this.radioRegular.CheckedImage = global::PokedexTracker.Properties.Resources.checkedPokeball;
-            this.radioRegular.Location = new System.Drawing.Point(675, 179);
-            this.radioRegular.Name = "radioRegular";
-            this.radioRegular.Size = new System.Drawing.Size(241, 81);
-            this.radioRegular.TabIndex = 11;
-            this.radioRegular.TabStop = true;
-            this.radioRegular.Text = "Regular";
-            this.radioRegular.UncheckedImage = global::PokedexTracker.Properties.Resources.uncheckedPokeball;
-            this.radioRegular.UseVisualStyleBackColor = true;
-            // 
-            // radioSGB
-            // 
-            this.radioSGB.CheckedImage = global::PokedexTracker.Properties.Resources.checkedPokeball;
-            this.radioSGB.Location = new System.Drawing.Point(825, 69);
-            this.radioSGB.Name = "radioSGB";
-            this.radioSGB.Size = new System.Drawing.Size(180, 81);
-            this.radioSGB.TabIndex = 7;
-            this.radioSGB.TabStop = true;
-            this.radioSGB.Text = "SGB";
-            this.radioSGB.UncheckedImage = global::PokedexTracker.Properties.Resources.uncheckedPokeball;
-            this.radioSGB.UseVisualStyleBackColor = true;
-            // 
-            // radioGB
-            // 
-            this.radioGB.CheckedImage = global::PokedexTracker.Properties.Resources.checkedPokeball;
-            this.radioGB.Location = new System.Drawing.Point(675, 69);
-            this.radioGB.Name = "radioGB";
-            this.radioGB.Size = new System.Drawing.Size(180, 81);
-            this.radioGB.TabIndex = 6;
-            this.radioGB.TabStop = true;
-            this.radioGB.Text = "GB";
-            this.radioGB.UncheckedImage = global::PokedexTracker.Properties.Resources.uncheckedPokeball;
-            this.radioGB.UseVisualStyleBackColor = true;
-            // 
             // txtHour
             // 
             this.txtHour.Location = new System.Drawing.Point(681, 384);
             this.txtHour.Name = "txtHour";
             this.txtHour.Size = new System.Drawing.Size(150, 38);
             this.txtHour.TabIndex = 14;
+            this.txtHour.Text = "00";
             // 
             // txtMinute
             // 
@@ -154,6 +107,7 @@
             this.txtMinute.Name = "txtMinute";
             this.txtMinute.Size = new System.Drawing.Size(100, 38);
             this.txtMinute.TabIndex = 15;
+            this.txtMinute.Text = "00";
             // 
             // lblHour
             // 
@@ -172,6 +126,50 @@
             this.lblMinute.Size = new System.Drawing.Size(122, 32);
             this.lblMinute.TabIndex = 17;
             this.lblMinute.Text = "Minutes:";
+            // 
+            // radioPrinter
+            // 
+            this.radioPrinter.CheckedImage = global::PokedexTracker.Properties.Resources.checkedPokeball;
+            this.radioPrinter.Location = new System.Drawing.Point(675, 257);
+            this.radioPrinter.Name = "radioPrinter";
+            this.radioPrinter.Size = new System.Drawing.Size(241, 81);
+            this.radioPrinter.TabIndex = 12;
+            this.radioPrinter.Text = "Printer";
+            this.radioPrinter.UncheckedImage = global::PokedexTracker.Properties.Resources.uncheckedPokeball;
+            this.radioPrinter.UseVisualStyleBackColor = true;
+            // 
+            // radioRegular
+            // 
+            this.radioRegular.CheckedImage = global::PokedexTracker.Properties.Resources.checkedPokeball;
+            this.radioRegular.Location = new System.Drawing.Point(675, 179);
+            this.radioRegular.Name = "radioRegular";
+            this.radioRegular.Size = new System.Drawing.Size(241, 81);
+            this.radioRegular.TabIndex = 11;
+            this.radioRegular.Text = "Regular";
+            this.radioRegular.UncheckedImage = global::PokedexTracker.Properties.Resources.uncheckedPokeball;
+            this.radioRegular.UseVisualStyleBackColor = true;
+            // 
+            // radioSGB
+            // 
+            this.radioSGB.CheckedImage = global::PokedexTracker.Properties.Resources.checkedPokeball;
+            this.radioSGB.Location = new System.Drawing.Point(825, 69);
+            this.radioSGB.Name = "radioSGB";
+            this.radioSGB.Size = new System.Drawing.Size(180, 81);
+            this.radioSGB.TabIndex = 7;
+            this.radioSGB.Text = "SGB";
+            this.radioSGB.UncheckedImage = global::PokedexTracker.Properties.Resources.uncheckedPokeball;
+            this.radioSGB.UseVisualStyleBackColor = true;
+            // 
+            // radioGB
+            // 
+            this.radioGB.CheckedImage = global::PokedexTracker.Properties.Resources.checkedPokeball;
+            this.radioGB.Location = new System.Drawing.Point(675, 69);
+            this.radioGB.Name = "radioGB";
+            this.radioGB.Size = new System.Drawing.Size(180, 81);
+            this.radioGB.TabIndex = 6;
+            this.radioGB.Text = "GB";
+            this.radioGB.UncheckedImage = global::PokedexTracker.Properties.Resources.uncheckedPokeball;
+            this.radioGB.UseVisualStyleBackColor = true;
             // 
             // DiplomaForm
             // 

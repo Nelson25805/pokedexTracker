@@ -1,4 +1,5 @@
-﻿using System;
+﻿// DiplomaForm.cs
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -18,70 +19,58 @@ namespace PokedexTracker.Forms
         private readonly AssetManager _assets;
         private readonly DiplomaNameDisplayManager _nameMgr;
         private readonly DiplomaTimeDisplayManager _timeMgr = new DiplomaTimeDisplayManager();
+        private readonly bool _missingMew;
 
-        // two version axes:
-        private string _mediaVersion = "GB";       // always GB
-        private string _printVersion = "Regular";  // or "Printer"
-        private readonly bool _missingMew;         // new flag!
+        // Current selections
+        private string _mediaVersion = "GB";
+        private string _printVersion = "Regular";
 
-        // only Red/Blue get SGB
+        // Which games get which toggles
         private static readonly string[] SgbGames = { "Red", "Blue" };
-
-        // only these get printer toggle
         private static readonly string[] PrintGames = { "Yellow", "Gold", "Silver", "Crystal" };
 
-        // 1) Primary ctor
-        public DiplomaForm(string gameName, string playerName)
+        public DiplomaForm(string gameName, string playerName, bool missingMew)
         {
             InitializeComponent();
+
             _gameName = gameName;
             _playerName = playerName;
+            _missingMew = missingMew;
             _assets = new AssetManager();
             _nameMgr = new DiplomaNameDisplayManager();
 
-            // wire media radios
+            // Wire up events
             radioGB.CheckedChanged += MediaVersion_CheckedChanged;
             radioSGB.CheckedChanged += MediaVersion_CheckedChanged;
-            // wire print radios
             radioRegular.CheckedChanged += PrintVersion_CheckedChanged;
             radioPrinter.CheckedChanged += PrintVersion_CheckedChanged;
-
-            // time edits
-            txtHour.TextChanged += (s, e) => LoadAndComposeDiploma();
-            txtMinute.TextChanged += (s, e) => LoadAndComposeDiploma();
-
-            // save/close
+            txtHour.TextChanged += (_, __) => LoadAndComposeDiploma();
+            txtMinute.TextChanged += (_, __) => LoadAndComposeDiploma();
             buttonSave.Click += buttonSave_Click;
             buttonClose.Click += buttonClose_Click;
         }
 
-        // 2) Overload that accepts “missingMew”
-        public DiplomaForm(string gameName, string playerName, bool missingMew)
-            : this(gameName, playerName)
-        {
-            _missingMew = missingMew;
-        }
-
         private void DiplomaForm_Load(object sender, EventArgs e)
         {
-            // MEDIA defaults
-            radioGB.Checked = true;
-            radioGB.Enabled = true;
+            // 1) Show GB/SGB only for Red & Blue
             bool sgbOK = SgbGames.Contains(_gameName);
-            radioSGB.Enabled = sgbOK;
-            radioSGB.Checked = false;
+            radioGB.Visible = sgbOK;
+            radioSGB.Visible = sgbOK;
+            if (sgbOK)
+                radioGB.Checked = true;   // default GB
 
-            // PRINT toggles
+            // 2) Show Regular/Printer only for Yellow, Gold, Silver, Crystal
             bool printOK = PrintGames.Contains(_gameName);
-            radioRegular.Enabled = printOK;
-            radioPrinter.Enabled = printOK;
-            radioRegular.Checked = true;
-            radioPrinter.Checked = false;
+            radioRegular.Visible = printOK;
+            radioPrinter.Visible = printOK;
 
-            // show/hide time boxes
+            if (printOK)
+            {
+                radioRegular.Checked = true;
+                _printVersion = "Regular";
+            }
+
             ToggleHourMinuteControls();
-
-            // initial render
             LoadAndComposeDiploma();
         }
 
@@ -100,43 +89,30 @@ namespace PokedexTracker.Forms
 
         private void ToggleHourMinuteControls()
         {
-            bool show = (_printVersion == "Printer") && PrintGames.Contains(_gameName);
+            bool show = _printVersion == "Printer" && PrintGames.Contains(_gameName);
             lblHour.Visible = txtHour.Visible = show;
             lblMinute.Visible = txtMinute.Visible = show;
         }
 
         private void LoadAndComposeDiploma()
         {
-            // 1) Determine which “print” variant to load
-            string actualPrint = _printVersion;
+            // If Yellow+Printer+missingMew, use the special “PrinterMissing” file
+            var actualPrint = (_gameName == "Yellow"
+                               && _printVersion == "Printer"
+                               && _missingMew)
+                              ? "PrinterMissingMew"
+                              : _printVersion;
 
-            // For Yellow + Printer + missingMew → use special “PrinterMissing” file
-            if (_gameName == "Yellow"
-             && _printVersion == "Printer"
-             && _missingMew)
-            {
-                actualPrint = "PrinterMissingMew";
-                // ensure you have: Yellow-GB-PrinterMissing.png
-            }
-
-            // 2) Build the path
-            string path = _assets.GetDiplomaPath(
-                _gameName,
-                _mediaVersion,
-                actualPrint
-            );
-
+            // Compose filename: e.g. "Yellow-GB-PrinterMissing.png"
+            var path = _assets.GetDiplomaPath(_gameName, _mediaVersion, actualPrint);
             if (!File.Exists(path))
             {
-                MessageBox.Show(
-                    $"Diploma not found: {path}",
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error
-                );
+                MessageBox.Show($"Diploma not found: {path}", "Error",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Close();
                 return;
             }
 
-            // 3) Load & draw
             using (var baseImg = Image.FromFile(path))
             {
                 var bmp = new Bitmap(
@@ -144,9 +120,10 @@ namespace PokedexTracker.Forms
                     baseImg.Height,
                     PixelFormat.Format32bppArgb
                 );
+
                 using (var g = Graphics.FromImage(bmp))
                 {
-                    // draw base
+                    // draw background
                     g.PageUnit = GraphicsUnit.Pixel;
                     g.InterpolationMode = InterpolationMode.NearestNeighbor;
                     g.PixelOffsetMode = PixelOffsetMode.None;
@@ -156,14 +133,14 @@ namespace PokedexTracker.Forms
                     g.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
                     g.DrawImage(baseImg, Point.Empty);
 
-                    // name overwrite
+                    // draw player name
                     var nameFmt = _nameMgr.GetFontSettings(_gameName);
                     g.CompositingMode = CompositingMode.SourceCopy;
                     g.TextRenderingHint = TextRenderingHint.SingleBitPerPixel;
                     g.SmoothingMode = SmoothingMode.None;
-                    using (var pathName = new GraphicsPath())
+                    using (var gp = new GraphicsPath())
                     {
-                        pathName.AddString(
+                        gp.AddString(
                             _playerName,
                             nameFmt.Family,
                             (int)FontStyle.Regular,
@@ -172,54 +149,63 @@ namespace PokedexTracker.Forms
                             StringFormat.GenericDefault
                         );
                         using (var halo = new Pen(Color.White, 3) { LineJoin = LineJoin.Round })
-                            g.DrawPath(halo, pathName);
-                        g.FillPath(Brushes.Black, pathName);
+                            g.DrawPath(halo, gp);
+                        g.FillPath(Brushes.Black, gp);
                     }
 
-                    // restore & hour/minute...
+                    // restore for time / anti‐alias
                     g.CompositingMode = CompositingMode.SourceOver;
                     g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
                     g.SmoothingMode = SmoothingMode.AntiAlias;
 
+                    // draw hour/minute if using any Printer variant
                     if (actualPrint.StartsWith("Printer") && PrintGames.Contains(_gameName))
                     {
                         var twoFs = _timeMgr.GetFontSettings(_gameName);
-                        // Hour
+
                         using (var fH = new Font(
-                            twoFs.HourSettings.Family,
-                            twoFs.HourSettings.Size,
-                            FontStyle.Regular,
-                            GraphicsUnit.Pixel))
+                                   twoFs.HourSettings.Family,
+                                   twoFs.HourSettings.Size,
+                                   FontStyle.Regular,
+                                   GraphicsUnit.Pixel))
+                        {
                             g.DrawString(
                                 txtHour.Text.PadLeft(2, '0'),
                                 fH,
                                 Brushes.Black,
                                 twoFs.HourSettings.Location
                             );
-                        // Minute
+                        }
+
                         using (var fM = new Font(
-                            twoFs.MinuteSettings.Family,
-                            twoFs.MinuteSettings.Size,
-                            FontStyle.Regular,
-                            GraphicsUnit.Pixel))
+                                   twoFs.MinuteSettings.Family,
+                                   twoFs.MinuteSettings.Size,
+                                   FontStyle.Regular,
+                                   GraphicsUnit.Pixel))
+                        {
                             g.DrawString(
                                 txtMinute.Text.PadLeft(2, '0'),
                                 fM,
                                 Brushes.Black,
                                 twoFs.MinuteSettings.Location
                             );
+                        }
                     }
                 }
+
                 pictureBox1.Image = bmp;
             }
         }
 
-        // no change to SetPrinterDefault()
         public void SetPrinterDefault(bool printer)
         {
-            radioPrinter.Checked = printer;
-            radioRegular.Checked = !printer;
-            ToggleHourMinuteControls();
+            if (radioPrinter.Visible)
+            {
+                radioPrinter.Checked = printer;
+                radioRegular.Checked = !printer;
+                _printVersion = printer ? "Printer" : "Regular";
+                ToggleHourMinuteControls();
+            }
         }
 
         private void buttonSave_Click(object sender, EventArgs e)

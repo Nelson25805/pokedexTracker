@@ -221,13 +221,18 @@
   <ItemGroup>
     <Resource Include="Assets\Diplomas\Yellow-GB-Printer.png" />
     <Resource Include="Assets\Diplomas\Yellow-GB-Regular.png" />
-    <Resource Include="Assets\Diplomas\Yellow-SGB-Regular.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Diplomas\Yellow-SGB-Printer.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Diplomas\Yellow-GB-PrinterMissingMew.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Diplomas\Crystal-GB-Printer.png" />
+    <Resource Include="Assets\Diplomas\Crystal-GB-Regular.png" />
+    <Resource Include="Assets\Diplomas\Gold-Silver-GB-Printer.png" />
+    <Resource Include="Assets\Diplomas\Gold-Silver-GB-Regular.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
