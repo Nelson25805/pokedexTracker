@@ -50,6 +50,10 @@ namespace PokedexTracker.Forms
             // save/close
             buttonSave.Click += buttonSave_Click;
             buttonClose.Click += (_, __) => Close();
+
+            // Only allow digits in them
+            txtHour.KeyPress += NumericOnly_KeyPress;
+            txtMinute.KeyPress += NumericOnly_KeyPress;
         }
 
         private void DiplomaForm_Load(object sender, EventArgs e)
@@ -128,7 +132,7 @@ namespace PokedexTracker.Forms
 
         private void LoadAndComposeDiploma()
         {
-            // special missing‐Mew override for Yellow+Printer
+            // special missing-Mew override for Yellow+Printer
             string actualPrint = (_gameName == "Yellow"
                                   && _printVersion == "Printer"
                                   && _missingMew)
@@ -194,35 +198,43 @@ namespace PokedexTracker.Forms
                 {
                     var fs = _timeMgr.GetFontSettings(_gameName);
 
+                    // --- HOURS: measure and right-align ---
                     using (var fH = new Font(
                         fs.HourSettings.Family,
                         fs.HourSettings.Size,
                         FontStyle.Regular,
                         GraphicsUnit.Pixel))
                     {
-                        g.DrawString(
-                            txtHour.Text.PadLeft(2, '0'),
-                            fH,
-                            Brushes.Black,
-                            fs.HourSettings.Location);
+                        string h = txtHour.Text.PadLeft(2, '0');
+                        // measure width in pixels
+                        SizeF sz = g.MeasureString(h, fH);
+                        // compute X so text right edge == fs.HourSettings.Location.X
+                        float x = fs.HourSettings.Location.X - sz.Width;
+                        float y = fs.HourSettings.Location.Y;
+                        g.DrawString(h, fH, Brushes.Black, new PointF(x, y));
                     }
+
+                    // --- MINUTES: unchanged (left-align) ---
                     using (var fM = new Font(
                         fs.MinuteSettings.Family,
                         fs.MinuteSettings.Size,
                         FontStyle.Regular,
                         GraphicsUnit.Pixel))
                     {
+                        string m = txtMinute.Text.PadLeft(2, '0');
                         g.DrawString(
-                            txtMinute.Text.PadLeft(2, '0'),
+                            m,
                             fM,
                             Brushes.Black,
                             fs.MinuteSettings.Location);
                     }
                 }
 
+                // clone out of the using so it isn’t disposed
                 pictureBox1.Image = (Bitmap)bmp.Clone();
             }
         }
+
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
@@ -237,5 +249,12 @@ namespace PokedexTracker.Forms
         }
 
         private void buttonClose_Click(object sender, EventArgs e) => Close();
+
+        private void NumericOnly_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Allow control keys (backspace, delete etc.) and digits only
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+                e.Handled = true;
+        }
     }
 }

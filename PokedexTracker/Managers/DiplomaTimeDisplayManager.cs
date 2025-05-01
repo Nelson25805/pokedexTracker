@@ -21,7 +21,7 @@ namespace PokedexTracker.DisplayManagers
         private readonly Dictionary<string, (string FontFile, float Size, Point HourLoc, Point MinLoc)> _timeStyles
             = new Dictionary<string, (string, float, Point, Point)>()
         {
-            { "Yellow", ("Gen1+2.ttf", 8f, new Point(100,260), new Point(130,260)) },
+            { "Yellow", ("Gen1+2.ttf", 8f, new Point(123,262), new Point(127,262)) },
             { "Gold",   ("Gen1+2.ttf", 9f, new Point(175,190), new Point(225,190)) },
             { "Silver", ("Gen1+2.ttf", 9f, new Point(175,190), new Point(225,190)) },
             { "Crystal",("Gen1+2.ttf", 9f, new Point(175,190), new Point(225,190)) }
