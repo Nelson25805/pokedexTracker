@@ -83,6 +83,7 @@
             // txtHour
             // 
             this.txtHour.Location = new System.Drawing.Point(704, 281);
+            this.txtHour.MaxLength = 3;
             this.txtHour.Name = "txtHour";
             this.txtHour.Size = new System.Drawing.Size(150, 38);
             this.txtHour.TabIndex = 14;

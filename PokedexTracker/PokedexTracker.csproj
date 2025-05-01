@@ -223,9 +223,6 @@
     <Resource Include="Assets\Diplomas\Yellow-GB-Regular.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\Diplomas\Yellow-SGB-Printer.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Assets\Diplomas\Yellow-GB-PrinterMissingMew.png" />
   </ItemGroup>
   <ItemGroup>
