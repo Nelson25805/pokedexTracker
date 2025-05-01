@@ -47,10 +47,6 @@ namespace PokedexTracker.Forms
             txtHour.TextChanged += (_, __) => LoadAndComposeDiploma();
             txtMinute.TextChanged += (_, __) => LoadAndComposeDiploma();
 
-            // save/close
-            buttonSave.Click += buttonSave_Click;
-            buttonClose.Click += (_, __) => Close();
-
             // Only allow digits in them
             txtHour.KeyPress += NumericOnly_KeyPress;
             txtMinute.KeyPress += NumericOnly_KeyPress;
