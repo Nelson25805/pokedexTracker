@@ -24,7 +24,7 @@ namespace PokedexTracker.DisplayManagers
             { "Yellow", ("Gen1+2.ttf", 8f, new Point(122,263), new Point(127,263)) },
             { "Gold",   ("Gen1+2.ttf", 8f, new Point(130,263), new Point(135,263)) },
             { "Silver", ("Gen1+2.ttf", 8f, new Point(130,263), new Point(135,263)) },
-            { "Crystal",("Gen1+2.ttf", 8f, new Point(130,263), new Point(135,263)) },
+            { "Crystal",("Gen1+2.ttf", 8f, new Point(130,263), new Point(135,263)) }
         };
 
         public TwoFontSettings GetFontSettings(string gameName)

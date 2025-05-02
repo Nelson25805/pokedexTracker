@@ -27,6 +27,9 @@ namespace PokedexTracker.Forms
         // sets
         private static readonly string[] SgbGames = { "Red", "Blue" };
         private static readonly string[] PrintGames = { "Yellow", "Gold", "Silver", "Crystal" };
+        private static readonly string[] NationalPokedex = {"Ruby", "Sapphire", 
+            "Emerald", "Diamond", "Pearl", "Platinum", "HeartGold", "SoulSilver", "Black",
+        "White", "Black 2", "White 2", "X", "Y", "Omega Ruby", "Alpha Sapphire", "Brilliant Diamond", "Shinning Pearl"};
 
         public DiplomaForm(string gameName, string playerName, bool missingMew)
         {
