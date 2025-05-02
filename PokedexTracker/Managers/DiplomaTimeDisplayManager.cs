@@ -22,9 +22,9 @@ namespace PokedexTracker.DisplayManagers
             = new Dictionary<string, (string, float, Point, Point)>()
         {
             { "Yellow", ("Gen1+2.ttf", 8f, new Point(122,263), new Point(127,263)) },
-            { "Gold",   ("Gen1+2.ttf", 9f, new Point(175,190), new Point(225,190)) },
-            { "Silver", ("Gen1+2.ttf", 9f, new Point(175,190), new Point(225,190)) },
-            { "Crystal",("Gen1+2.ttf", 9f, new Point(175,190), new Point(225,190)) }
+            { "Gold",   ("Gen1+2.ttf", 8f, new Point(130,263), new Point(135,263)) },
+            { "Silver", ("Gen1+2.ttf", 8f, new Point(130,263), new Point(135,263)) },
+            { "Crystal",("Gen1+2.ttf", 8f, new Point(130,263), new Point(135,263)) },
         };
 
         public TwoFontSettings GetFontSettings(string gameName)

@@ -14,9 +14,9 @@ namespace PokedexTracker.DisplayManagers
             { "Red",        ("Gen1+2.ttf",  8f, new Point(78, 31)) },
             { "Blue",       ("Gen1+2.ttf",  8f, new Point(78, 31)) },
             { "Yellow",     ("Gen1+2.ttf",  8f, new Point(78, 31)) },
-            { "Gold",       ("Gen1+2.ttf",  12f, new Point(75, 110)) },
-            { "Silver",     ("Gen1+2.ttf",  12f, new Point(75, 110)) },
-            { "Crystal",    ("Gen1+2.ttf",  12f, new Point(75, 110)) },
+            { "Gold",       ("Gen1+2.ttf",  8f, new Point(70, 39)) },
+            { "Silver",     ("Gen1+2.ttf",  8f, new Point(70, 39)) },
+            { "Crystal",    ("Gen1+2.ttf",  8f, new Point(70, 39)) },
             // … add others …
         };
 

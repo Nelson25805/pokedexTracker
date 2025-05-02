@@ -65,8 +65,8 @@
             "Red",
             "Blue",
             "Yellow",
-            "Silver",
             "Gold",
+            "Silver",
             "Crystal",
             "Ruby",
             "Sapphire",
@@ -214,7 +214,7 @@
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(40, 40);
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1876, 60);
+            this.menuStrip1.Size = new System.Drawing.Size(1876, 24);
             this.menuStrip1.TabIndex = 12;
             this.menuStrip1.Text = "menuStrip1";
             // 
