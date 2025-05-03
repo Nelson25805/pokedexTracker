@@ -30,6 +30,13 @@ namespace PokedexTracker.Forms
         private static readonly string[] NationalPokedex = {"Ruby", "Sapphire", 
             "Emerald", "Diamond", "Pearl", "Platinum", "HeartGold", "SoulSilver", "Black",
         "White", "Black 2", "White 2", "X", "Y", "Omega Ruby", "Alpha Sapphire", "Brilliant Diamond", "Shinning Pearl"};
+        private static readonly string[] KantoPokedex = {"Fire Red", "Leaf Green", "Let's Go Pikachu", "Let's Go Eevee" };
+        private static readonly string[] JohtoPokedex = { "Heart Gold", "Soul Silver"};
+        private static readonly string[] HoennPokedex = { "Ruby", "Sapphire", "Emerald", "Omega Ruby", "Alpha Sapphire" };
+        private static readonly string[] SinnohPokedex = { "Diamond", "Pearl", "Platinum", "Brilliant Diamond", "Shinning Pearl" };
+        private static readonly string[] UnovaPokedex = { "Black", "White", "Black 2", "White 2" };
+        private static readonly string[] KalosPokedex = { "X", "Y" };
+        //Add other games later on
 
         public DiplomaForm(string gameName, string playerName, bool missingMew)
         {
