@@ -231,6 +231,11 @@
     <Resource Include="Assets\Diplomas\Gold-Silver-GB-Printer.png" />
     <Resource Include="Assets\Diplomas\Gold-Silver-GB-Regular.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Diplomas\E_National_Diploma.png" />
+    <Resource Include="Assets\Diplomas\FRLG_National_Diploma.png" />
+    <Resource Include="Assets\Diplomas\RS_National_Diploma.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
