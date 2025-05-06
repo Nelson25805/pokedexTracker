@@ -60,66 +60,56 @@ namespace PokedexTracker
         public string GetPokemonCardBackgroundPath() =>
             Path.Combine(_baseAssetsPath, "PokemonCardBackground", "pokeballBg.png");
 
-        public string GetDiplomaPath(string gameName, string mediaVersion = "GB", string printVersion = "Regular")
+        public string GetDiplomaPath(string gameName, string choice)
         {
-            // Map each game to its generation folder:
-            var genMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-            {
-                // Gen I
-                ["Red"] = "Gen1",
-                ["Blue"] = "Gen1",
-                ["Yellow"] = "Gen1",
-                // Gen II
-                ["Gold"] = "Gen2",
-                ["Silver"] = "Gen2",
-                ["Crystal"] = "Gen2",
-                // Gen III
-                ["Ruby"] = "Gen3",
-                ["Sapphire"] = "Gen3",
-                ["Emerald"] = "Gen3",
-                ["Fire Red"] = "Gen3",
-                ["Leaf Green"] = "Gen3",
-                // Gen IV
-                ["Diamond"] = "Gen4",
-                ["Pearl"] = "Gen4",
-                ["Platinum"] = "Gen4",
-                ["Heart Gold"] = "Gen4",
-                ["Soul Silver"] = "Gen4",
-                // … add Gen V+ as needed …
-            };
-
-            // Determine gen folder, default to top-level if unknown:
-            string genFolder = genMap.TryGetValue(gameName, out var g) ? g : "";
-
-            // Determine game folder (e.g. “Red-Blue”, “Gold-Silver”, etc.)
-            string gameFolder;
-            if (gameName == "Red" || gameName == "Blue")
-                gameFolder = "Red-Blue";
-            else if (gameName == "Gold" || gameName == "Silver")
-                gameFolder = "Gold-Silver";
-            else if (gameName == "Ruby" || gameName == "Sapphire")
-                gameFolder = "Ruby-Sapphire";
-            else if (gameName == "Fire Red" || gameName == "Leaf Green")
-                gameFolder = "FireRed-LeafGreen";
-            else if (gameName == "Diamond" || gameName == "Pearl")
-                gameFolder = "Diamond-Pearl";
-            else if (gameName == "Heart Gold" || gameName == "Soul Silver")
-                gameFolder = "HeartGold-SoulSilver";
+            // 1) Determine generation folder:
+            string gen;
+            if (gameName == "Red" || gameName == "Blue" || gameName == "Yellow")
+                gen = "Gen1";
+            else if (gameName == "Gold" || gameName == "Silver" || gameName == "Crystal")
+                gen = "Gen2";
+            else if (gameName == "Ruby" || gameName == "Sapphire" || gameName == "Emerald")
+                gen = "Gen3";
+            else if (gameName == "Fire Red" || gameName == "Leaf Green" || gameName == "Platinum")
+                gen = "Gen3";
+            else if (gameName == "Diamond" || gameName == "Pearl" || gameName == "Heart Gold" || gameName == "Soul Silver")
+                gen = "Gen4";
+            else if (gameName == "Black" || gameName == "White" || gameName == "Black 2" || gameName == "White 2")
+                gen = "Gen5";
+            else if (gameName == "X" || gameName == "Y")
+                gen = "Gen6";
             else
-                gameFolder = gameName;
+                gen = "GenMisc";
 
-            // Build the diplomas root:
-            string diplomasRoot = Path.Combine(_baseAssetsPath, "Diplomas");
+            // 2) Normalize game-folder name:
+            string gf;
+            if (gameName == "Red" || gameName == "Blue")
+                gf = "Red-Blue";
+            else if (gameName == "Gold" || gameName == "Silver")
+                gf = "Gold-Silver";
+            else if (gameName == "Ruby" || gameName == "Sapphire")
+                gf = "Ruby-Sapphire";
+            else if (gameName == "Fire Red" || gameName == "Leaf Green")
+                gf = "FireRed-LeafGreen";
+            else if (gameName == "Diamond" || gameName == "Pearl")
+                gf = "Diamond-Pearl";
+            else if (gameName == "Heart Gold" || gameName == "Soul Silver")
+                gf = "HeartGold-SoulSilver";
+            else
+                gf = gameName.Replace(" ", "");
 
-            // If we have a genFolder, look under it:
-            string targetDir = string.IsNullOrEmpty(genFolder)
-                ? diplomasRoot
-                : Path.Combine(diplomasRoot, genFolder);
+            // 3) Build filename with exactly one choice token:
+            //    e.g. "Red-Blue-GB.png", "Yellow-Printer.png", "Ruby-Regional.png"
+            string fileName = $"{gf}-{choice}.png";
 
-            // Compose the filename: e.g. “Yellow-GB-Printer.png”
-            string fileName = $"{gameFolder}-{mediaVersion}-{printVersion}.png";
-
-            return Path.Combine(targetDir, fileName);
+            // 4) Assemble full path
+            return Path.Combine(
+                _baseAssetsPath,
+                "Diplomas",
+                gen,
+                gf,
+                fileName
+            );
         }
     }
 }

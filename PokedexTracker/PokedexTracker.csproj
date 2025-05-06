@@ -193,6 +193,7 @@
     <Resource Include="Assets\TrainerCard\Yellow\Trainer_0.png" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Assets\Diplomas\" />
     <Folder Include="bin\Debug\" />
     <Folder Include="GithubAssets\" />
   </ItemGroup>
@@ -211,30 +212,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\Diplomas\Red-Blue-SGB-Regular.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\Diplomas\Red-Blue-GB-Regular.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\Diplomas\Yellow-GB-Printer.png" />
-    <Resource Include="Assets\Diplomas\Yellow-GB-Regular.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\Diplomas\Yellow-GB-PrinterMissingMew.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\Diplomas\Crystal-GB-Printer.png" />
-    <Resource Include="Assets\Diplomas\Crystal-GB-Regular.png" />
-    <Resource Include="Assets\Diplomas\Gold-Silver-GB-Printer.png" />
-    <Resource Include="Assets\Diplomas\Gold-Silver-GB-Regular.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\Diplomas\E_National_Diploma.png" />
-    <Resource Include="Assets\Diplomas\FRLG_National_Diploma.png" />
-    <Resource Include="Assets\Diplomas\RS_National_Diploma.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
