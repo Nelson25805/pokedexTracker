@@ -156,10 +156,14 @@ namespace PokedexTracker.Forms
             g.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
             g.DrawImage(baseImg, Point.Empty);
 
-            // Draw player name vector‐style
+            // 1) fetch new settings with color:
             var nf = _nameMgr.GetFontSettings(_gameName);
+
+            // 2) prepare for overwrite:
             g.CompositingMode = CompositingMode.SourceCopy;
             g.TextRenderingHint = TextRenderingHint.SingleBitPerPixel;
+            g.SmoothingMode = SmoothingMode.None;
+
             using (var gp = new GraphicsPath())
             {
                 gp.AddString(
@@ -170,13 +174,21 @@ namespace PokedexTracker.Forms
                     new PointF(nf.Location.X, nf.Location.Y),
                     StringFormat.GenericDefault
                 );
-                g.FillPath(Brushes.Black, gp);
+
+                // optional white halo:
+                //using (var halo = new Pen(Color.White, 3) { LineJoin = LineJoin.Round })
+                //    g.DrawPath(halo, gp);
+
+                // 3) fill text with our per‐game color:
+                using (var brush = new SolidBrush(nf.TextColor))
+                    g.FillPath(brush, gp);
             }
 
-            // Restore for possible time text
+            // 4) restore for any further AA drawing
             g.CompositingMode = CompositingMode.SourceOver;
             g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
             g.SmoothingMode = SmoothingMode.AntiAlias;
+
 
             // If Printer variant, draw time
             if (choiceKey.StartsWith("Printer"))
