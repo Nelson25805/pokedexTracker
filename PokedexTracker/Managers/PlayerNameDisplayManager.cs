@@ -17,7 +17,7 @@ namespace PokedexTracker.DisplayManagers
             { "Gold",       ("Gen1+2.ttf", 8f,  new Point(47,15)) },
             { "Silver",     ("Gen1+2.ttf", 8f,  new Point(47,15)) },
             { "Crystal",    ("Gen1+2.ttf", 8f,  new Point(47,15)) },
-            { "Ruby",       ("Pokemon RS.ttf",   16.5f, new Point(60,43)) },
+            { "Ruby",       ("Pokemon RS.ttf",   17f, new Point(60,41)) },
             { "Sapphire",   ("Pokemon RS.ttf",   12f, new Point(52,45)) },
             { "Emerald",    ("Pokemon RS.ttf",   12f, new Point(52,45)) },
             { "Fire Red",   ("Pokemon RS.ttf",   11f, new Point(63,38)) },
