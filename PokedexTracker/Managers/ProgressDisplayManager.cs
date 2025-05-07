@@ -17,21 +17,21 @@ namespace PokedexTracker.DisplayManagers
             { "Gold",        ("Gen1+2.ttf",  6f, new Point(69,32)) },
             { "Silver",      ("Gen1+2.ttf",  6f, new Point(69,32)) },
             { "Crystal",     ("Gen1+2.ttf",  6f, new Point(69,32)) },
-            { "Ruby",        ("Gen3.ttf",   10f, new Point(70,69)) },
-            { "Sapphire",    ("Gen3.ttf",   10f, new Point(70,69)) },
-            { "Emerald",     ("Gen3.ttf",   10f, new Point(70,69)) },
-            { "Fire Red",    ("Gen3.ttf",   11f, new Point(75,65)) },
-            { "Leaf Green",  ("Gen3.ttf",   11f, new Point(75,65)) },
-            { "Diamond",     ("Gen3.ttf",   11f, new Point(85,70)) },
-            { "Pearl",       ("Gen3.ttf",   11f, new Point(85,70)) },
-            { "Platinum",    ("Gen3.ttf",   11f, new Point(85,70)) },
-            { "Heart Gold",  ("Gen3.ttf",   11f, new Point(85,70)) },
-            { "Soul Silver", ("Gen3.ttf",   11f, new Point(85,70)) }
+            { "Ruby",        ("Pokemon RS.ttf",   17f, new Point(72,66)) },
+            { "Sapphire",    ("Pokemon RS.ttf",   10f, new Point(70,69)) },
+            { "Emerald",     ("Pokemon RS.ttf",   10f, new Point(70,69)) },
+            { "Fire Red",    ("Pokemon RS.ttf",   11f, new Point(75,65)) },
+            { "Leaf Green",  ("Pokemon RS.ttf",   11f, new Point(75,65)) },
+            { "Diamond",     ("Pokemon RS.ttf",   11f, new Point(85,70)) },
+            { "Pearl",       ("Pokemon RS.ttf",   11f, new Point(85,70)) },
+            { "Platinum",    ("Pokemon RS.ttf",   11f, new Point(85,70)) },
+            { "Heart Gold",  ("Pokemon RS.ttf",   11f, new Point(85,70)) },
+            { "Soul Silver", ("Pokemon RS.ttf",   11f, new Point(85,70)) }
         };
         private readonly PrivateFontCollection _fonts;
         public ProgressDisplayManager()
         {
-            _fonts = FontLoader.LoadFontCollection(new[] { "Gen1+2.ttf", "Gen3.ttf" });
+            _fonts = FontLoader.LoadFontCollection(new[] { "Gen1+2.ttf", "Pokemon RS.ttf" });
         }
         public FontSettings GetFontSettings(string gameName)
         {

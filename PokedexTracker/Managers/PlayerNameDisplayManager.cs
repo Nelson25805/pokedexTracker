@@ -17,21 +17,21 @@ namespace PokedexTracker.DisplayManagers
             { "Gold",       ("Gen1+2.ttf", 8f,  new Point(47,15)) },
             { "Silver",     ("Gen1+2.ttf", 8f,  new Point(47,15)) },
             { "Crystal",    ("Gen1+2.ttf", 8f,  new Point(47,15)) },
-            { "Ruby",       ("Gen3.ttf",   8f, new Point(52,45)) },
-            { "Sapphire",   ("Gen3.ttf",   12f, new Point(52,45)) },
-            { "Emerald",    ("Gen3.ttf",   12f, new Point(52,45)) },
-            { "Fire Red",   ("Gen3.ttf",   11f, new Point(63,38)) },
-            { "Leaf Green", ("Gen3.ttf",   11f, new Point(63,38)) },
-            { "Diamond",    ("Gen3.ttf",   12f, new Point(59,47)) },
-            { "Pearl",      ("Gen3.ttf",   12f, new Point(59,47)) },
-            { "Platinum",   ("Gen3.ttf",   12f, new Point(59,47)) },
-            { "Heart Gold", ("Gen3.ttf",   12f, new Point(59,47)) },
-            { "Soul Silver",("Gen3.ttf",   12f, new Point(59,47)) }
+            { "Ruby",       ("Pokemon RS.ttf",   16.5f, new Point(60,43)) },
+            { "Sapphire",   ("Pokemon RS.ttf",   12f, new Point(52,45)) },
+            { "Emerald",    ("Pokemon RS.ttf",   12f, new Point(52,45)) },
+            { "Fire Red",   ("Pokemon RS.ttf",   11f, new Point(63,38)) },
+            { "Leaf Green", ("Pokemon RS.ttf",   11f, new Point(63,38)) },
+            { "Diamond",    ("Pokemon RS.ttf",   12f, new Point(59,47)) },
+            { "Pearl",      ("Pokemon RS.ttf",   12f, new Point(59,47)) },
+            { "Platinum",   ("Pokemon RS.ttf",   12f, new Point(59,47)) },
+            { "Heart Gold", ("Pokemon RS.ttf",   12f, new Point(59,47)) },
+            { "Soul Silver",("Pokemon RS.ttf",   12f, new Point(59,47)) }
         };
         private readonly PrivateFontCollection _fonts;
         public PlayerNameDisplayManager()
         {
-            _fonts = FontLoader.LoadFontCollection(new[] { "Gen1+2.ttf", "Gen3.ttf" });
+            _fonts = FontLoader.LoadFontCollection(new[] { "Gen1+2.ttf", "Pokemon RS.ttf" });
         }
         public FontSettings GetFontSettings(string gameName)
         {
