@@ -51,10 +51,6 @@ namespace PokedexTracker.Forms
             // Only digits in time fields:
             txtHour.KeyPress += NumericOnly_KeyPress;
             txtMinute.KeyPress += NumericOnly_KeyPress;
-
-            // Save & Close:
-            buttonSave.Click += buttonSave_Click;
-            buttonClose.Click += (_, __) => Close();
         }
 
         private void DiplomaForm_Load(object sender, EventArgs e)
