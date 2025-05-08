@@ -11,12 +11,12 @@ namespace PokedexTracker.DisplayManagers
         private readonly Dictionary<string, (string File, float Size, Point Loc)> _styles
             = new Dictionary<string, (string, float, Point)>
         {
-            { "Red",       ("Gen1+2.ttf",  8f, new Point(78, 31)) },
-            { "Blue",      ("Gen1+2.ttf",  8f, new Point(78, 31)) },
-            { "Yellow",    ("Gen1+2.ttf",  8f, new Point(78, 31)) },
-            { "Gold",      ("Gen1+2.ttf",  8f, new Point(70, 39)) },
-            { "Silver",    ("Gen1+2.ttf",  8f, new Point(70, 39)) },
-            { "Crystal",   ("Gen1+2.ttf",  8f, new Point(70, 39)) },
+            { "Red",       ("PKMN RBYGSC.ttf",  8f, new Point(78, 31)) },
+            { "Blue",      ("PKMN RBYGSC.ttf",  8f, new Point(78, 31)) },
+            { "Yellow",    ("PKMN RBYGSC.ttf",  8f, new Point(78, 31)) },
+            { "Gold",      ("PKMN RBYGSC.ttf",  8f, new Point(70, 39)) },
+            { "Silver",    ("PKMN RBYGSC.ttf",  8f, new Point(70, 39)) },
+            { "Crystal",   ("PKMN RBYGSC.ttf",  8f, new Point(70, 39)) },
             { "Ruby",       ("Pokemon RS.ttf",   17f, new Point(99,14)) },
             { "Sapphire",  ("Pokemon RS.ttf",    17f, new Point(70, 39)) },
             { "Emerald",   ("Pokemon RS.ttf",    8f, new Point(70, 39)) },
@@ -41,7 +41,7 @@ namespace PokedexTracker.DisplayManagers
             // load any fonts you need (same as your FontLoader expects)
             _fonts = FontLoader.LoadFontCollection(new[]
             {
-                "Gen1+2.ttf",
+                "PKMN RBYGSC.ttf",
                 "Pokemon RS.ttf",
                 "Pokémon FireRed & LeafGreen Fon.ttf"
             });
@@ -51,7 +51,7 @@ namespace PokedexTracker.DisplayManagers
         {
             // 1) pick font/size/loc or fallback
             if (!_styles.TryGetValue(gameName, out var _style))
-                _style = ("Gen1+2.ttf", 12f, new Point(50, 100));
+                _style = ("PKMN RBYGSC.ttf", 12f, new Point(50, 100));
 
             // 2) pick color override or default to Black
             var color = _colorOverrides.TryGetValue(gameName, out var c)

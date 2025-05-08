@@ -11,15 +11,15 @@ namespace PokedexTracker.DisplayManagers
         private readonly Dictionary<string, (string FontFile, float SizePx, Point Loc)> _styles
             = new Dictionary<string, (string, float, Point)>
         {
-            { "Red",        ("Gen1+2.ttf", 70f,  new Point(517,167)) },
-            { "Blue",       ("Gen1+2.ttf", 70f,  new Point(517,167)) },
-            { "Yellow",     ("Gen1+2.ttf", 70f,  new Point(517,167)) },
-            { "Gold",       ("Gen1+2.ttf", 8f,  new Point(47,15)) },
-            { "Silver",     ("Gen1+2.ttf", 8f,  new Point(47,15)) },
-            { "Crystal",    ("Gen1+2.ttf", 8f,  new Point(47,15)) },
+            { "Red",        ("PKMN RBYGSC.ttf", 70f,  new Point(517,167)) },
+            { "Blue",       ("PKMN RBYGSC.ttf", 70f,  new Point(517,167)) },
+            { "Yellow",     ("PKMN RBYGSC.ttf", 70f,  new Point(517,167)) },
+            { "Gold",       ("PKMN RBYGSC.ttf", 8f,  new Point(47,15)) },
+            { "Silver",     ("PKMN RBYGSC.ttf", 8f,  new Point(47,15)) },
+            { "Crystal",    ("PKMN RBYGSC.ttf", 8f,  new Point(47,15)) },
             { "Ruby",       ("Pokemon RS.ttf",   17f, new Point(60,41)) },
             { "Sapphire",   ("Pokemon RS.ttf",   12f, new Point(52,45)) },
-            { "Emerald",    ("Pokemon RS.ttf",   12f, new Point(52,45)) },
+            { "Emerald",    ("Pokémon FireRed & LeafGreen Fon.ttf",   12f, new Point(52,45)) },
             { "Fire Red",  ("Pokémon FireRed & LeafGreen Fon.ttf",    12f, new Point(70, 39)) },
             { "Leaf Green",("Pokémon FireRed & LeafGreen Fon.ttf",    17f, new Point(70, 39)) },
             { "Diamond",    ("Pokemon RS.ttf",   12f, new Point(59,47)) },
@@ -31,12 +31,12 @@ namespace PokedexTracker.DisplayManagers
         private readonly PrivateFontCollection _fonts;
         public PlayerNameDisplayManager()
         {
-            _fonts = FontLoader.LoadFontCollection(new[] { "Gen1+2.ttf", "Pokemon RS.ttf", "Pokémon FireRed & LeafGreen Fon.ttf" });
+            _fonts = FontLoader.LoadFontCollection(new[] { "PKMN RBYGSC.ttf", "Pokemon RS.ttf", "Pokémon FireRed & LeafGreen Fon.ttf" });
         }
         public FontSettings GetFontSettings(string gameName)
         {
             if (!_styles.TryGetValue(gameName, out var s))
-                s = ("Gen1+2.ttf", 12f, new Point(50, 50));
+                s = ("PKMN RBYGSC.ttf", 12f, new Point(50, 50));
             var fam = FontLoader.GetFamilyFromCollection(_fonts, s.FontFile);
             return new FontSettings(fam, s.SizePx, s.Loc);
         }

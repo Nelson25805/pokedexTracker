@@ -168,7 +168,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
-    <EmbeddedResource Include="Assets\Fonts\Gen1+2.ttf" />
+    <EmbeddedResource Include="Assets\Fonts\PKMN RBYGSC.ttf" />
     <EmbeddedResource Include="Assets\Fonts\Pokemon RS.ttf" />
     <EmbeddedResource Include="Assets\Fonts\Pokémon FireRed &amp; LeafGreen Fon.ttf" />
     <None Include="packages.config" />

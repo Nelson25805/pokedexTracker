@@ -21,10 +21,10 @@ namespace PokedexTracker.DisplayManagers
         private readonly Dictionary<string, (string FontFile, float Size, Point HourLoc, Point MinLoc)> _timeStyles
             = new Dictionary<string, (string, float, Point, Point)>()
         {
-            { "Yellow", ("Gen1+2.ttf", 8f, new Point(122,263), new Point(127,263)) },
-            { "Gold",   ("Gen1+2.ttf", 8f, new Point(130,263), new Point(135,263)) },
-            { "Silver", ("Gen1+2.ttf", 8f, new Point(130,263), new Point(135,263)) },
-            { "Crystal",("Gen1+2.ttf", 8f, new Point(130,263), new Point(135,263)) }
+            { "Yellow", ("PKMN RBYGSC.ttf", 8f, new Point(122,263), new Point(127,263)) },
+            { "Gold",   ("PKMN RBYGSC.ttf", 8f, new Point(130,263), new Point(135,263)) },
+            { "Silver", ("PKMN RBYGSC.ttf", 8f, new Point(130,263), new Point(135,263)) },
+            { "Crystal",("PKMN RBYGSC.ttf", 8f, new Point(130,263), new Point(135,263)) }
         };
 
         public TwoFontSettings GetFontSettings(string gameName)
@@ -32,7 +32,7 @@ namespace PokedexTracker.DisplayManagers
             if (!_timeStyles.TryGetValue(gameName, out var s))
             {
                 // fallback if needed
-                s = ("Gen1+2.ttf", 8f, new Point(0, 0), new Point(0, 0));
+                s = ("PKMN RBYGSC.ttf", 8f, new Point(0, 0), new Point(0, 0));
             }
 
             // Load the embedded font family once from resource
