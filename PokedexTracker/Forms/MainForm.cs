@@ -71,6 +71,11 @@ namespace PokedexTracker
             {
                 comboBoxGames.SelectedIndex = 0;
             }
+
+            //Finding font names
+            //var coll = FontLoader.LoadFontCollection(new[] { "pokemon-frlg.ttf" });
+            //foreach (var f in coll.Families)
+            //    MessageBox.Show($"Found loaded font family '{f.Name}'");
         }
 
 

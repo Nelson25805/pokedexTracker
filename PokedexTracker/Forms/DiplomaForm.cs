@@ -171,10 +171,6 @@ namespace PokedexTracker.Forms
                     StringFormat.GenericDefault
                 );
 
-                // optional white halo:
-                //using (var halo = new Pen(Color.White, 3) { LineJoin = LineJoin.Round })
-                //    g.DrawPath(halo, gp);
-
                 // 3) fill text with our per‐game color:
                 using (var brush = new SolidBrush(nf.TextColor))
                     g.FillPath(brush, gp);
