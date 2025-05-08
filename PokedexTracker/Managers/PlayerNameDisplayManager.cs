@@ -20,8 +20,8 @@ namespace PokedexTracker.DisplayManagers
             { "Ruby",       ("Pokemon RS.ttf",   17f, new Point(60,41)) },
             { "Sapphire",   ("Pokemon RS.ttf",   12f, new Point(52,45)) },
             { "Emerald",    ("Pokemon RS.ttf",   12f, new Point(52,45)) },
-            { "Fire Red",   ("Pokemon RS.ttf",   11f, new Point(63,38)) },
-            { "Leaf Green", ("Pokemon RS.ttf",   11f, new Point(63,38)) },
+            { "Fire Red",  ("Pokémon FireRed & LeafGreen Fon.ttf",    12f, new Point(70, 39)) },
+            { "Leaf Green",("Pokémon FireRed & LeafGreen Fon.ttf",    17f, new Point(70, 39)) },
             { "Diamond",    ("Pokemon RS.ttf",   12f, new Point(59,47)) },
             { "Pearl",      ("Pokemon RS.ttf",   12f, new Point(59,47)) },
             { "Platinum",   ("Pokemon RS.ttf",   12f, new Point(59,47)) },
@@ -31,7 +31,7 @@ namespace PokedexTracker.DisplayManagers
         private readonly PrivateFontCollection _fonts;
         public PlayerNameDisplayManager()
         {
-            _fonts = FontLoader.LoadFontCollection(new[] { "Gen1+2.ttf", "Pokemon RS.ttf" });
+            _fonts = FontLoader.LoadFontCollection(new[] { "Gen1+2.ttf", "Pokemon RS.ttf", "Pokémon FireRed & LeafGreen Fon.ttf" });
         }
         public FontSettings GetFontSettings(string gameName)
         {
