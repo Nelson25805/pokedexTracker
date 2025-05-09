@@ -93,8 +93,8 @@ namespace PokedexTracker
                 var token = _gameSelectionCTS.Token;
 
                 // Enable/disable shiny and gender options as before.
-                int silverIndex = comboBoxGames.Items.IndexOf("Silver");
-                chkShiny.Enabled = comboBoxGames.SelectedIndex >= silverIndex;
+                int goldIndex = comboBoxGames.Items.IndexOf("Gold");
+                chkShiny.Enabled = comboBoxGames.SelectedIndex >= goldIndex;
                 if (!chkShiny.Enabled)
                     chkShiny.Checked = false;
 
