@@ -17,6 +17,7 @@ namespace PokedexTracker.Managers
         private List<(string Name, string Number, string SpritePath, bool IsCaught)> _allPokemonData;
         private readonly Dictionary<string, (List<(string Name, string Number, string SpritePath, bool IsCaught)> Data, int Total, int Caught)> _pokemonCache
             = new Dictionary<string, (List<(string, string, string, bool)>, int, int)>();
+        private bool _useShiny;
 
         // Store the current game name so click events can use it.
         private string _currentGameName;
@@ -37,6 +38,7 @@ namespace PokedexTracker.Managers
         public async Task LoadPokemonCardsAsync(string gameName, bool useShiny, CancellationToken token)
         {
             _currentGameName = gameName;
+            _useShiny = useShiny;
 
             // Reset scroll and layout.
             _panel.AutoScrollPosition = new Point(0, 0);
@@ -124,12 +126,19 @@ namespace PokedexTracker.Managers
                         _allPokemonData[index] = (item.Name, item.Number, item.SpritePath, newStatus);
                     }
 
-                    // Update database status.
-                    _gameManager.ToggleCaughtStatus(item.Number, _currentGameName, newStatus);
+                    if (_useShiny)
+                    {
+                        _gameManager.ToggleShinyCaughtStatus(item.Number, _currentGameName, newStatus);
+                        var data = _gameManager.GetShinyPokemonData(_currentGameName);
+                        ProgressUpdated?.Invoke(data.Total, data.Caught);
+                    }
+                    else
+                    {
+                        _gameManager.ToggleCaughtStatus(item.Number, _currentGameName, newStatus);
+                        var data = _gameManager.GetPokemonData(_currentGameName);
+                        ProgressUpdated?.Invoke(data.Total, data.Caught);
+                    }
 
-                    // Re-fetch data and update progress display.
-                    var updatedData = _gameManager.GetPokemonData(_currentGameName);
-                    ProgressUpdated?.Invoke(updatedData.Total, updatedData.Caught);
                 };
 
                 _panel.Controls.Add(card);

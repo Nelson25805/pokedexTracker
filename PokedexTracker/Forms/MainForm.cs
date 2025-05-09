@@ -53,16 +53,14 @@ namespace PokedexTracker
             _nameDisplayManager = new PlayerNameDisplayManager();
             _progressDisplayManager = new ProgressDisplayManager();
 
-            // Create the PokemonCardsManager using a valid reference to panelCards.
             _pokemonCardsManager = new PokemonCardsManager(panelCards, _gameManager, _assetManager);
-            // Subscribe to progress updates so we can update the trainer card.
             _pokemonCardsManager.ProgressUpdated += (total, caught) =>
             {
                 if (comboBoxGames.SelectedItem is string gameName)
-                {
                     UpdateProgressAndTrainer(gameName, total, caught);
-                }
             };
+
+
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -260,17 +258,22 @@ namespace PokedexTracker
         /// <summary>
         /// Handles changes to the shiny checkbox state.
         /// </summary>
-        private void chkShiny_CheckedChanged(object sender, EventArgs e)
+        private async void chkShiny_CheckedChanged(object sender, EventArgs e)
         {
+            // don’t run until the cards manager is in place
+            if (_pokemonCardsManager == null || comboBoxGames.SelectedItem == null)
+                return;
+
             if (chkShiny.Enabled && comboBoxGames.SelectedItem is string gameName)
             {
                 _gameSelectionCTS?.Cancel();
                 _gameSelectionCTS = new CancellationTokenSource();
                 var token = _gameSelectionCTS.Token;
-
-                _ = _pokemonCardsManager.LoadPokemonCardsAsync(gameName, chkShiny.Checked, token);
+                await _pokemonCardsManager.LoadPokemonCardsAsync(gameName, chkShiny.Checked, token);
             }
         }
+
+
 
 
         /// <summary>
