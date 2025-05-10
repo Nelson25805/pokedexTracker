@@ -59,10 +59,6 @@ namespace PokedexTracker.Helpers
                         StringFormat.GenericDefault
                     );
 
-                    // optional halo
-                    using (var halo = new Pen(Color.White, 3) { LineJoin = LineJoin.Round })
-                        g.DrawPath(halo, namePath);
-
                     // overwrite with black
                     g.FillPath(Brushes.Black, namePath);
                 }
