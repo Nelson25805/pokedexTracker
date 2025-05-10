@@ -59,8 +59,6 @@ namespace PokedexTracker
                 if (comboBoxGames.SelectedItem is string gameName)
                     UpdateProgressAndTrainer(gameName, total, caught);
             };
-
-
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -272,9 +270,6 @@ namespace PokedexTracker
                 await _pokemonCardsManager.LoadPokemonCardsAsync(gameName, chkShiny.Checked, token);
             }
         }
-
-
-
 
         /// <summary>
         /// Handles gender radio button state changes.
