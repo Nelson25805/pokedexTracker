@@ -79,6 +79,7 @@ Pokemon Pokedex Tracker is a C# Windows Forms application designed to help you k
 Key benefits:
 * **Efficient Data Management:** Quickly update and access your Pokémon collection.
 * **Multi-Game Compatibility:** Seamlessly handle data from various Pokémon titles.
+* **Image Saving:** Save diplomas for various Pokémon titles for completing the Pokedex of said game.
 * **User-Friendly Interface:** Simple Windows Forms design for a smooth user experience.
 * **Lightweight Database:** Utilizes SQLite for local data storage without the overhead of a full database server.
 
