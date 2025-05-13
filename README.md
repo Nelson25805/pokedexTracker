@@ -164,8 +164,8 @@ Don't forget to give the project a star! Thanks again!
 
 ### Top contributors:
 
-<a href="https://github.com/Nelson25805/igdbGameInfo/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Nelson25805/igdbGameInfo" alt="contrib.rocks image" />
+<a href="https://github.com/Nelson25805/pokedexTracker/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Nelson25805/pokedexTracker" alt="contrib.rocks image" />
 </a>
 
 
@@ -184,23 +184,23 @@ Distributed under the project_license. See `LICENSE.txt` for more information.
 
 Nelson McFadyen <!-- - [@twitter_handle](https://twitter.com/twitter_handle) --> - Nelson25805@hotmail.com
 
-Project Link: [https://github.com/Nelson25805/igdbGameInfo](https://github.com/Nelson25805/igdbGameInfo)
+Project Link: [https://github.com/Nelson25805/pokedexTracker](https://github.com/Nelson25805/pokedexTracker)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/Nelson25805/igdbGameInfo.svg?style=for-the-badge
-[contributors-url]: https://github.com/Nelson25805/igdbGameInfo/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/Nelson25805/igdbGameInfo.svg?style=for-the-badge
-[forks-url]: https://github.com/Nelson25805/igdbGameInfo/network/members
-[stars-shield]: https://img.shields.io/github/stars/Nelson25805/igdbGameInfo.svg?style=for-the-badge
-[stars-url]: https://github.com/Nelson25805/igdbGameInfo/stargazers
-[issues-shield]: https://img.shields.io/github/issues/Nelson25805/igdbGameInfo.svg?style=for-the-badge
-[issues-url]: https://github.com/Nelson25805/igdbGameInfo/issues
-[license-shield]: https://img.shields.io/github/license/Nelson25805/igdbGameInfo.svg?style=for-the-badge
-[license-url]: https://github.com/Nelson25805/igdbGameInfo/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/Nelson25805/pokedexTracker.svg?style=for-the-badge
+[contributors-url]: https://github.com/Nelson25805/pokedexTracker/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/Nelson25805/pokedexTracker.svg?style=for-the-badge
+[forks-url]: https://github.com/Nelson25805/pokedexTracker/network/members
+[stars-shield]: https://img.shields.io/github/stars/Nelson25805/pokedexTracker.svg?style=for-the-badge
+[stars-url]: https://github.com/Nelson25805/pokedexTracker/stargazers
+[issues-shield]: https://img.shields.io/github/issues/Nelson25805/pokedexTracker.svg?style=for-the-badge
+[issues-url]: https://github.com/Nelson25805/pokedexTracker/issues
+[license-shield]: https://img.shields.io/github/license/Nelson25805/pokedexTracker.svg?style=for-the-badge
+[license-url]: https://github.com/Nelson25805/pokedexTracker/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/nelson-mcfadyen-806134133/
 
