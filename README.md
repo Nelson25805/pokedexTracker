@@ -25,7 +25,6 @@
 
   <h3 align="center">Pokemon Pokedex Tracker</h3>
 
-
   <p align="center">
     A Windows Forms application for tracking caught and uncaught Pokémon across multiple games.
     <br />
@@ -166,16 +165,12 @@ Don't forget to give the project a star! Thanks again!
   <img src="https://contrib.rocks/image?repo=Nelson25805/pokedexTracker" alt="contrib.rocks image" />
 </a>
 
-
-
 <!-- LICENSE -->
 ## License
 
 Distributed under the project_license. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- CONTACT -->
 ## Contact
@@ -185,7 +180,6 @@ Nelson McFadyen <!-- - [@twitter_handle](https://twitter.com/twitter_handle) -->
 Project Link: [https://github.com/Nelson25805/pokedexTracker](https://github.com/Nelson25805/pokedexTracker)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
@@ -210,7 +204,6 @@ Project Link: [https://github.com/Nelson25805/pokedexTracker](https://github.com
 
 [project-screenshot4]: GithubImages/excelExample.png
 [project-screenshot5]: GithubImages/envExample.png
-
 
 [Python-url]: https://www.python.org/downloads/
 [PyQt5-url]: https://pypi.org/project/PyQt5/
