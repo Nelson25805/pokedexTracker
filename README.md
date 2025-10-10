@@ -1,19 +1,19 @@
 <!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
 <a id="readme-top"></a>
-<!--
-*** Thanks for checking out this project!
-*** If you have suggestions to improve this README, feel free to fork the repo and create a pull request,
-*** or open an issue with the tag "enhancement".
-*** Don't forget to give the project a star!
-*** Now go catch 'em all!
--->
 
 <!-- PROJECT SHIELDS -->
+<!--
+*** I'm using markdown "reference style" links for readability.
+*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
+*** See the bottom of this document for the declaration of the reference variables
+*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
+*** https://www.markdownguide.org/basic-syntax/#reference-style-links
+-->
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
+[![project_license][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
 <!-- PROJECT LOGO -->
@@ -75,6 +75,7 @@ Pokemon Pokedex Tracker is a C# Windows Forms application designed to help you k
 Key benefits:
 * **Efficient Data Management:** Quickly update and access your Pokémon collection.
 * **Multi-Game Compatibility:** Seamlessly handle data from various Pokémon titles.
+* **Image Saving:** Save diplomas for various Pokémon titles for completing the Pokedex of said game.
 * **User-Friendly Interface:** Simple Windows Forms design for a smooth user experience.
 * **Lightweight Database:** Utilizes SQLite for local data storage without the overhead of a full database server.
 
@@ -142,30 +143,73 @@ Contributing
 Contributions make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
 
 If you have a suggestion to improve the project, please fork the repository and create a pull request. You can also open an issue with the tag "enhancement".
+<!-- CONTRIBUTING -->
+## Contributing
 
-Steps to contribute:
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-Fork the Project
-Create your Feature Branch (git checkout -b feature/AmazingFeature)
-Commit your Changes (git commit -m 'Add some AmazingFeature')
-Push to the Branch (git push origin feature/AmazingFeature)
-Open a Pull Request
-<p align="right">(<a href="#readme-top">back to top</a>)</p> <!-- LICENSE -->
-License
-Distributed under the MIT License. See LICENSE for more information.
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+Don't forget to give the project a star! Thanks again!
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p> <!-- CONTACT -->
-Contact
-Your Name - @your_twitter - email@example.com
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-Project Link: https://github.com/yourusername/PokemonPokedexTracker
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p> <!-- ACKNOWLEDGMENTS -->
-Acknowledgments
-Choose an Open Source License
-GitHub Emoji Cheat Sheet
-Img Shields
-Windows Forms Documentation
-SQLite Documentation
-Thanks to the Pokémon community for the inspiration!
-<p align="right">(<a href="#readme-top">back to top</a>)</p> <!-- MARKDOWN LINKS & IMAGES -->
+### Top contributors:
+
+<a href="https://github.com/Nelson25805/pokedexTracker/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Nelson25805/pokedexTracker" alt="contrib.rocks image" />
+</a>
+
+<!-- LICENSE -->
+## License
+
+Distributed under the project_license. See `LICENSE.txt` for more information.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- CONTACT -->
+## Contact
+
+Nelson McFadyen <!-- - [@twitter_handle](https://twitter.com/twitter_handle) --> - Nelson25805@hotmail.com
+
+Project Link: [https://github.com/Nelson25805/pokedexTracker](https://github.com/Nelson25805/pokedexTracker)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[contributors-shield]: https://img.shields.io/github/contributors/Nelson25805/pokedexTracker.svg?style=for-the-badge
+[contributors-url]: https://github.com/Nelson25805/pokedexTracker/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/Nelson25805/pokedexTracker.svg?style=for-the-badge
+[forks-url]: https://github.com/Nelson25805/pokedexTracker/network/members
+[stars-shield]: https://img.shields.io/github/stars/Nelson25805/pokedexTracker.svg?style=for-the-badge
+[stars-url]: https://github.com/Nelson25805/pokedexTracker/stargazers
+[issues-shield]: https://img.shields.io/github/issues/Nelson25805/pokedexTracker.svg?style=for-the-badge
+[issues-url]: https://github.com/Nelson25805/pokedexTracker/issues
+[license-shield]: https://img.shields.io/github/license/Nelson25805/pokedexTracker.svg?style=for-the-badge
+[license-url]: https://github.com/Nelson25805/pokedexTracker/blob/master/LICENSE.txt
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-url]: https://www.linkedin.com/in/nelson-mcfadyen-806134133/
+
+[project-Image]: GithubImages/projectImage.png
+
+[project-screenshot]: GithubImages/mainScreen.png
+[project-screenshot2]: GithubImages/filteredGameSearch.gif
+[project-screenshot3]: GithubImages/randomGameSearch.gif
+
+[project-screenshot4]: GithubImages/excelExample.png
+[project-screenshot5]: GithubImages/envExample.png
+
+[Python-url]: https://www.python.org/downloads/
+[PyQt5-url]: https://pypi.org/project/PyQt5/
+[qdarkstyle-url]: https://pypi.org/project/QDarkStyle/
+[igdb-api-url]: https://api-docs.igdb.com/
+[pandas-url]: https://pandas.pydata.org/
+
+[JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
+[JQuery-url]: https://jquery.com 
