@@ -20,10 +20,10 @@ namespace PokedexTracker.Forms
         private readonly DiplomaTimeDisplayManager _timeMgr;
 
         // Our single “choice” radio value:
-        // – For Red/Blue:            GB or SGB
+        // – For Red/Blue: GB or SGB
         // – For Yellow/Gold/Silver/Crystal:
         //      Regular or Printer (PrinterMissingMew if special)
-        // – For all others:          Regional or National
+        // – For all others: Regional or National
         private string _choice;
 
         public DiplomaForm(
