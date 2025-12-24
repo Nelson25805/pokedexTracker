@@ -20,7 +20,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/yourusername/PokemonPokedexTracker">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="GithubImages/logo.png" alt="Logo" width="200" height="200">
   </a>
 
   <h3 align="center">Pokemon Pokedex Tracker</h3>
