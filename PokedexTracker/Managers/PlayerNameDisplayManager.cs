@@ -1,5 +1,4 @@
-﻿// PlayerNameDisplayManager.cs
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Text;
 using PokedexTracker.Helpers;
 using System.Collections.Generic;
