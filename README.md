@@ -119,7 +119,9 @@ Build and Run
 Build the solution using Build -> Build Solution or press Ctrl+Shift+B.
 Run the application by clicking the Start button or pressing F5.
 <p align="right">(<a href="#readme-top">back to top</a>)</p> <!-- USAGE -->
-Usage
+
+### Usage
+
 Here’s how you can use the Pokemon Pokedex Tracker:
 
 Adding Pokémon Data: Click the "Add Pokémon" button to enter new Pokémon details into your Pokedex.
