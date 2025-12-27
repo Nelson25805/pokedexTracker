@@ -131,7 +131,9 @@ Database Management: All database interactions are handled internally with SQLit
 For more detailed usage examples, please refer to the project documentation.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p> <!-- ROADMAP -->
-Roadmap
+
+### Roadmap
+
  Basic functionality for adding, editing, and removing Pokémon entries
  Integration with SQLite for data management
  Export/Import functionality for Pokedex data
