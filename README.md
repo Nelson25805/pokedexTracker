@@ -118,8 +118,9 @@ Alternatively, right-click on the solution in the Solution Explorer and select R
 Build and Run
 Build the solution using Build -> Build Solution or press Ctrl+Shift+B.
 Run the application by clicking the Start button or pressing F5.
-<p align="right">(<a href="#readme-top">back to top</a>)</p> <!-- USAGE -->
+<p align="right">(<a href="#readme-top">back to top</a>)</p> 
 
+<!-- USAGE -->
 ### Usage
 
 Here’s how you can use the Pokemon Pokedex Tracker:
@@ -130,26 +131,23 @@ Editing/Removing Entries: Select a Pokémon to update its details or remove it f
 Database Management: All database interactions are handled internally with SQLite, requiring no manual setup.
 For more detailed usage examples, please refer to the project documentation.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p> <!-- ROADMAP -->
+<p align="right">(<a href="#readme-top">back to top</a>)</p> 
 
+<!-- ROADMAP -->
 ### Roadmap
 
- Basic functionality for adding, editing, and removing Pokémon entries
- Integration with SQLite for data management
- Export/Import functionality for Pokedex data
- Enhanced search and filter options for Pokémon
- User customization and themes
- Cross-platform support (future improvements)
+Basic functionality for adding, editing, and removing Pokémon entries
+Integration with SQLite for data management
+Export/Import functionality for Pokedex data
+Enhanced search and filter options for Pokémon
+User customization and themes
+Cross-platform support (future improvements)
 See the open issues for a full list of proposed features and known issues.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p> <!-- CONTRIBUTING -->
-Contributing
-Contributions make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
+<p align="right">(<a href="#readme-top">back to top</a>)</p> 
 
-If you have a suggestion to improve the project, please fork the repository and create a pull request. You can also open an issue with the tag "enhancement".
 <!-- CONTRIBUTING -->
 ## Contributing
-
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
 If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
