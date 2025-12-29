@@ -108,7 +108,7 @@ Make sure you have the following installed:
 
 1. **Clone the Repository**
    ```sh
-   git clone https://github.com/yourusername/PokemonPokedexTracker.git
+   git clone https://github.com/Nelson25805/PokemonPokedexTracker.git
 Open the Project
 Open Visual Studio.
 Navigate to File -> Open -> Project/Solution and select the .sln file.
