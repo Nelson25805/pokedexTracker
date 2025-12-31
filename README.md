@@ -81,7 +81,7 @@ Key benefits:
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Built With
+## Built With
 
 This project was built using the following technologies:
 
@@ -104,7 +104,7 @@ Make sure you have the following installed:
 * [.NET Framework 4.7.2+ or .NET Core 3.1+](https://dotnet.microsoft.com/)
 * SQLite libraries (included in the project)
 
-### Installation
+## Installation
 
 1. **Clone the Repository**
    ```sh
@@ -121,7 +121,7 @@ Run the application by clicking the Start button or pressing F5.
 <p align="right">(<a href="#readme-top">back to top</a>)</p> 
 
 <!-- USAGE -->
-### Usage
+## Usage
 
 Here’s how you can use the Pokemon Pokedex Tracker:
 
@@ -134,7 +134,7 @@ For more detailed usage examples, please refer to the project documentation.
 <p align="right">(<a href="#readme-top">back to top</a>)</p> 
 
 <!-- ROADMAP -->
-### Roadmap
+## Roadmap
 
 Basic functionality for adding, editing, and removing Pokémon entries
 Integration with SQLite for data management
@@ -161,7 +161,7 @@ Don't forget to give the project a star! Thanks again!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Top contributors:
+## Top contributors:
 
 <a href="https://github.com/Nelson25805/pokedexTracker/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=Nelson25805/pokedexTracker" alt="contrib.rocks image" />
